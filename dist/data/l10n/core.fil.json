@@ -1,0 +1,467 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.098Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.fil.json",
+    "hash": "8fafc5ad922874bdb7ee19e258545367"
+  },
+  "fil": {
+    "QA": {
+      "keepRight": {
+        "detail_description": "Paglalarawan"
+      }
+    },
+    "background": {
+      "key": "B"
+    },
+    "bearing": {
+      "n": "H"
+    },
+    "commit": {
+      "changes": "Mga Pagbabago",
+      "created": "Nilikha",
+      "deleted": "Binura",
+      "modified": "Binago"
+    },
+    "help": {
+      "editing": {
+        "keyboard_h": "Mga Shortcut sa Keyboard"
+      },
+      "overview": {
+        "navigation_h": "Nabigasyon"
+      }
+    },
+    "icons": {
+      "copy": "kopyahin",
+      "deselect": "tanggalin sa pagkakapili",
+      "download": "i-download",
+      "favorite": "paborito",
+      "information": "impormasyon",
+      "list": "listahan",
+      "remove": "tanggalin",
+      "text": "teksto",
+      "undo": "i-undo",
+      "view_on": "tingnan sa {domain}",
+      "visit_website": "bisitahin ang website",
+      "zoom_to": "mag-zoom sa"
+    },
+    "info_panels": {
+      "background": {
+        "description": "Paglalarawan",
+        "source": "Batis"
+      },
+      "history": {
+        "note_comments": "Mga Komento",
+        "note_created_date": "Petsa ng Paglikha",
+        "note_created_user": "Nilikha Ni",
+        "title": "Kasaysayan"
+      },
+      "measurement": {
+        "area": "Lugar",
+        "distance": "Distansya",
+        "title": "Sukat"
+      }
+    },
+    "inspector": {
+      "remove": "Tanggalin",
+      "search": "Hanapin"
+    },
+    "intro": {
+      "navigation": {
+        "features": "Ginagamit namin ang salitang *features* para ilarawan ang mga bagay na makikita sa mapa. Anumang bagay sa totoong mundo ay maaaring imapa bilang isang feature sa OpenStreetMap.",
+        "map_info": "Ang pangunahing lugar ng mapa ay nagpapakita ng data ng OpenStreetMap sa tuktok ng isang background.",
+        "title": "Nabigasyon",
+        "zoom": "Maaari mong i-zoom ang mapa sa pamamagitan ng pag-scroll gamit ang {mousewheel_icon} mouse wheel o trackpad, o sa pamamagitan ng pagpindot sa {plus} / {minus} na button. **I-zoom ang mapa!**"
+      },
+      "startediting": {
+        "help": "Handa ka na ngayong i-edit ang OpenStreetMap!{br}Maaari mong i-replay ang walkthrough na ito anumang oras o tumingin ng higit pang dokumentasyon sa pamamagitan ng pagpindot sa button na {help_icon} {help} o ang `{help_key}` na key.",
+        "save": "Huwag kalimutang regular na i-save ang iyong mga pagbabago!",
+        "shortcuts": "Maaari mong tingnan ang isang listahan ng mga command kasama ng kanilang mga keyboard shortcut sa pamamagitan ng pagpindot sa `{shortcuts_key}` na key.",
+        "start": "Simulan ang pagmamapa!",
+        "title": "Simulan ang Pag-edit"
+      },
+      "welcome": {
+        "chapters": "Maaari mong gamitin ang mga pindutan sa ibaba upang laktawan ang mga kabanata anumang oras o upang simulan muli ang isang kabanata kung natigil ka. Magsimula na tayo! **Pindutin ang '{next}' para magpatuloy.**",
+        "practice": "Ang lahat ng data sa walkthrough na ito ay para lamang sa pagsasanay, at anumang mga pag-edit na gagawin mo sa walkthrough ay hindi mase-save.",
+        "title": "Maligayang pagdating",
+        "welcome": "Maligayang pagdating! Ang walkthrough na ito ay magtuturo sa iyo ng mga pangunahing kaalaman sa pag-edit sa OpenStreetMap.",
+        "words": "Ang walkthrough na ito ay magpapakilala ng ilang bagong salita at konsepto. Kapag nagpakilala kami ng bagong salita, gagamit kami ng *italics*."
+      }
+    },
+    "issues": {
+      "key": "I"
+    },
+    "languageNames": {
+      "ace": "Achinese",
+      "ar-001": "Modernong Karaniwang Arabic",
+      "ars": "Najdi Arabic",
+      "bgn": "Kanlurang Balochi",
+      "bla": "Siksika",
+      "csw": "Latian na Cree",
+      "en": "Ingles",
+      "en-US": "Ingles (American)",
+      "es-419": "Latin American na Espanyol",
+      "es-MX": "Mexican na Espanyol",
+      "ff": "Fulah",
+      "fr-CH": "Swiss na French",
+      "frr": "Hilagang Frisian",
+      "hax": "Katimugang Haida",
+      "ht": "Haitian",
+      "ikt": "Kanlurang Canadian Inuktitut",
+      "ky": "Kirghiz",
+      "lrc": "Hilagang Luri",
+      "mgo": "Meta’",
+      "mic": "Micmac",
+      "mus": "Creek",
+      "nd": "Hilagang Ndebele",
+      "nso": "Hilagang Sotho",
+      "ojb": "Hilagang-Kanluran ng Ojibwa",
+      "ojw": "Kanlurang Ojibwa",
+      "pt-BR": "Portuges ng Brasil",
+      "sdh": "Katimugang Kurdish",
+      "se": "Hilagang Sami",
+      "slh": "Katimugang Lushootseed",
+      "sma": "Katimugang Sami",
+      "smj": "Lule Sami",
+      "smn": "Inari Sami",
+      "sms": "Skolt Sami",
+      "st": "Katimugang Sotho",
+      "tce": "Katimugang Tutchone",
+      "uk": "Ukranian",
+      "zh-Hans": "Pinasimpleng Mandarin Chinese",
+      "zh-Hant": "Tradisyonal na Mandarin Chinese"
+    },
+    "modes": {
+      "add_area": {
+        "description": "Magdagdag ng mga parke, gusali, lawa o iba pang lugar sa mapa.",
+        "title": "Lugar"
+      },
+      "add_line": {
+        "description": "Magdagdag ng mga highway, kalye, daanan ng pedestrian, kanal o iba pang linya sa mapa.",
+        "title": "Linya"
+      },
+      "add_note": {
+        "description": "May nakita kang isyu? Ipaalam sa iba pang mappers.",
+        "title": "Tala"
+      },
+      "add_point": {
+        "description": "Magdagdag ng mga restaurant, monumento, postal box o iba pang mga punto sa mapa.",
+        "title": "Punto"
+      },
+      "add_preset": {
+        "title": "Magdagdag ng {feature}"
+      },
+      "browse": {
+        "description": "I-pan at i-zoom ang mapa.",
+        "title": "Mag-browse"
+      },
+      "drag_node": {
+        "connected_to_hidden": "Hindi ito maaaring i-edit dahil nakakonekta ito sa isang nakatagong feature."
+      }
+    },
+    "note": {
+      "commentTitle": "Mga Komento",
+      "note": "Tala"
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "Nagdagdag ng tala.",
+          "point": "Nagdagdag ng isang punto.",
+          "relation": "Nagdagdag ng kaugnayan.",
+          "vertex": "Nagdagdag ng node sa daanan."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Kinansela ang pagguhit."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "Binago ang tungkulin ng mga miyembro ng kaugnayan.",
+          "other": "Binago ang mga tungkulin ng {n} mga miyembro ng kaugnayan."
+        }
+      },
+      "change_tags": {
+        "annotation": "Binago ang mga tag."
+      },
+      "circularize": {
+        "annotation": {
+          "feature": {
+            "one": "Ginawa ang feature na pabilog.",
+            "other": "Ginawang pabilog ang {n} na mga feature."
+          }
+        },
+        "title": "Gawing pabilog"
+      },
+      "connect": {
+        "annotation": {
+          "from_point": {
+            "to_line": "Pingsama ang isang punto sa isang linya.",
+            "to_point": "Pingsama ang isang punto sa isa pang punto."
+          },
+          "from_vertex": {
+            "to_area": "Dinugtong ang isang \"way\" sa isang area o poligon.",
+            "to_line": "Dinugtong ang isang \"way\" sa isang linya.",
+            "to_point": "Dinugtong ang isang \"way\" sa isang punto o tuldok.",
+            "to_vertex": "Dinugtong ang isang \"way\" sa isa pang \"way\"."
+          }
+        }
+      },
+      "continue": {
+        "annotation": {
+          "area": "Nagpatuloy sa isang lugar.",
+          "line": "Nagpatuloy ng isang linya."
+        },
+        "description": "Ipagpatuloy ang linyang ito.",
+        "multiple": "Maraming linya ang maaaring ipagpatuloy dito. Magdagdag ng isa sa pagpili upang magpatuloy.",
+        "not_eligible": "Walang linyang matutuloy dito.",
+        "title": "Magpatuloy"
+      },
+      "copy": {
+        "annotation": {
+          "one": "Kinopya ang isang feature.",
+          "other": "Kinopya ang {n} na feature."
+        },
+        "description": {
+          "one": "Itakda ang feature na ito para sa pag-paste.",
+          "other": "Itakda ang mga feature na ito para sa pag-paste."
+        },
+        "title": "Kopyahin",
+        "too_large": {
+          "one": "Hindi ito maaaring kopyahin dahil hindi sapat sa kasalukuyan ang nakikita.",
+          "other": "Ang mga ito ay hindi maaaring kopyahin dahil hindi sapat sa mga ito ang kasalukuyang nakikita."
+        }
+      },
+      "delete": {
+        "annotation": {
+          "point": "Nagbura ng punto."
+        },
+        "title": "Burahin"
+      },
+      "disconnect": {
+        "description": {
+          "single_point": {
+            "single_way": {
+              "area": "Paghiwalayin ang napiling lugar sa puntong ito.",
+              "line": "Paghiwalayin ang napiling linya sa puntong ito."
+            }
+          }
+        },
+        "not_connected": "Hindi sapat ang mga linya/lugar dito para paghiwalayin.",
+        "title": "Paghiwalayin",
+        "too_large": {
+          "multiple": "Hindi maaaring paghiwalayin dahil hindi sapat sa mga ito ang kasalukuyang nakikita.",
+          "single": "Hindi maaaring paghiwalayin dahil hindi sapat ang kasalukuyang nakikita."
+        }
+      },
+      "merge": {
+        "title": "Pagsamahin"
+      },
+      "move": {
+        "annotation": {
+          "line": "Gumalaw ng isang linya.",
+          "point": "Gumalaw ng isang punto.",
+          "relation": "Gumalaw ng isang kaugnayan."
+        },
+        "title": "Galawin"
+      },
+      "orthogonalize": {
+        "annotation": {
+          "corner": {
+            "one": "Naging parisukat ang sulok.",
+            "other": "Naging parisukat ang {n} na mga sulok."
+          },
+          "feature": {
+            "one": "Naging parisukat ang mga sulok sa feature.",
+            "other": "Naging parisukat ang mga sulok sa {n} na mga feature."
+          }
+        },
+        "title": "Gawing parisukat"
+      },
+      "paste": {
+        "annotation": {
+          "one": "Na-paste ang isang feature.",
+          "other": "Na-paste ang {n} na mga feature."
+        },
+        "description": {
+          "one": "Magdagdag ng duplicate na {feature} dito.",
+          "other": "Magdagdag ng {n} ng mga duplicate na feature dito."
+        },
+        "nothing_copied": "Walang mga feature ang nakopya.",
+        "title": "I-paste"
+      },
+      "rotate": {
+        "annotation": {
+          "line": "Umikot ng isang linya."
+        },
+        "title": "Ikutin"
+      },
+      "split": {
+        "description": {
+          "line": {
+            "single": {
+              "multiple_node": "Hatiin ang linya sa punto na ito.",
+              "single_node": "Hatiin ang linya sa dalawa sa punto na ito."
+            }
+          }
+        },
+        "title": "Hatiin"
+      },
+      "start": {
+        "annotation": {
+          "area": "Nagsimula ng isang lugar.",
+          "line": "Nagsimula ng linya."
+        }
+      },
+      "straighten": {
+        "annotation": {
+          "line": {
+            "one": "Itinuwid ang isang linya.",
+            "other": "Itinuwid ang {n} na mga linya."
+          },
+          "point": {
+            "one": "Itinuwid ang isang punto.",
+            "other": "Itinuwid ang {n} na mga punto."
+          }
+        },
+        "description": {
+          "line": "Ituwid ang linyang ito.",
+          "lines": "Ituwid ang mga linyang ito.",
+          "points": "Ituwid ang mga puntong ito."
+        },
+        "title": "Ituwid"
+      }
+    },
+    "rapid_menu": {
+      "remove": "Tanggalin"
+    },
+    "restore": {
+      "description": "Ibig mo bang ibalik ang mga hindi na-save na pagbabago mula sa isang nakaraang session sa pag-edit?",
+      "heading": "Mayroon kang hindi na-save ng mga pagbabago"
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distansya"
+      },
+      "help": {
+        "from": "GALING SA",
+        "to": "PAPUNTA SA"
+      }
+    },
+    "save": {
+      "conflict": {
+        "restore": "Ibalik"
+      },
+      "unsaved_changes": "Mayroon kang hindi na-save ng mga pagbabago"
+    },
+    "scriptNames": {
+      "Hanb": "Han na may Bopomofo",
+      "Hans": "Pinasimpleng Han",
+      "Hant": "Tradisyonal na Han",
+      "Rohg": "Hanifi",
+      "Zsym": "Mga Simbolo",
+      "Zxxx": "Hindi Nakasulat",
+      "Zyyy": "Karaniwan",
+      "Zzzz": "Hindi Kilalang Script"
+    },
+    "shortcuts": {
+      "browsing": "Pagba-browse",
+      "command": {
+        "add_note": {
+          "key": "H"
+        },
+        "extract": {
+          "key": "S"
+        },
+        "pan": {
+          "label": "Mag-pan sa mapa"
+        },
+        "straighten": {
+          "key": "T"
+        },
+        "toggle_osm_notes": {
+          "key": "H"
+        },
+        "toggle_streetside": {
+          "key": "T"
+        },
+        "wireframe": {
+          "key": "K"
+        }
+      },
+      "gesture": {
+        "drag": "drag"
+      },
+      "key": {
+        "alt": "Alt",
+        "backspace": "Backspace",
+        "cmd": "Cmd",
+        "ctrl": "Ctrl",
+        "del": "Del",
+        "delete": "Burahin",
+        "end": "End",
+        "enter": "Enter",
+        "esc": "Esc",
+        "home": "Home",
+        "menu": "Menu",
+        "option": "Option",
+        "pause": "Pause",
+        "pgdn": "PgDn",
+        "pgup": "PgUp",
+        "return": "Return",
+        "shift": "Shift",
+        "space": "Space"
+      },
+      "navigation": "Nabigasyon",
+      "or": "-o-",
+      "title": "Mga Shortcut sa Keyboard",
+      "tooltip": "Ipakita ang screen ng mga keyboard shortcut."
+    },
+    "splash": {
+      "text": "Ang iD ay isang simple ngunit magandang editor para sa pag-edit ng libreng mapa ng buong mundo.  Ito ay bersyon {version}. Para sa karagdagang impormasyon tingnan ang {website} at i-ulat ang mga bugs sa {github}.",
+      "walkthrough": "Simulan ang \"Walkthrough\"",
+      "welcome": "Maligayang pagdating sa iD OpenStreetMap editor"
+    },
+    "status": {
+      "retry": "Ulitin"
+    },
+    "tag_reference": {
+      "description": "Paglalarawan"
+    },
+    "title": {
+      "format": {
+        "changes": "({changes}) {base}",
+        "changes_context": "({changes}) {base} – {context}",
+        "context": "{base} – {context}"
+      },
+      "labeled_and_more": {
+        "one": "{labeled} at {count} pa",
+        "other": "{labeled} at {count} pa"
+      }
+    },
+    "toolbar": {
+      "add_feature": "Magdagdag ng Feature",
+      "favorites": "Mga Paborito",
+      "inspect": "Inspeksyunin",
+      "recent": "Kamakailan",
+      "undo_redo": "I-undo / I-redo"
+    },
+    "translate": {
+      "localized_translation_name": "Pangalan"
+    },
+    "units": {
+      "coordinate": "{coordinate}{direction}",
+      "coordinate_pair": "{latitude}, {longitude}",
+      "east": "S",
+      "north": "H",
+      "south": "T",
+      "west": "K",
+      "year_month_day": "YYYY-MM-DD"
+    },
+    "wikidata": {
+      "description": "Paglalarawan",
+      "identifier": "Tagapagkilala",
+      "label": "Label"
+    }
+  }
+}

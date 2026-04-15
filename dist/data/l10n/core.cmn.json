@@ -1,0 +1,219 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.125Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.cmn.json",
+    "hash": "8a471838b41807fd9d19b1944a4ee4ec"
+  },
+  "cmn": {
+    "operations": {
+      "orthogonalize": {
+        "connected_to_hidden": "因為有圖微連結到隱藏的要素而無法方角化。"
+      },
+      "straighten": {
+        "connected_to_hidden": "因為有要素連結到隱藏的要素而無法直線化。"
+      },
+      "delete": {
+        "description": "永久刪除這些要素。",
+        "too_large": "這些要素無法被刪除，因為檢視的部分並不夠。",
+        "incomplete_relation": "因為這些要素沒有完全下載下來，所以無法刪除這些要素。",
+        "part_of_relation": "因為這些要素是更大的關係的一部分，所以無法刪除。你必須先將他們從關係移除。",
+        "connected_to_hidden": "因為這些要素連結到隱藏的要素，所以無法刪除。",
+        "not_downloaded": "因為這些要素部分還未下載下來，所以無法刪除。",
+        "has_wikidata_tag": "因為這些要素帶有 Wikidata 標籤，所以無法刪除。"
+      },
+      "downgrade": {
+        "has_wikidata_tag": "因為有些要素有 Wikidata 標籤而無法降級。"
+      },
+      "move": {
+        "description": "移動這些要素到不同位置。",
+        "incomplete_relation": "因為這些要素沒有完全下載，所以無法移動。",
+        "connected_to_hidden": "因為有些要素連接到隱藏的要素，所以無法移動。",
+        "not_downloaded": "因為有些要素還沒有下載下來，所以無法移動。"
+      },
+      "reflect": {
+        "description": {
+          "long": "依據長軸翻轉要素。",
+          "short": "依據短軸翻轉要素。"
+        },
+        "incomplete_relation": "因為這些要素還沒有完全下載，所以無法翻轉。",
+        "too_large": "因為這些要素無法檢視，所以無法翻轉。",
+        "connected_to_hidden": "因為這些要素連結到隱藏的要素，所以無法翻轉。",
+        "not_downloaded": "因為這些要素的一部分還沒有下載，所以無法翻轉。"
+      },
+      "rotate": {
+        "description": "依據中心點翻轉這些要素。",
+        "incomplete_relation": "因為這些要素還沒有完全下載，所以無法旋轉。",
+        "connected_to_hidden": "因為這些要素連結到隱藏的要素，所以無法旋轉。",
+        "not_downloaded": "因為這些要素有部分還沒有下載，所以無法旋轉。"
+      },
+      "scale": {
+        "too_small": "因為這些要素太小了，所以無法縮小。",
+        "too_large": "因為這些要素檢視的部分不夠，所以無法縮放。",
+        "connected_to_hidden": "因為這些要素連結到隱藏的要素，所以無法縮放。",
+        "not_downloaded": "因為這些要素還有部分沒有下載，所以無法縮放。"
+      },
+      "extract": {
+        "description": {
+          "vertex": "從父要素抽取節點。"
+        },
+        "too_large": "無法從這些要素截取點，因為沒有足夠可視的要素。",
+        "connected_to_hidden": "無法從這些要素截取點，因為有些連結的要素已經被隱藏了"
+      }
+    },
+    "inspector": {
+      "tooltip": "啟用要素檢查器"
+    },
+    "map_data": {
+      "layers": {
+        "osm": {
+          "feature": "開放街圖要素"
+        },
+        "rapid": {
+          "tooltip": "運用機器學習偵測的建議要素，以及開放資料，能夠運用來改進開放資料圖資",
+          "title": "Rapid 要素"
+        }
+      }
+    },
+    "filters": {
+      "active": "有些要素已經被篩選了：",
+      "hidden_preset": {
+        "manual": "{features}個要素已經被篩選了，請在地圖資料面版啟用這些資料。"
+      }
+    },
+    "splash": {
+      "text": "Rapid 是一款友好而强大的 OpenStreetMap 编辑器，OpenStreetMap 是一款免费的全球地图。如果您是第一次使用，请点击下方按钮开始教程。人人都能成为地图绘制者！\n\n更多信息请访问我们的 GitHub 更新日志（https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new）和问题跟踪器（https://github.com/facebook/Rapid/issues）。祝您地图绘制愉快！👍"
+    },
+    "whats_new": {
+      "text_v24": "此次版本更新改进了 Rapid 的文本本地化功能，并简化了与 Mapillary 等街道级数据的交互。现在您可以查看检测到的对象，例如交通标志、人行横道、自行车架等等！\n\n所有详情请查看我们在 GitHub 上的[更新日志](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new)和[问题跟踪器](https://github.com/facebook/Rapid/issues)。祝您地图绘制愉快！👍"
+    },
+    "rapid_splash": {
+      "text": "选择 {rapidicon}选项即可开始快速导览。如果您是 OSM 新手且之前没有绘制过地图，请选择第一个 {walkthrough}选项。最后，如果您想直接开始绘制地图，请点击最后一个{edit}选项。您之后也可以随时从帮助菜单访问导览。"
+    },
+    "rapid_first_edit": {
+      "nice": "你剛加了你第一個{rapidicon}AI 輔助要素，很好。"
+    },
+    "rapid_inspector": {
+      "prompt": "針對這個選取的要素你要如何處理？",
+      "option_accept": {
+        "label": "新增這個要素",
+        "description": "這看起來是正確的要素嗎？請確認之後選擇來開始連結、加標籤，然後儲存到開放街圖。👍",
+        "annotation": "新增 Rapid 要素。",
+        "tooltip": "新增這要素到地圖來開始編輯。",
+        "disabled": "为了帮助提高 OSM 数据质量，我们每次绘图会话仅允许添加{n}个 AI 功能\n。请先尽力修复你目前已做的编辑中存在的问题。保存后，你将可以继续添加更多 AI 功能。",
+        "disabled_flash": "要幫助改進開放街圖資料品質，我們只允許 {n}個 AI 要素加到每一次的畫地圖階段。"
+      },
+      "option_ignore": {
+        "label": "忽略這要素",
+        "description": "忽略這要素來幫助我們的機器學習機制。如果你不確定是否正確的話，請忽略就好，不會有東西儲存或是移除。👍",
+        "annotation": "忽略 Rapid 要素。",
+        "tooltip": "忽略這個要素。"
+      }
+    },
+    "rapid_menu": {
+      "overture": {
+        "places": {
+          "description": "從 Overture 地圖來的興趣點，來源自不同的商業與社群貢獻者。"
+        },
+        "esri_buildings": {
+          "label": "Esri 社群地圖建築",
+          "description": "建築外框是透過 Overture 地圖基金會，由 Esri 社群地圖計劃所提供。"
+        },
+        "ml_buildings": {
+          "label": "微軟機器學習 + Google 開放建築",
+          "description": "機器學習產生建築外框由微軟與 Google 開放建築，並且由 Overture 地圖基金會來整合。"
+        },
+        "tomtom_roads": {
+          "label": "TomTom 道路",
+          "description": "從 TomTom 來的道路網路資料，透過 Overture 地圖基金會取得"
+        }
+      },
+      "ignored_ids": {
+        "link": "已忽略{count}個 Overture 編號",
+        "link_one": "已忽略 {count}Overture 編號",
+        "title": "已忽略 {count}個 Overture 編號",
+        "title_one": "已忽略 {count} 個 Overture 編號",
+        "instructions": "這些是這次歷程您所駁回/忽略的 Overture 機器學習產生的建築外框的 GERS 編號。您可以開啟議題回報為偽陽性。",
+        "copy": "複製到剪貼簿",
+        "copied": "已經複製了！",
+        "download": "以檔案方式下載",
+        "more": "…以及更多{count}"
+      }
+    },
+    "rapid_poweruser": {
+      "allowLargeEdits": {
+        "description": "解除編輯不在目前檢範圍要素的限制"
+      }
+    },
+    "help": {
+      "overview": {
+        "navigation_zoom": "您可以使用{mouse_wheel_icon}鼠标滚轮或触控板滚动来放大或缩小地图，也可以{twofinger_zoom_icon}在触摸屏上使用双指进行缩放。此外，您还可以按地图侧边的{plus}加号/{minus}减号按钮或键盘上的“+”和“-”键。"
+      },
+      "editing": {
+        "select_left_click": "{mouse_left_icon}按左鍵或是{onefinger_tap_icon}點一下要素來選取。這會高亮度顯示要素會閃耀發光，並能在要素檢視器看到要素詳細資訊。",
+        "select_right_click": "{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按要素來顯示編輯選單，能夠顯示複製、旋轉和刪除等功能。",
+        "multiselect_shift_click": "在有滑鼠與鍵盤時，按住`{shift}`與對著要素{mouse_left_icon}按左鍵則能加入選取。在觸控螢幕時，{onefinger_tap_and_hold_icon}點與按住一個要素同時{onefinger_tap_icon}則用另外指頭點選額外的要素。",
+        "multiselect_lasso": "其他方式選取多個要素是按住`{shift}`鍵，接著點以及按住{mouse_left_icon}滑鼠左鍵，拖拉滑鼠來繪製選取範圍。所有範圍的點都會被選取。"
+      },
+      "lines": {
+        "connect_line_drag": "要連接線到其他要素，拖動其中一個線段的點到其他要素，直到兩個要素結合。小技巧：你可以按住`{option}`鍵來避免連結到其他要素。",
+        "disconnect_line_command": "要斷開道路與其他要素的連結，{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按連結的節點，然後選擇編輯選單{disconnect_icon}**{disconnect}**操作。",
+        "move_line_connected": "線連結到其他要素會在移動線時同時移動到新位置，Rapid 可能會阻止你移動連結到其他線的線。"
+      },
+      "areas": {
+        "square_area_command": "許多要素例如建築有方角角落，要方角化區域的角落，請{mouse_right_icon}按右鍵或是{onefinger_tap_and_hold_icon}長按區域的角落以及從編輯選單選擇{orthogonalize_icon}**{orthogonalize}**操作。"
+      },
+      "relations": {
+        "maintain_relation": "對大部分的狀況來說，Rapid 會在你編輯時自動維護關聯。你應該在取代可能是關聯成員的要素特別小心。例如說，你刪除道路的一部分以及新繪製道路新的部分來取代，你應該將新的部分如同原來的，加到相同的關聯 (路線、轉彎限制等)。",
+        "multipolygon_create": "要新增多重多边形，例如一个带有孔洞的建筑物，请先将外边缘绘制，再将内边缘绘制为一条线或其他类型的面。然后`{shift}`+{mouse_left_icon}并单击鼠标左键以选择这两个要素，{mouse_right_icon}单击鼠标右键以显示编辑菜单，然后选择{merge_icon}**{merge}**操作。",
+        "multipolygon_merge": "合併多個線段與區域會新增這些選擇的區域為成員的多重多邊形。Rapid 會依據要素是否在側，自動選擇內圈與外圈角色。",
+        "turn_restriction_editing": "在\"{turn_restrictions}\"字段中，选择一条“起点”道路，查看是否允许或限制转弯至任何“终点”道路。您可以点击转弯图标来切换允许和限制状态。Rapid 将根据您的选择自动创建关联关系并设置起点、途经和终点角色。"
+      },
+      "operations": {
+        "intro": "\"操作\"是你能夠編輯圖時的特殊行動。{mouse_right_icon}點滑鼠右鍵或是{onefinger_tap_and_hold_icon}長按任何要素來檢視可用的操作。"
+      },
+      "qa": {
+        "issues": "處理 Q/A 問題類似處理註記。選取標記以在側邊欄的要素檢測器檢視問題。每個工具都有其功能，但是一般來說你可以回應和/或關閉問題。"
+      }
+    },
+    "intro": {
+      "navigation": {
+        "click_townhall": "所有地圖上要素都能透過{mouse_left_icon}點滑鼠左鍵來選擇。**點一下來選擇該點。**",
+        "tap_townhall": "所有地圖上的要素都能透過{onefinger_tap_icon}點一下來選擇。**點一下來選擇該點。**"
+      },
+      "points": {
+        "rightclick": "您可以{mouse_right_icon}右键单击任何要素来查看“编辑菜单”，其中显示了可执行的编辑操作列表。{br}右键单击可能与按住 Control 键单击或双指单击的效果相同。**右键单击以选择您创建的点并显示编辑菜单。**",
+        "edit_menu_touch": "你可以對著任任要素{onefinger_tap_and_hold_icon}長按來檢視*編輯選單*，能夠顯示一系列能夠進行的編輯操作。**按住你新增的點來顯示編輯選單。**"
+      },
+      "areas": {
+        "continue_playground": "继续沿着游乐场边缘放置更多节点来绘制区域。可以将该区域与现有的步行路径连接起来。{br}提示：您可以按住 `{option}` 或 `{control} 键来阻止节点与其他元素连接。**继续绘制游乐场区域。**"
+      },
+      "rapid": {
+        "title": "Rapid 要素",
+        "start": "{rapid}“功能”是指那些可能缺失于 OpenStreetMap 的要素建议。这些要素来自开放数据集，或通过机器学习算法从影像中识别得到。本节教程将带你学习如何使用这些建议要素。",
+        "ai_roads": "Rapid 要素會以洋紅色的的套疊呈現，請按`OK`來啟用 Rapid 要素圖層。(這些要素圖層也可以在上面的{rapid}按鈕來啟用)。",
+        "add_road_h": "新增 Rapid 要素",
+        "add_road": "點一下'使用這個要素'按鈕來在工作地圖上新增道路。",
+        "select_road_again": "你也可以忽略不想新增到開放街圖的要素。**按左鍵再次選擇 Rapid 道路。**",
+        "done": "你已經完成了！最後的提醒 - Rapid 建議並不會出現在所有地方。要檢視可用要素的最新資訊，請點<a href=\"https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries\" target=\"_blank\">可用的國家清單</a>。**點'{next}'來繼續。**"
+      }
+    },
+    "shortcuts": {
+      "with_rapid_selected": "與選取的 Rapid 要素",
+      "command": {
+        "zoom_to": {
+          "label": "放大 / 縮小選取的要素"
+        },
+        "accept_feature": {
+          "label": "接受要素"
+        },
+        "ignore_feature": {
+          "label": "忽略要素"
+        },
+        "toggle_inspector": {
+          "label": "切換要素檢查器"
+        }
+      }
+    }
+  }
+}

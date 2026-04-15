@@ -1,0 +1,738 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.041Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.pa-PK.json",
+    "hash": "faf75bd9cc5b6bdd70fb932045b7df41"
+  },
+  "pa-PK": {
+    "QA": {
+      "keepRight": {
+        "close": "بند کرو، ایہدا حل کیتا سی",
+        "close_comment": "تپݨی کرو، بند کرو",
+        "comment": "ٹپݨی",
+        "comment_placeholder": "ٹپݨی کریو۔",
+        "detail_description": "تفصیل",
+        "errorTypes": {
+          "30": {
+            "title": "کھتر نہیس بند"
+          },
+          "71": {
+            "description": "{var1} ٹیگ نہیں اے۔"
+          },
+          "72": {
+            "description": "ایہہ راہ وچ {var1} میمبر نہیں اے، ٹیگ نہیں لگے۔"
+          },
+          "120": {
+            "description": "{var1} وچ اِکّ نوڈ اے۔",
+            "title": "راہ وچ نوڈ نہیں اے"
+          },
+          "281": {
+            "description": "{var1} وچ ناں نہیں اے۔"
+          }
+        },
+        "error_parts": {
+          "bank": "بینک",
+          "cafe": "کافی ہٹی",
+          "cycleway": "سائیکل وے",
+          "cycleway_footpath": "سائیکل وے یا فُٹ پاتھ",
+          "fast_food": "کھاݨیاں والے",
+          "from": "توں",
+          "hospital": "ہسپٹل",
+          "library": "لائبریری",
+          "pub": "پب",
+          "railway": "ریلوے",
+          "school": "سکول",
+          "this_boundary": "ایس حد",
+          "this_crossing": "ایس کراسنگ",
+          "this_cycleway": "ایس سائیکل وے",
+          "this_cycleway_footpath": "ایس سائکل وے یا ایس فُٹ پاتھ",
+          "this_feature": "ایس نقش",
+          "this_node": "ایس نوڈ",
+          "this_railway": "ایس ریلوے",
+          "this_railway_crossing": "ایس ریل کراسنگ",
+          "this_relation": "ایس سمبندھ",
+          "this_track": "ایہہ ٹریک",
+          "this_turn_restriction": "ایس موڑ منع",
+          "this_way": "ایس راہ",
+          "to": "نوں",
+          "university": "یونیورسٹی"
+        },
+        "ignore_comment": "تپݨی کرو، مٹاؤ",
+        "save_comment": "تپݨی سانبھو"
+      },
+      "osmose": {
+        "detail_title": "ویروے",
+        "elems_title": "چیزاں"
+      }
+    },
+    "background": {
+      "key": "B",
+      "none": "کوئی نہیں",
+      "title": "پچھوکڑ تے تصویر"
+    },
+    "commit": {
+      "about_changeset_comments": "تبدیلیاں دیاں ٹپݨیاں بارے",
+      "cancel": "رد کرو",
+      "changes": "اِتھے تبدیلیاں",
+      "comment_needed_message": "تبدیلیاں وچ ٹپݨی پا چاہیدی۔",
+      "created": "بݨائے",
+      "deleted": "مٹائے",
+      "download_changes": "تبدیلیاں ڈاؤنلوڈ کرو",
+      "modified": "سودھ کیتے",
+      "save": "چڑھاؤ",
+      "title": "نقشے اُتھے چڑھاؤ",
+      "warnings": "احتیاطاں"
+    },
+    "confirm": {
+      "cancel": "رد کرو",
+      "okay": "ٹھیک اے"
+    },
+    "contributors": {
+      "list": "{users} ورتونوالے دے سودھ",
+      "truncated_list": {
+        "one": "ُ{users} تے {count} ہور ورتونوالے دا سودھ",
+        "other": "ُ{users} تے {count} ہور ورتونوالے دے سودھ"
+      }
+    },
+    "geocoder": {
+      "no_results_worldwide": "نتیجے نہیں لبھے"
+    },
+    "geometry": {
+      "area": "کھیتر",
+      "line": "لائن",
+      "note": "نوٹ",
+      "point": "پوئنٹ",
+      "relation": "سمبندھ"
+    },
+    "help": {
+      "areas": {
+        "add_area_h": "کھیتر پاؤݨ",
+        "delete_area_h": "کھیتر مٹاؤݨ",
+        "modify_area_h": "کھیتر سودھ کرن",
+        "point_or_area_h": "پوئینٹ یا کھیتر؟",
+        "title": "کھیتر"
+      },
+      "editing": {
+        "keyboard_h": "کیبورڈ شورٹکٹ\nشورٹکٹ",
+        "save_h": "سانبھو",
+        "select_h": "چݨو",
+        "title": "سودھ کدن تے سانبھ کعن",
+        "upload_h": "چڑھاؤ"
+      },
+      "feature_editor": {
+        "fields_h": "اِنپوٹ",
+        "tags_h": "ٹیگ",
+        "title": "نقش دا ایڈٹر",
+        "type_h": "نقش دی قِسم"
+      },
+      "field": {
+        "restrictions": {
+          "about": {
+            "title": "بارے"
+          },
+          "title": "موڑ منع لئی مدد"
+        }
+      },
+      "gps": {
+        "title": "کھرے کھوجاں",
+        "using_h": "کھرے کھوجاں ورتݨ"
+      },
+      "help": {
+        "open_source_h": "آزاد سروت",
+        "title": "مدد"
+      },
+      "imagery": {
+        "sources_h": "تصویراں دے سروت"
+      },
+      "key": "H",
+      "lines": {
+        "add_line_h": "لائین پاؤݨ",
+        "connect_line_h": "لائین جوڑن",
+        "delete_line_h": "لائن مٹاؤݨ",
+        "modify_line_h": "لائین سودھ کرن",
+        "move_line_h": "لائین چلݨ",
+        "title": "لائین"
+      },
+      "notes": {
+        "add_note_h": "نوٹ پاؤݨ",
+        "save_note_h": "نوٹ سانبھ",
+        "title": "نوٹ"
+      },
+      "overview": {
+        "features_h": "نوشے دیاں چیزاں",
+        "nodes_ways": "اِتھے پوئینٹ دا ناں لئی **نوڈ** لفظ ورتدا، لائین یا کھیتراں دے ناواں لئی **راہ** لفظ ورتدے اے۔ "
+      },
+      "points": {
+        "add_point_h": "پوئینٹ پاؤݨ",
+        "delete_point_h": "پوئینٹ مٹاؤݨ",
+        "title": "پوئینٹ"
+      },
+      "qa": {
+        "tools_h": "سَند"
+      },
+      "relations": {
+        "boundary_h": "حد",
+        "edit_relation_h": "سمبندھ سودھݨ",
+        "maintain_relation_h": "سمبندھ ورتݨ",
+        "relation_types_h": "سمبندھ دیاں قِسماں",
+        "route_h": "روٹ",
+        "title": "سمبندھ",
+        "turn_restriction_h": "موڑ منع"
+      },
+      "streetlevel": {
+        "title": "سڑک اُتے تصویر",
+        "using_h": "سڑک اُتے تصویر ورتݨ"
+      },
+      "title": "مدد"
+    },
+    "help_translate": "انواد کریو",
+    "icons": {
+      "copy": "کاپی کرو",
+      "deselect": "چݨ ہٹاؤ",
+      "download": "ڈاؤنلوڈ",
+      "favorite": "منپسند",
+      "information": "جاݨکاری",
+      "list": "فہرست",
+      "remove": "مٹاؤ",
+      "text": "لکھت",
+      "undo": "موڑو",
+      "view_on": "{domain} اُتے دیکھو",
+      "visit_website": "ویب سائٹ اُتے جائیو",
+      "zoom_to": "اِتھے وڈا کرو"
+    },
+    "info_panels": {
+      "background": {
+        "description": "تفصیل",
+        "source": "سروت",
+        "title": "پچھوکڑ تے تصویر",
+        "vintage": "پُراݨے",
+        "zoom": "وڈا کرو"
+      },
+      "history": {
+        "changeset": "تبدیلیاں",
+        "edited_by": "تبفیلیاں دا ورتونوالا",
+        "last_edit": "پہلاں سودھ",
+        "note_comments": "ٹپݨیاں",
+        "note_created_date": "تریخ تے بݨائے",
+        "note_created_user": "لیکھک",
+        "note_link_text": "اوپن‌سٹریٹ‌میپ تے نوٹ",
+        "note_no_history": "اتیت نہیں (نواں نوٹ)",
+        "title": "اتیت",
+        "version": "ورژن"
+      },
+      "location": {
+        "title": "ستھتی"
+      },
+      "measurement": {
+        "area": "کھیتر",
+        "center": "کیندر",
+        "closed_line": "بند راہ",
+        "location": "ستھتی",
+        "title": "ماپدے"
+      },
+      "selected": {
+        "one": "{n} چیز چݨی",
+        "other": "{n}  چیزاں چݨیاں"
+      }
+    },
+    "inspector": {
+      "add": "پائیو",
+      "add_to_relation": "سمبندھ وچ پایو",
+      "check": {
+        "no": "نہیں",
+        "yes": "ہاں"
+      },
+      "edit": "چیز سودھو",
+      "edit_reference": "مدد سودھیو، انواد کریو",
+      "feature_list": "چیزاں وچ کھوجو",
+      "feature_type": "چیز دی قِسم",
+      "features": "چیزاں",
+      "fields": "اِنپوٹ",
+      "key_value": "کنجی = مُل",
+      "location": "ستھتی",
+      "lock": {
+        "suggestion": "{label} خانہ قفل بند ہو چکا ہے چونکہ اس کے ساتھ ایک ویکی ڈیٹا ٹیگ منسلک ہے۔ آپ ٹیگ کو \"ٹیگز\" خانے میں تبدیل یا ہٹا سکتے ہیں۔"
+      },
+      "members": "میمبر",
+      "multiple_types": "کئی قسماں",
+      "multiple_values": "کئی مُل",
+      "node": "نوڈ",
+      "none": "کوئی نہیں",
+      "radio": {
+        "structure": {
+          "default": "مول",
+          "layer": "کج"
+        }
+      },
+      "relation": "سمبندھ",
+      "relations": "سمبندھ",
+      "remove": "مٹاؤ",
+      "results": {
+        "one": "”{search}“ کھوج توں {n} نتیجہ لبھیا",
+        "other": "”{search}“ کھوج توں {n} نتیجے لبھے"
+      },
+      "search": "کھوجو",
+      "show_more": "ہور ویکھو",
+      "tags": "ٹیگ",
+      "unknown": "نامعلوم",
+      "way": "راہ",
+      "zoom_to": {
+        "title": "چݨ ‘تے وڈا کرو"
+      }
+    },
+    "intro": {
+      "areas": {
+        "title": "کھیتر"
+      },
+      "buildings": {
+        "title": "مکانات"
+      },
+      "graph": {
+        "city": "فیصل آباد",
+        "district": "ضلع ٹوبہ ٹیک سنگھ",
+        "name": {
+          "battle-street": "گلی نمبر 10",
+          "hoffman-street": "گلشن اقبال روڈ",
+          "hook-avenue": "مین بولیوارڈ",
+          "jefferson-street": "بینک روڈ",
+          "kelsey-street": "جیل روڈ",
+          "lafayette-park": "جیلانی پارک",
+          "las-coffee-cafe": "مولوی پکوڑے",
+          "lincoln-avenue": "تھیری روڈ",
+          "lowrys-books": "ہارون کمپنی",
+          "lynns-garage": "اکرم سائیکل ورکس",
+          "main-street": "جڑانوالہ روڈ",
+          "main-street-barbell": "احسن ٹریڈر",
+          "main-street-cafe": "رحمان کتابگار",
+          "main-street-fitness": "فیصل فٹنس جم",
+          "maple-street": "ریلوے روڈ",
+          "marina-park": "جناح پارک",
+          "market-street": "مین بزار",
+          "memory-isle": "جریرہ ویل",
+          "memory-isle-park": "زکریا پارک",
+          "michigan-avenue": "سکول روڈ",
+          "middle-street": "یادگار روڈ",
+          "millard-street": "بی بلاک روڈ",
+          "moore-street": "پنڈ روڈ",
+          "morris-avenue": "یونیورسیٹی روڈ",
+          "mural-mall": "مٹھائی والا",
+          "paisanos-bar-and-grill": "المشہور مند برفی",
+          "paisley-emporium": "سبز منڈی",
+          "paparazzi-tattoo": "نیو الیاس کتاب محل",
+          "pealer-street": "کماہاں روڈ",
+          "pine-street": "رانا روڈ",
+          "pizza-hut": "ایم سی بی غلہ منڈی",
+          "river-city-appliance": "بشارت اینڈ سنز پراپرٹی ڈیلر",
+          "river-drive": "گلی نمبر 9",
+          "river-road": "باغ روڈ",
+          "river-street": "عام والی گلی",
+          "riviera-theatre": "عمر شادی ہال",
+          "rocky-river": "روی نہر",
+          "saint-joseph-river": "گوگیرہ برینچ",
+          "scidmore-park": "ڈیفنس پارک",
+          "scidmore-park-petting-zoo": "جلو پارک",
+          "scouter-park": "اسلامیہ پارک",
+          "sherwin-williams": "ٹوئیلٹ",
+          "south-street": "رضوان گوریجہ روڈ",
+          "southern-michigan-bank": "صوفہ دی دکان",
+          "spring-street": "دربار شریف روڈ",
+          "sturgeon-river-road": "سمندری روڈ",
+          "three-rivers": "فیصل آباد",
+          "three-rivers-city-hall": "تحصیل کونسل",
+          "three-rivers-elementary-school": "گورنمنٹ ہائی سکول",
+          "three-rivers-fire-department": "فائیر بریگیڈ سٹیشن",
+          "three-rivers-high-school": "گورنمنٹ پرائمری سکول",
+          "three-rivers-middle-school": "گورنمنٹ ماڈل سکول",
+          "three-rivers-municipal-airport": "الاقوامی ہوائی اڈہ",
+          "three-rivers-post-office": "جی پی او",
+          "three-rivers-public-library": "لائبریری مسجد",
+          "unique-jewelry": "الشیخ سموسے والے",
+          "walnut-street": "سروس روڈ",
+          "washington-street": "گوجرہ روڈ",
+          "water-street": "ٹوبہ ٹیک سنگھ روڈ",
+          "west-street": "گلی نمبر 2",
+          "wheeler-street": "نہر سڑک",
+          "william-towing": "چراٹ سیمنٹ",
+          "wood-street": "سٹیشن روڈ"
+        },
+        "postcode": "56000",
+        "province": "پنجاب",
+        "subdistrict": "تحصیل گوجرہ"
+      },
+      "lines": {
+        "title": "لائناں"
+      },
+      "navigation": {
+        "nodes_ways": "اِتھے پوئینٹ دا ناں لئی **نوڈ** لفظ ورتدا، لائین یا کھیتراں دے ناواں لئی **راہ** لفظ ورتدے اے۔ "
+      },
+      "ok": "ٹھیک اے",
+      "points": {
+        "title": "پوئینٹ"
+      }
+    },
+    "issues": {
+      "disable_all": "سارے بند کرو",
+      "enable_all": "سارے چالو کرو",
+      "fix": {
+        "remove_tag": {
+          "annotation": "ٹیگ ہٹایا سی۔",
+          "title": "ایہہ ٹیگ ہٹاؤ"
+        },
+        "remove_tags": {
+          "title": "ایہہ ٹیگ ہٹاؤ"
+        },
+        "remove_the_name": {
+          "title": "ایہہ ناں مٹاؤ"
+        },
+        "select_preset": {
+          "title": "نشان دی قسم چݨو"
+        },
+        "select_road_type": {
+          "title": "سڑک دی قسم چݨو"
+        }
+      },
+      "fix_all": {
+        "title": "سارے دروست"
+      },
+      "fix_one": {
+        "title": "دروست"
+      },
+      "help_request": {
+        "title": "مدد چہیدے"
+      },
+      "key": "I",
+      "no_issues": {
+        "message": {
+          "edits": " تہاڈے سودھ ٹھیک اے",
+          "edits_in_view": "اِتھے تہاڈے سودھ ٹیکھ اے",
+          "everything": "سارے ٹھیک اے",
+          "everything_in_view": "اِتھے سارے ٹھیک اے"
+        }
+      },
+      "options": {
+        "what": {
+          "all": "سارے",
+          "edited": "میرے سودھ"
+        }
+      },
+      "title": "مسئلے",
+      "unclosed_multipolygon_part": {
+        "message": "{feature} وچ اِک حصہ نہیں بند اے۔"
+      }
+    },
+    "loading_auth": "اوپن صٹریٹ میپ جوڑدا…",
+    "login": "لوگ اِن کرو",
+    "logout": "لوگ آؤٹ کرو",
+    "map_data": {
+      "description": "نقشے دے ڈیٹا",
+      "key": "U",
+      "layers": {
+        "custom": {
+          "zoom": "ڈیٹا اُتے وڈا کرو"
+        },
+        "notes": {
+          "title": "اوپن سٹریٹ میپ دے نوٹ",
+          "tooltip": "اوپن سٹریٹ میپ توں نوٹ دے ڈیٹا"
+        },
+        "osm": {
+          "title": "اوپن سٹریٹ میپ دے ڈیٹا",
+          "tooltip": "نوشے دے ڈیٹے توں اوپن سٹریٹ میپ"
+        }
+      },
+      "style_options": "تھیم سیٹنگاں",
+      "title": "نقشے دے ڈیٹا"
+    },
+    "mapillary": {
+      "title": "میپیلری"
+    },
+    "modes": {
+      "add_area": {
+        "description": "نقشے اُتے پارک، عمارت، سٹیشن، وغیرہ پایو",
+        "title": "کھیتر"
+      },
+      "add_line": {
+        "description": "نقشے اُتے سڑک، فُٹ پاتھ، نہر، وغیرہ پایو",
+        "title": "لائین"
+      },
+      "add_note": {
+        "title": "نوٹ"
+      },
+      "add_point": {
+        "description": "نقشے اُتے ہٹیاں، پتے، سائین، وغیرہ پایو",
+        "title": "پوئینٹ"
+      },
+      "add_preset": {
+        "title": "{feature} پائیو"
+      },
+      "browse": {
+        "title": "دکھیو"
+      }
+    },
+    "note": {
+      "anonymous": "انام",
+      "close": "نوٹ بند کرو",
+      "close_comment": "تپݨی کرو اتے بند کرو",
+      "closed": "(بند)",
+      "comment": "تپݨی کرو",
+      "commentTitle": "ٹپݨیاں",
+      "inputPlaceholder": "ہور ورتونوالے لئی ٹپݨی پایو",
+      "new": "نواں نوٹ",
+      "newComment": "ٹپݨی کرو",
+      "note": "نوٹ",
+      "save": "نوٹ سانبھ",
+      "status": {
+        "closed": "بند {when}"
+      },
+      "title": "نوٹ سودھو"
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "اِک نوٹ پایا۔",
+          "point": "اِک پوئینٹ پایا۔",
+          "relation": "سمبندھ پایا۔",
+          "vertex": "اِک راہ وچ اِک نوڈ پایا۔"
+        }
+      },
+      "cancel_draw": {
+        "annotation": "بݨا رد کیتا۔"
+      },
+      "change_tags": {
+        "annotation": "ٹیگ سودھ کیتے۔"
+      },
+      "circularize": {
+        "title": "چکر کرو"
+      },
+      "copy": {
+        "annotation": {
+          "one": "{n} چیز کاپی کیتی",
+          "other": "{n} چیزاں کاپی کیتیاں"
+        },
+        "title": "کاپی کرو",
+        "too_large": {
+          "one": "ایہہ کاپی کرن نہیں سکدا، بس چیز نہیں ویکھدی اے۔",
+          "other": "ایہہ کاپی کرن نہیں سکدے، بس چیزاں نہیں ویکھدیاں اے۔"
+        }
+      },
+      "delete": {
+        "annotation": {
+          "area": "کھیتر مٹایا۔",
+          "feature": {
+            "one": "{n} اِک چیز مٹائی۔",
+            "other": "{n} چیزاں مٹائیاں۔"
+          },
+          "line": "لائین مٹایا۔",
+          "point": "اِک پوئنٹ مٹایا۔",
+          "relation": "سمبندھ مٹایا۔",
+          "vertex": "راہ وچ اِک نوڈ‌ مٹایا۔"
+        },
+        "title": "مٹاؤ"
+      },
+      "downgrade": {
+        "description": {
+          "generic": "ٹیگ ہٹاؤ"
+        }
+      },
+      "merge": {
+        "annotation": {
+          "one": "اِک نقش ملایا گیا۔",
+          "other": "{n} نقش ملاۓ گئے۔"
+        },
+        "title": "ملاؤ"
+      },
+      "move": {
+        "annotation": {
+          "area": "کھیتر چلایا۔",
+          "feature": {
+            "one": "{n} چیز چلائی۔",
+            "other": "{n} چیزاں چلایاں۔"
+          },
+          "line": "لائین چلایا۔",
+          "point": "پوئینٹ چلایا۔",
+          "relation": "سمبندھ چلایا۔",
+          "vertex": "راہ وچ نوڈ چلایا۔"
+        },
+        "title": "چلاؤ"
+      },
+      "orthogonalize": {
+        "title": "ورگ کرو"
+      },
+      "paste": {
+        "annotation": {
+          "one": "اِک چیز پیسٹ کیتی",
+          "other": "{n} چیزاں پیسٹ کیتیاں"
+        },
+        "description": {
+          "one": "اِتھے {n} چیز دی کاپی پائیو",
+          "other": "اِتھے {n} چیزاں دیاں کاپیاں پائیو"
+        },
+        "nothing_copied": "نقش نہیں کاپی کیتے۔",
+        "title": "پیسٹ کرو"
+      },
+      "restriction": {
+        "annotation": {
+          "create": "موڑ منع پایا۔",
+          "delete": "موڑ منع مٹایا۔"
+        }
+      },
+      "start": {
+        "annotation": {
+          "area": "کھیتر کھُلھیا گیا اے۔",
+          "line": "لائین کھُلھی گئی اے۔"
+        }
+      }
+    },
+    "photo_overlays": {
+      "date_filter": {
+        "fromDate": {
+          "title": "ایہہ توں"
+        },
+        "toDate": {
+          "title": "ایہہ نوں"
+        }
+      },
+      "username_filter": {
+        "title": "ورتونوالے دا ناں"
+      }
+    },
+    "preferences": {
+      "description": "سیٹنگاں",
+      "key": "P",
+      "title": "سیٹنگاں"
+    },
+    "restore": {
+      "heading": "تسیں نہیں تبدیلیاں سانبھدیاں",
+      "reset": "تبدیلیاں حٹاؤ"
+    },
+    "restriction": {
+      "controls": {
+        "via": "دوارا",
+        "via_node_only": "ایحی نوڈ"
+      },
+      "help": {
+        "via": "دوارا"
+      }
+    },
+    "save": {
+      "conflict": {
+        "keep_local": "میرے ورتو",
+        "keep_remote": "ایہہ ورتو",
+        "next": "اگلا >",
+        "previous": " < پچھلے"
+      },
+      "no_changes": "نہیں سودھ جا سانبھ سکݨے اے۔",
+      "title": "سانبھو",
+      "unsaved_changes": "تسیں نہیں تبدیلیاں سانبھدیاں",
+      "uploading": "نقشے اُتے تبدیلیاں چڑھادیاں…"
+    },
+    "settings": {
+      "custom_data": {
+        "file": {
+          "label": "فائلاں ویکھو"
+        },
+        "or": "جاں",
+        "url": {
+          "placeholder": "کڑی لئی یو آر ایل پایو"
+        }
+      }
+    },
+    "shortcuts": {
+      "key": {
+        "alt": "Alt",
+        "backspace": "Backspace",
+        "cmd": "Cmd",
+        "ctrl": "Ctrl",
+        "del": "Del",
+        "delete": "مٹاؤ",
+        "end": "End",
+        "enter": "Enter",
+        "esc": "Esc",
+        "home": "Home",
+        "menu": "Menu",
+        "option": "Option",
+        "pause": "Pause",
+        "pgdn": "PgDn",
+        "pgup": "PgUp",
+        "shift": "Shift"
+      },
+      "or": "جاں",
+      "title": "کیبورڈ شورٹکٹ\nشورٹکٹ"
+    },
+    "source_switch": {
+      "dev": "کم کرن",
+      "live": "حالیہ"
+    },
+    "splash": {
+      "start": "ہݨے سودھو"
+    },
+    "streetside": {
+      "title": "بِنگ سڑک اُتے تصویر"
+    },
+    "success": {
+      "help_link_text": "ویروے",
+      "just_edited": " ہݨے تسیں اوپن سٹریٹ میپ سودھ کیتے!",
+      "languages": "بولیاں: {languages}",
+      "more": "ہور",
+      "thank_you": "شکریہ، نقشے اُتے ٹہاڈے سودھ ٹھیک اے۔",
+      "thank_you_where": {
+        "format": "{place}{separator}{region}",
+        "separator": "،"
+      },
+      "view_on_osm": "اوپن سٹریٹ میپ اُتے تبیلیاں ویکھو"
+    },
+    "tag_reference": {
+      "description": "تفصیل"
+    },
+    "title": {
+      "format": {
+        "context": "{base} – {context}"
+      },
+      "labeled_and_more": {
+        "one": "{labeled} اتے {count} ہور",
+        "other": "{labeled}  تے {count} ہور"
+      }
+    },
+    "toolbar": {
+      "add_feature": "نقش پایو",
+      "favorites": "منپسند",
+      "recent": "حالیہ",
+      "undo_redo": "موڑو"
+    },
+    "translate": {
+      "language_and_code": "{language} ({code})",
+      "localized_translation_label": "قومانتری ناں",
+      "localized_translation_language": "بولی چݨیو",
+      "localized_translation_name": "ناں",
+      "translate": "قومانتری ناں پایو"
+    },
+    "undo": {
+      "title": "موڑو"
+    },
+    "units": {
+      "arcdegrees": "{quantity}°",
+      "arcminutes": "{quantity}′",
+      "arcseconds": "{quantity}″",
+      "area_pair": "{area1} ({area2})",
+      "coordinate": "{coordinate}{direction}",
+      "coordinate_pair": "{latitude}, {longitude}",
+      "east": "چڑھدا",
+      "feet": "{quantity} فیٹ",
+      "miles": "{quantity} مائیل",
+      "north": "اُتر",
+      "south": "دکھݨ",
+      "west": "لہندا",
+      "year_month_day": "YYYY-MM-DDء"
+    },
+    "wikidata": {
+      "description": "تفصیل",
+      "identifier": "شناختی",
+      "label": "چیپی"
+    },
+    "zoom": {
+      "in": "وڈا کرو",
+      "out": "چھوٹا کرو"
+    },
+    "zoom_in_edit": "سودھ کرن لئی وڈا کریو"
+  }
+}

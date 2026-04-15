@@ -1,0 +1,1297 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.023Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.sq.json",
+    "hash": "91c768a5a8a45375f93a9d062c018aea"
+  },
+  "sq": {
+    "QA": {
+      "keepRight": {
+        "close_comment": "Mbyllni dhe Komentoni",
+        "comment": "Koment",
+        "comment_placeholder": "Vendosni një koment për ta ndarë me përdoruesit e tjerë.",
+        "detail_description": "Përshkrim"
+      },
+      "osmose": {
+        "detail_title": "Detajet"
+      }
+    },
+    "background": {
+      "backgrounds": "Sfondet",
+      "brightness": "Ndriçimi",
+      "contrast": "Kontrast",
+      "custom": "E personalizuar",
+      "key": "B",
+      "minimap": {
+        "description": "Shfaq një hartë të zvogëluar",
+        "tooltip": "Shfaq një hartë të zvogluar për të treguar vendosjen e zonës të dukshme."
+      },
+      "none": "Asnjë",
+      "reset": "Rikthe vlerat",
+      "sharpness": "Mprehtësia",
+      "switch": "Rikthehuni tek ky sfond",
+      "title": "Sfond"
+    },
+    "commit": {
+      "about_changeset_comments": "Rreth komenteve për ndryshimet",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/Good_changeset_comments",
+      "cancel": "Anullo",
+      "created": "Krijuar",
+      "deleted": "Fshirë",
+      "google_warning": "Ju përmendët Google në këtë koment: mos harroni se të kopjuarit nga Google Maps është rreptësisht e ndaluar.",
+      "modified": "Modifikuar",
+      "request_review": "Unë do doja që dikush ti rishikonte editimet e mia",
+      "save": "Ngarkoni",
+      "title": "Ngarkoni në OpenStreetMap",
+      "upload_explanation": "Redaktimet qe ju ngarkoni do jen të dukshëm në të gjithë hartat që përdorin të dhëna OpenStreetMap.",
+      "upload_explanation_with_user": "Redaktimet qe ju ngarkoni si {user} do jen të dukshëm në të gjithë hartat që përdorin të dhëna OpenStreetMap.",
+      "warnings": "Paralajmërime"
+    },
+    "confirm": {
+      "cancel": "Anullo",
+      "okay": "OK"
+    },
+    "contributors": {
+      "list": "Redaktime nga {users}"
+    },
+    "filters": {
+      "boundaries": {
+        "description": "Kufijtë",
+        "tooltip": "Kufijtë Administrativë"
+      },
+      "buildings": {
+        "description": "Ndërtesat",
+        "tooltip": "Ndërtesat, Strehat, Garazhdet, etj."
+      },
+      "others": {
+        "tooltip": "Çdo gjë tjetër"
+      },
+      "paths": {
+        "description": "Shtigje",
+        "tooltip": "Trotuare, Rrugë këmbësorësh, Rrugë biçikletash, etj."
+      },
+      "points": {
+        "description": "Pikat",
+        "tooltip": "Pikat e interesit"
+      },
+      "rail": {
+        "tooltip": "Hekurudhat"
+      },
+      "traffic_roads": {
+        "tooltip": "Hekurudha, Rrugë, etj."
+      },
+      "water": {
+        "tooltip": "Lumenj, Liqene, Pellgje, Basenet, etj."
+      }
+    },
+    "geocoder": {
+      "no_results_worldwide": "Nuk u gjetën rezultate",
+      "search": "Kërkoni të gjithë botën..."
+    },
+    "geolocate": {
+      "title": "Shfaq Vendndodhjen Time"
+    },
+    "geometry": {
+      "area": "sipërfaqe",
+      "line": "vijë",
+      "note": "shënim",
+      "point": "pik",
+      "relation": "lidhje",
+      "vertex": "tepe"
+    },
+    "help": {
+      "areas": {
+        "delete_area_h": "Fshirje e Sipërfaqeve",
+        "modify_area_h": "Modifikim i Sipërfaqeve",
+        "point_or_area_h": "Pikat apo Sipërfaqet?",
+        "title": "Sipërfaqet"
+      },
+      "editing": {
+        "keyboard_h": "Shkurtimet e tastierës",
+        "multiselect_h": "Përzgjedhje e shumëfishtë",
+        "save_h": "Ruaj",
+        "select_h": "Përzgjidhni",
+        "upload_h": "Ngarkoni"
+      },
+      "feature_editor": {
+        "fields_h": "Fushat",
+        "tags_h": "Etiketat"
+      },
+      "help": {
+        "before_start_h": "Përpara se të filloni",
+        "open_data": "Editimet që do bëni në këtë hartë do të jenë të dukshme tek çdokush që përdor OpenStreetMap. Editimet tuaja mund të bazohen në dijet vetjake, vëzhgimet tokësore apo imazheritë e mbledhura nga fotot aeriale apo tokësore. Të kopjuarit nga burime komerciale si Google Maps, [është rreptësisht e ndaluar](https://www.openstreetmap.org/copyright).",
+        "open_data_h": "Të dhëna të hapura",
+        "open_source": "Editori iD është një projekt bashkëpunues me kodburim të hapur dhe ju po përdorni versionin {version} tani. Kodburimi është i disponueshëm [në Github](https://github.com/openstreetmap/iD).",
+        "title": "Ndihmë",
+        "welcome": "Mirësevini në editorin iD për [OpenStreetMap](https://www.openstreetmap.org/). Me këtë editor ju mund të përditësoni OpenStreetMap direkt nga webfaqja juaj."
+      },
+      "key": "H",
+      "lines": {
+        "title": "Vijat"
+      },
+      "notes": {
+        "title": "Shënimet"
+      },
+      "overview": {
+        "features_h": "Karakteristikat e Hartës",
+        "navigation_h": "Navigim"
+      },
+      "points": {
+        "add_point_h": "Shtim Pikash",
+        "delete_point_h": "Fshirja e Pikave",
+        "intro": "*Pikat* mund të përdoren për të paraqitur karakteristika si dyqanet, restorantet dhe monumentet. Ato shënjojnë një vendndodhje specifike dhe përshkruajnë çfarë është atje.",
+        "move_point_h": "Zhvendosje e Pikave",
+        "title": "Pikat"
+      },
+      "qa": {
+        "tools_h": "Mjetet"
+      },
+      "relations": {
+        "boundary_h": "Kufijtë",
+        "title": "Lidhjet"
+      },
+      "title": "Ndihmë"
+    },
+    "help_translate": "Ndihmoni në përkthim",
+    "icons": {
+      "information": "info",
+      "remove": "hiq",
+      "undo": "zhbëj"
+    },
+    "info_panels": {
+      "background": {
+        "accuracy": "Saktësi",
+        "description": "Përshkrim",
+        "resolution": "Rezolucion",
+        "source": "Burim",
+        "title": "Sfond",
+        "zoom": "Zmadhoni"
+      },
+      "history": {
+        "edited_by": "Edituar nga",
+        "last_edit": "Editimi i fundit",
+        "no_history": "Ska historik (Karakteristikë e re)",
+        "note_comments": "Komentet",
+        "note_created_date": "Data e krijimit",
+        "note_created_user": "Krijuar nga",
+        "note_link_text": "Shënim në openstreetmap.org",
+        "note_no_history": "Ska historik (Shënim i ri)",
+        "title": "Historia",
+        "version": "Version"
+      },
+      "location": {
+        "title": "Vendndodhje",
+        "unknown_location": "Vendndodhje e panjohur"
+      },
+      "measurement": {
+        "area": "Sipërfaqe",
+        "center": "Qendër",
+        "centroid": "Centroida",
+        "closed_area": "sipërfaqe e mbyllur",
+        "closed_line": "vijë e mbyllur",
+        "distance": "Distancë",
+        "geometry": "Gjeometri",
+        "length": "Gjatësi",
+        "location": "Vendndodhje",
+        "metric": "Metrik",
+        "node_count": "Numri i nyjeve",
+        "perimeter": "Perimetër",
+        "title": "Matje"
+      }
+    },
+    "inspector": {
+      "add": "Shto",
+      "add_fields": "Shtoni fushë:",
+      "check": {
+        "no": "Jo",
+        "reverser": "Ndryshoni Drejtimin",
+        "yes": "Po"
+      },
+      "choose": "Zgjidhni llojën e tiparit",
+      "details": "Detajet",
+      "edit": "Redakto tiparin",
+      "feature_list": "Kërko tiparet",
+      "fields": "Fushat",
+      "incomplete": "<not downloaded>",
+      "location": "Vendosje",
+      "members": "Anëtarët",
+      "new_relation": "Lidhje të re...",
+      "node": "Nyjë",
+      "none": "Asnjë",
+      "radio": {
+        "structure": {
+          "layer": "Shtresë"
+        }
+      },
+      "relation": "Lidhje",
+      "relations": "Lidhjet",
+      "remove": "Hiq",
+      "role": "Rol",
+      "search": "Kërko",
+      "show_more": "Paraqit më tepër",
+      "tags": "Etiketat",
+      "type": "Tipi",
+      "unknown": "I panjohur",
+      "view_on_osm": "Shiko në openstreetmap.org",
+      "way": "Linjë"
+    },
+    "intro": {
+      "areas": {
+        "title": "Sipërfaqet"
+      },
+      "buildings": {
+        "title": "Ndërtesat"
+      },
+      "graph": {
+        "block_number": "<value for addr:block_number>",
+        "countrycode": "al",
+        "county": "<value for addr:county>",
+        "district": "<value for addr:district>",
+        "hamlet": "<value for addr:hamlet>",
+        "neighbourhood": "<value for addr:neighbourhood>",
+        "province": "<value for addr:province>",
+        "quarter": "<value for addr:quarter>",
+        "state": "<value for addr:state>",
+        "subdistrict": "<value for addr:subdistrict>",
+        "suburb": "<value for addr:suburb>"
+      },
+      "lines": {
+        "title": "Vijat"
+      },
+      "navigation": {
+        "title": "Navigim"
+      },
+      "ok": "OK",
+      "points": {
+        "title": "Pikat"
+      },
+      "startediting": {
+        "save": "Mos harroni t'i ruani rregullisht ndryshimet tuaja!",
+        "title": "Filloni të Editoni"
+      }
+    },
+    "issues": {
+      "key": "I",
+      "warnings": "Paralajmërime"
+    },
+    "languageNames": {
+      "aa": "afarisht",
+      "ab": "abkazisht",
+      "ace": "akinezisht",
+      "ada": "andangmeisht",
+      "ady": "adigisht",
+      "af": "afrikanisht",
+      "agq": "agemisht",
+      "ain": "ajnuisht",
+      "ak": "akanisht",
+      "ale": "aleutisht",
+      "alt": "altaishte jugore",
+      "am": "amarisht",
+      "an": "aragonezisht",
+      "ann": "oboloisht",
+      "anp": "angikisht",
+      "ar": "arabisht",
+      "ar-001": "arabishte standarde moderne",
+      "arn": "mapuçisht",
+      "arp": "arapahoisht",
+      "ars": "arabishte naxhdi",
+      "as": "asamezisht",
+      "asa": "asuisht",
+      "ast": "asturisht",
+      "atj": "atikamekisht",
+      "av": "avarikisht",
+      "awa": "auadhisht",
+      "ay": "ajmarisht",
+      "az": "azerbajxhanisht",
+      "ba": "bashkirisht",
+      "ban": "balinezisht",
+      "bas": "basaisht",
+      "be": "bjellorusisht",
+      "bem": "bembaisht",
+      "bez": "benaisht",
+      "bg": "bullgarisht",
+      "bgc": "harjanvisht",
+      "bgn": "balokishte perëndimore",
+      "bho": "boxhpurisht",
+      "bi": "bislamisht",
+      "bin": "binisht",
+      "bla": "siksikaisht",
+      "blo": "anisht",
+      "bm": "bambarisht",
+      "bn": "bengalisht",
+      "bo": "tibetisht",
+      "br": "bretonisht",
+      "brx": "bodoisht",
+      "bs": "boshnjakisht",
+      "bug": "buginezisht",
+      "byn": "blinisht",
+      "ca": "katalonisht",
+      "cay": "kajugaisht",
+      "ccp": "çakmaisht",
+      "ce": "çeçenisht",
+      "ceb": "sebuanisht",
+      "cgg": "çigisht",
+      "ch": "kamoroisht",
+      "chk": "çukezisht",
+      "chm": "marisht",
+      "cho": "çoktauisht",
+      "chp": "çipeuajanisht",
+      "chr": "çerokisht",
+      "chy": "çejenisht",
+      "ckb": "kurdishte qendrore",
+      "clc": "çilkotinisht",
+      "co": "korsikisht",
+      "crg": "miçifisht",
+      "crj": "krijishte juglindore",
+      "crk": "krijishte fusharake",
+      "crl": "krijishte verilindore",
+      "crm": "krijishte e Muzit",
+      "crr": "algonkuianishte e Karolinës",
+      "crs": "frëngjishte kreole seselve",
+      "cs": "çekisht",
+      "csw": "krijishte e moçaleve (Ontario)",
+      "cu": "sllavishte kishtare",
+      "cv": "çuvashisht",
+      "cy": "uellsisht",
+      "da": "danisht",
+      "dak": "dakotisht",
+      "dar": "darguaisht",
+      "dav": "tajtaisht",
+      "de": "gjermanisht",
+      "de-AT": "gjermanishte austriake",
+      "de-CH": "gjermanishte zvicerane (dialekti i Alpeve)",
+      "dgr": "dogribisht",
+      "dje": "zarmaisht",
+      "doi": "dogrisht",
+      "dsb": "sorbishte e poshtme",
+      "dua": "dualaisht",
+      "dv": "divehisht",
+      "dyo": "xhulafonjisht",
+      "dz": "xhongaisht",
+      "dzg": "dazagauisht",
+      "ebu": "embuisht",
+      "ee": "eveisht",
+      "efi": "efikisht",
+      "eka": "ekajukisht",
+      "el": "greqisht",
+      "en": "anglisht",
+      "en-AU": "anglishte australiane",
+      "en-CA": "anglishte kanadeze",
+      "en-GB": "anglishte britanike",
+      "en-US": "anglishte amerikane",
+      "eo": "esperanto",
+      "es": "spanjisht",
+      "es-419": "spanjishte amerikano-latine",
+      "es-ES": "spanjishte evropiane",
+      "es-MX": "spanjishte meksikane",
+      "et": "estonisht",
+      "eu": "baskisht",
+      "ewo": "euondoisht",
+      "fa": "persisht",
+      "fa-AF": "darisht",
+      "ff": "fulaisht",
+      "fi": "finlandisht",
+      "fil": "filipinisht",
+      "fj": "fixhianisht",
+      "fo": "faroisht",
+      "fon": "fonisht",
+      "fr": "frëngjisht",
+      "fr-CA": "frëngjishte kanadeze",
+      "fr-CH": "frëngjishte zvicerane",
+      "frc": "frëngjishte kajune",
+      "frr": "frisianishte veriore",
+      "fur": "friulianisht",
+      "fy": "frizianishte perëndimore",
+      "ga": "irlandisht",
+      "gaa": "gaisht",
+      "gag": "gagauzisht",
+      "gd": "galishte skoceze",
+      "gez": "gizisht",
+      "gil": "gilbertazisht",
+      "gl": "galicisht",
+      "gn": "guaranisht",
+      "gor": "gorontaloisht",
+      "gsw": "gjermanishte zvicerane",
+      "gu": "guxharatisht",
+      "guz": "gusisht",
+      "gv": "manksisht",
+      "gwi": "guiçinisht",
+      "ha": "hausisht",
+      "hai": "haidaisht",
+      "haw": "havaisht",
+      "hax": "haidaishte jugore",
+      "he": "hebraisht",
+      "hi": "indisht",
+      "hi-Latn": "hindisht (latine)",
+      "hil": "hiligajnonisht",
+      "hmn": "hmongisht",
+      "hr": "kroatisht",
+      "hsb": "sorbishte e sipërme",
+      "ht": "kreolishte e Haitit",
+      "hu": "hungarisht",
+      "hup": "hupaisht",
+      "hur": "halkemejlemisht",
+      "hy": "armenisht",
+      "hz": "hereroisht",
+      "ia": "interlingua",
+      "iba": "ibanisht",
+      "ibb": "ibibioisht",
+      "id": "indonezisht",
+      "ie": "gjuha oksidentale",
+      "ig": "igboisht",
+      "ii": "sishuanisht",
+      "ikt": "inuktitutishte kanadeze perëndimore",
+      "ilo": "ilokoisht",
+      "inh": "ingushisht",
+      "io": "idoisht",
+      "is": "islandisht",
+      "it": "italisht",
+      "iu": "inuktitutisht",
+      "ja": "japonisht",
+      "jbo": "lojbanisht",
+      "jgo": "ngombisht",
+      "jmc": "maçamisht",
+      "jv": "javanisht",
+      "ka": "gjeorgjisht",
+      "kab": "kabilisht",
+      "kac": "kaçinisht",
+      "kaj": "kajeisht",
+      "kam": "kambaisht",
+      "kbd": "kabardianisht",
+      "kcg": "tjapisht",
+      "kde": "makondisht",
+      "kea": "kreolishte e Kepit të Gjelbër",
+      "kfo": "koroisht",
+      "kgp": "kaingangisht",
+      "kha": "kasisht",
+      "khq": "kojraçinisht",
+      "ki": "kikujuisht",
+      "kj": "kuanjamaisht",
+      "kk": "kazakisht",
+      "kkj": "kakoisht",
+      "kl": "kalalisutisht",
+      "kln": "kalenxhinisht",
+      "km": "kmerisht",
+      "kmb": "kimbunduisht",
+      "kn": "kanadisht",
+      "ko": "koreanisht",
+      "koi": "komi-parmjakisht",
+      "kok": "konkanisht",
+      "kpe": "kpeleisht",
+      "kr": "kanurisht",
+      "krc": "karaçaj-balkarisht",
+      "krl": "karelianisht",
+      "kru": "kurukisht",
+      "ks": "kashmirisht",
+      "ksb": "shambalisht",
+      "ksf": "bafianisht",
+      "ksh": "këlnisht",
+      "ku": "kurdisht",
+      "kum": "kumikisht",
+      "kv": "komisht",
+      "kw": "kornisht",
+      "kwk": "kuakualaisht",
+      "kxv": "kuvisht",
+      "ky": "kirgizisht",
+      "la": "latinisht",
+      "lad": "ladinoisht",
+      "lag": "langisht",
+      "lb": "luksemburgisht",
+      "lez": "lezgianisht",
+      "lg": "gandaisht",
+      "li": "limburgisht",
+      "lij": "ligurianisht",
+      "lil": "lilluetisht",
+      "lkt": "lakotisht",
+      "lmo": "lombardisht",
+      "ln": "lingalisht",
+      "lo": "laosisht",
+      "lou": "kreolishte e Luizianës",
+      "loz": "lozisht",
+      "lrc": "lurishte veriore",
+      "lsm": "samisht",
+      "lt": "lituanisht",
+      "lu": "luba-katangaisht",
+      "lua": "luba-luluaisht",
+      "lun": "lundaisht",
+      "luo": "luoisht",
+      "lus": "mizoisht",
+      "luy": "lujaisht",
+      "lv": "letonisht",
+      "mad": "madurezisht",
+      "mag": "magaisht",
+      "mai": "maitilisht",
+      "mak": "makasarisht",
+      "mas": "masaisht",
+      "mdf": "mokshaisht",
+      "men": "mendisht",
+      "mer": "meruisht",
+      "mfe": "morisjenisht",
+      "mg": "madagaskarisht",
+      "mgh": "makua-mitoisht",
+      "mgo": "metaisht",
+      "mh": "marshallisht",
+      "mi": "maorisht",
+      "mic": "mikmakisht",
+      "min": "minangkabauisht",
+      "mk": "maqedonisht",
+      "ml": "malajalamisht",
+      "mn": "mongolisht",
+      "mni": "manipurisht",
+      "moe": "inuaimunisht",
+      "moh": "mohokisht",
+      "mos": "mosisht",
+      "mr": "maratisht",
+      "ms": "malajisht",
+      "mt": "maltisht",
+      "mua": "mundangisht",
+      "mus": "krikisht",
+      "mwl": "mirandisht",
+      "my": "birmanisht",
+      "myv": "erzjaisht",
+      "mzn": "mazanderanisht",
+      "na": "nauruisht",
+      "nap": "napoletanisht",
+      "naq": "namaisht",
+      "nb": "norvegjishte letrare",
+      "nd": "ndebelishte veriore",
+      "nds": "gjermanishte e vendeve të ulëta",
+      "nds-NL": "gjermanishte saksone e vendeve të ulëta",
+      "ne": "nepalisht",
+      "new": "neuarisht",
+      "ng": "ndongaisht",
+      "nia": "niasisht",
+      "niu": "niueanisht",
+      "nl": "holandisht",
+      "nl-BE": "flamandisht",
+      "nmg": "kuasisht",
+      "nn": "norvegjishte nynorsk",
+      "nnh": "ngiembunisht",
+      "no": "norvegjisht",
+      "nog": "nogajisht",
+      "nqo": "nkoisht",
+      "nr": "ndebelishte jugore",
+      "nso": "sotoishte veriore",
+      "nus": "nuerisht",
+      "nv": "navahoisht",
+      "ny": "nianjisht",
+      "nyn": "niankolisht",
+      "oc": "oksitanisht",
+      "ojb": "oxhibuaishte verilindore",
+      "ojc": "oxhibuaishte qendrore",
+      "ojs": "oxhikrijisht",
+      "ojw": "oxhibuaishte perëndimore",
+      "oka": "okanaganisht",
+      "om": "oromoisht",
+      "or": "odisht",
+      "os": "osetisht",
+      "pa": "punxhabisht",
+      "pag": "pangasinanisht",
+      "pam": "pampangaisht",
+      "pap": "papiamentisht",
+      "pau": "paluanisht",
+      "pcm": "pixhinishte nigeriane",
+      "pis": "pixhinisht",
+      "pl": "polonisht",
+      "pqm": "malisit-pasamakuadisht",
+      "prg": "prusisht",
+      "ps": "pashtoisht",
+      "pt": "portugalisht",
+      "pt-BR": "portugalishte braziliane",
+      "pt-PT": "portugalishte evropiane",
+      "qu": "keçuaisht",
+      "quc": "kiçeisht",
+      "raj": "raxhastanisht",
+      "rap": "rapanuisht",
+      "rar": "rarontonganisht",
+      "rhg": "rohingiaisht",
+      "rm": "retoromanisht",
+      "rn": "rundisht",
+      "ro": "rumanisht",
+      "ro-MD": "moldavisht",
+      "rof": "romboisht",
+      "ru": "rusisht",
+      "rup": "vllahisht",
+      "rw": "kiniaruandisht",
+      "rwk": "ruaisht",
+      "sa": "sanskritisht",
+      "sad": "sandauisht",
+      "sah": "sakaisht",
+      "saq": "samburisht",
+      "sat": "santalisht",
+      "sba": "ngambajisht",
+      "sbp": "sanguisht",
+      "sc": "sardenjisht",
+      "scn": "siçilianisht",
+      "sco": "skotisht",
+      "sd": "sindisht",
+      "sdh": "kurdishte jugore",
+      "se": "samishte veriore",
+      "seh": "senaisht",
+      "ses": "senishte kojrabore",
+      "sg": "sangoisht",
+      "sh": "serbo-kroatisht",
+      "shi": "taçelitisht",
+      "shn": "shanisht",
+      "si": "sinhalisht",
+      "sk": "sllovakisht",
+      "sl": "sllovenisht",
+      "slh": "lashutsidishte jugore",
+      "sm": "samoanisht",
+      "sma": "samishte jugore",
+      "smj": "samishte lule",
+      "smn": "samishte inari",
+      "sms": "samishte skolti",
+      "sn": "shonisht",
+      "snk": "soninkisht",
+      "so": "somalisht",
+      "sq": "shqip",
+      "sr": "serbisht",
+      "srn": "srananisht (sranantongoisht)",
+      "ss": "suatisht",
+      "ssy": "sahoisht",
+      "st": "sotoishte jugore",
+      "str": "sejlishte e Ngushticave të Rozarios",
+      "su": "sundanisht",
+      "suk": "sukumaisht",
+      "sv": "suedisht",
+      "sw": "suahilisht",
+      "sw-CD": "suahilishte kongoleze",
+      "swb": "kamorianisht",
+      "syr": "siriakisht",
+      "szl": "silesisht",
+      "ta": "tamilisht",
+      "tce": "tatshonishte jugore",
+      "te": "teluguisht",
+      "tem": "timneisht",
+      "teo": "tesoisht",
+      "tet": "tetumisht",
+      "tg": "taxhikisht",
+      "tgx": "tagishisht",
+      "th": "tajlandisht",
+      "tht": "taltanisht",
+      "ti": "tigrinjaisht",
+      "tig": "tigreisht",
+      "tk": "turkmenisht",
+      "tlh": "klingonisht",
+      "tli": "tlingitisht",
+      "tn": "cuanaisht",
+      "to": "tonganisht",
+      "tok": "tokiponaisht",
+      "tpi": "pisinishte toku",
+      "tr": "turqisht",
+      "trv": "torokoisht",
+      "ts": "congaisht",
+      "tt": "tatarisht",
+      "ttm": "taçoneishte veriore",
+      "tum": "tumbukaisht",
+      "tvl": "tuvaluisht",
+      "tw": "tuisht",
+      "twq": "tasavakisht",
+      "ty": "tahitisht",
+      "tyv": "tuvinianisht",
+      "tzm": "tamazajtisht e Atlasit Qendror",
+      "udm": "udmurtisht",
+      "ug": "ujgurisht",
+      "uk": "ukrainisht",
+      "umb": "umbunduisht",
+      "ur": "urduisht",
+      "uz": "uzbekisht",
+      "vai": "vaisht",
+      "ve": "vendaisht",
+      "vec": "venetisht",
+      "vi": "vietnamisht",
+      "vmw": "makuvaisht",
+      "vo": "volapykisht",
+      "vun": "vunxhoisht",
+      "wa": "ualunisht",
+      "wae": "ualserisht",
+      "wal": "ulajtaisht",
+      "war": "uarajisht",
+      "wbp": "uarlpirisht",
+      "wo": "uolofisht",
+      "wuu": "kinezishte vu",
+      "xal": "kalmikisht",
+      "xh": "xhosaisht",
+      "xnr": "kangrisht",
+      "xog": "sogisht",
+      "yav": "jangbenisht",
+      "ybb": "jembaisht",
+      "yi": "jidisht",
+      "yo": "jorubaisht",
+      "yrl": "nejengatuisht",
+      "yue": "kinezishte kantoneze",
+      "za": "zhuangisht",
+      "zgh": "tamaziatishte standarde marokene",
+      "zh": "kinezishte mandarine",
+      "zh-Hans": "kinezishte mandarine (e thjeshtuar)",
+      "zh-Hant": "kinezishte mandarine (tradicionale)",
+      "zu": "zuluisht",
+      "zun": "zunisht",
+      "zza": "zazaisht"
+    },
+    "loading_auth": "Duke u lidhur me OpenStreetMap...",
+    "login": "Kyçuni",
+    "logout": "Dilni",
+    "map_data": {
+      "data_layers": "Shtresat e të Dhënave",
+      "description": "Të dhënat e hartës",
+      "layers": {
+        "maproulette": {
+          "cancel": "Anullo",
+          "detail_title": "Detajet"
+        },
+        "osm": {
+          "tooltip": "Të dhënat e hartës nga OpenStreetMap"
+        }
+      },
+      "title": "Të dhënat e hartës"
+    },
+    "mapillary": {
+      "view_on_mapillary": "Shikoje këtë imazh në Mapilary"
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Kjo karakteristikë u fshi nga {user}.",
+        "location": "Kjo karakteristikë është lëvizur nga të dy, ju dhe {user}.",
+        "memberlist": "Anëtarët e lidhjes u ndryshuan nga të dy, ju dhe {user}.",
+        "nodelist": "Nyjet u ndryshuan nga të dy, ju dhe {user}."
+      }
+    },
+    "modes": {
+      "add_area": {
+        "description": "Shtoni parqe, ndërtesa, liqene, ose sipërfaqe të tjera në hartë.",
+        "title": "Sipërfaqe"
+      },
+      "add_line": {
+        "description": "Shtoni autostrada, rrugë, rrugë këmbësorësh, kanale, ose vija të tjera në hartë.",
+        "title": "Vijë"
+      },
+      "add_note": {
+        "title": "Shënim"
+      },
+      "add_point": {
+        "description": "Shtoni restorante, monumente, kuti postare, ose pika të tjera në hartë.",
+        "title": "Pikë"
+      },
+      "browse": {
+        "description": "Sposto dhe zmadho hartën.",
+        "title": "Shfleto"
+      },
+      "drag_node": {
+        "connected_to_hidden": "Kjo nuk mund të editohet sepse është e lidhur me një karakteristikë të fshehur."
+      }
+    },
+    "note": {
+      "anonymous": "anonim",
+      "close": "Mbyllni shënimin",
+      "close_comment": "Mbyllni dhe Komentoni",
+      "closed": "(Mbyllur)",
+      "comment": "Koment",
+      "commentTitle": "Komentet",
+      "inputPlaceholder": "Vendosni një koment për ta ndarë me përdoruesit e tjerë.",
+      "login": "Ju duhet të kyçeni për të ndryshuar apo komentuar në këtë shënim.",
+      "new": "Shënim i Ri",
+      "newComment": "Koment i Ri",
+      "note": "Shënim",
+      "open": "Rihapni shënimin",
+      "open_comment": "Rihapni dhe Komentoni",
+      "report": "Raportoni",
+      "save": "Ruani shënimin",
+      "status": {
+        "closed": "mbyllur {when}",
+        "commented": "komentuar {when}",
+        "opened": "hapur {when}",
+        "reopened": "rihapur {when}"
+      },
+      "title": "Editoni shënimin",
+      "upload_explanation": "Komentet tuaja do të jenë të dukshme publikisht për të gjithë përdoruesit e OpenStreetMap.",
+      "upload_explanation_with_user": "Komentet tuaja si {user} do të jenë të dukshme publikisht tek të jithë përdoruesit e OpenStreetMap."
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "U shtua një shënim.",
+          "point": "U shtua një pikë.",
+          "relation": "U shtua një lidhje.",
+          "vertex": "U shtua një nyjë në një linjë."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "U anullua vizatimi."
+      },
+      "change_tags": {
+        "annotation": "U ndruan etiketët."
+      },
+      "circularize": {
+        "title": "Jepi formë qarku"
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_area": "U lidh një linjë me një sipërfaqe.",
+            "to_line": "U lidh një linjë me një vijë.",
+            "to_point": "U lidh një linjë me një pik.",
+            "to_vertex": "U lidh një linjë me një tjetër."
+          }
+        },
+        "relation": "Këto karakteristika nuk mund të lidhen bashkë sepse kanë konflikt me rolet që kanë në lidhje.",
+        "restriction": "Këto karakteristika nuk mund të lidhen sepse do të dëmtonte një \"{relation}\" lidhje."
+      },
+      "continue": {
+        "annotation": {
+          "area": "U zgjerua një sipërfaqe.",
+          "line": "U zgjat një vijë."
+        },
+        "description": "Zgjato vijën.",
+        "not_eligible": "Këtu s'mund të zgjatet vija.",
+        "title": "Vazhdo"
+      },
+      "delete": {
+        "annotation": {
+          "area": "U fshi një sipërfaqe.",
+          "line": "U fshi një vijë.",
+          "point": "U fshi një pik.",
+          "relation": "U fshi një lidhje.",
+          "vertex": "U fshi një nyjë nga një linjë."
+        },
+        "title": "Fshij"
+      },
+      "disconnect": {
+        "connected_to_hidden": "Kjo nuk mund të shqitet sepse është lidhur me një tipar të fshehur.",
+        "not_connected": "Këtu nuk ka aq vijë/sipërfaqe për tu shqitur.",
+        "relation": "Kjo nuk mund të shkëputet sepse lidh bashkon e një lidhjeje.",
+        "title": "Shqit"
+      },
+      "merge": {
+        "conflicting_tags": "Këto karakteristika nuk mund të shkrihen sepse disa prej etiketave të tyre kanë vlera të ndryshme.",
+        "damage_relation": "Këto karakteristika nuk mund të lidhen sepse do të dëmtonte një \"{relation}\" lidhje.",
+        "description": "Bashkojini këto karakteristika.",
+        "incomplete_relation": "Këto tipare nuk mund të bashkohen sepse të paktën një nuk është shkarkuar plotësisht.",
+        "not_adjacent": "Këto karakteristika nuk mund të shkrihen bashkë sepse pikat e tyre fundore nuk janë të lidhura.",
+        "not_eligible": "Këto tipare nuk mund të bashkohen.",
+        "relation": "Këto karakteristika nuk mund të lidhen bashkë sepse kanë konflikt me rolet që kanë në lidhje.",
+        "title": "Bashko"
+      },
+      "move": {
+        "annotation": {
+          "area": "U lëviz një sipërfaqe.",
+          "line": "U lëviz një vijë.",
+          "point": "U lëviz një pik.",
+          "vertex": "U lëviz një njyë në një linjë."
+        },
+        "title": "Lëviz"
+      },
+      "orthogonalize": {
+        "title": "Katror"
+      },
+      "restriction": {
+        "annotation": {
+          "create": "U shtu një kufizim kthesësh.",
+          "delete": "U fshi një kufizim kthesësh."
+        }
+      },
+      "reverse": {
+        "description": {
+          "line": "Bëj këte vijë të shkoj në drejtimin e kundërt."
+        },
+        "title": "Kthej mbrapsht"
+      },
+      "rotate": {
+        "annotation": {
+          "area": "U rotullua një sipërfaqe.",
+          "line": "U rotullua një vijë."
+        },
+        "title": "Rrotullo"
+      },
+      "split": {
+        "connected_to_hidden": "Kjo nuk mund të ndahet sepse është lidhur me një tipar të fshehur.",
+        "not_eligible": "Vijë nuk mund të ndahen në fillim osë në fund.",
+        "title": "Nda"
+      },
+      "start": {
+        "annotation": {
+          "area": "U fillua një sipërfaqe.",
+          "line": "U fillua një vijë."
+        }
+      },
+      "straighten": {
+        "description": {
+          "line": "Drejtoni këtë vijë."
+        },
+        "title": "Drejto"
+      }
+    },
+    "photos": {
+      "hires": "Rezolucion i lartë"
+    },
+    "rapid_inspector": {
+      "tags": "Etiketat"
+    },
+    "rapid_menu": {
+      "remove": "Hiq"
+    },
+    "redo": {
+      "nothing": "Asgjë për të ribëj.",
+      "tooltip": "Ribëj: {action}"
+    },
+    "report_a_bug": "Raportoni një problematikë",
+    "restore": {
+      "heading": "Ju keni ndryshime të paruajtura"
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distancë",
+        "via_node_only": "Vetëm pika"
+      },
+      "help": {
+        "from": "NGA",
+        "from_name": "{from} {fromName}",
+        "from_name_to_name": "{from} {fromName} {to} {toName}",
+        "select_from_name": "Klikoni të përzgjidhni {from} {fromName}",
+        "toggle": "Klikoni për \"{turn}\"",
+        "via_names": "{via} {viaNames}"
+      }
+    },
+    "save": {
+      "conflict": {
+        "count": "Konflikt {num} nga {total}",
+        "done": "Të gjitha konfliktet u zgjidhën!",
+        "header": "Zgjidh konfliktet midis editimeve",
+        "keep_local": "Ruaj timen",
+        "keep_remote": "Përdor të tyren",
+        "next": "I ardhshëm >",
+        "previous": "< I mëparshëm"
+      },
+      "conflict_progress": "Duke kontrolluar për konflikte: {num} nga {total}",
+      "help": "Rishikoni ndryshimet tuaja dhe ngarkojini ato në OpenStreetMap, duke i bërë ato të dukshme tek përdoruesit e tjerë.",
+      "no_changes": "Ska ndryshime për t'u ruajtur.",
+      "title": "Ruaj",
+      "unknown_error_details": "Ju lutem sigurohuni që jeni të lidhur me internetin.",
+      "unsaved_changes": "Ju keni ndryshime të paruajtura",
+      "uploading": "Duke ngarkuar ndryshimet në OpenStreetMap..."
+    },
+    "scriptNames": {
+      "Adlm": "adlam",
+      "Aghb": "albanishte e Kaukazit",
+      "Ahom": "ahomisht",
+      "Arab": "arabik",
+      "Aran": "nastalik",
+      "Armi": "aramaishte perandorake",
+      "Armn": "armen",
+      "Avst": "avestanisht",
+      "Bali": "bali",
+      "Bamu": "bamu",
+      "Bass": "basavahisht",
+      "Batk": "batak",
+      "Beng": "bengal",
+      "Bhks": "baiksukisht",
+      "Bopo": "bopomof",
+      "Brah": "brahmisht",
+      "Brai": "brailisht",
+      "Bugi": "buginisht",
+      "Buhd": "buhidisht",
+      "Cakm": "çakma",
+      "Cans": "rrokje të unifikuara aborigjene kanadeze",
+      "Cari": "karianisht",
+      "Cham": "çam",
+      "Cher": "çeroki",
+      "Chrs": "korasmianisht",
+      "Copt": "koptisht",
+      "Cpmn": "minoishte e Qipros",
+      "Cprt": "qipriotisht",
+      "Cyrl": "cirilik",
+      "Deva": "devanagar",
+      "Diak": "divesakuruisht",
+      "Dogr": "dograisht",
+      "Dsrt": "deseretisht",
+      "Dupl": "duplojanisht - formë e shkurtër",
+      "Egyp": "hieroglife egjiptiane",
+      "Elba": "shkrim i Elbasanit",
+      "Elym": "elimaisht",
+      "Ethi": "etiopik",
+      "Geor": "gjeorgjian",
+      "Glag": "glagolitikisht",
+      "Gong": "gong",
+      "Gonm": "masaramgondisht",
+      "Goth": "gotik",
+      "Gran": "grantaisht",
+      "Grek": "grek",
+      "Gujr": "guxharat",
+      "Guru": "gurmuk",
+      "Hanb": "hanbik",
+      "Hang": "hangul",
+      "Hani": "han",
+      "Hano": "hanunoisht",
+      "Hans": "han i thjeshtuar",
+      "Hant": "han tradicional",
+      "Hatr": "hatranisht",
+      "Hebr": "hebraik",
+      "Hira": "hiragan",
+      "Hluw": "hieroglife anatoliane",
+      "Hmng": "pahauhmonisht",
+      "Hmnp": "niakeng puaçue hmong",
+      "Hrkt": "alfabet rrokjesor japonez",
+      "Hung": "hungarishte e vjetër",
+      "Ital": "italishte e vjetër",
+      "Jamo": "jamosisht",
+      "Java": "java",
+      "Jpan": "japonez",
+      "Kali": "kajali",
+      "Kana": "katakan",
+      "Kawi": "kavi",
+      "Khar": "karoshtisht",
+      "Khmr": "kmer",
+      "Khoj": "koxhkisht",
+      "Kits": "shkrim i vogël kitan",
+      "Knda": "kanad",
+      "Kore": "korean",
+      "Kthi": "kaitisht",
+      "Lana": "lana",
+      "Laoo": "laosisht",
+      "Latn": "latin",
+      "Lepc": "lepça",
+      "Limb": "limbu",
+      "Lisu": "fraser",
+      "Lyci": "licianisht",
+      "Lydi": "lidianisht",
+      "Mahj": "mahaxhanisht",
+      "Maka": "makasarisht",
+      "Mand": "mande",
+      "Mani": "manikeanisht",
+      "Marc": "markenisht",
+      "Medf": "medefaidrinisht",
+      "Mend": "mendeisht",
+      "Merc": "meroitik kursiv",
+      "Mero": "meroitik",
+      "Mlym": "malajalam",
+      "Modi": "modisht",
+      "Mong": "mongolisht",
+      "Mroo": "mroisht",
+      "Mtei": "mitei-majek",
+      "Mult": "multanisht",
+      "Mymr": "birman",
+      "Nagm": "nag mundari",
+      "Nand": "nandigarisht",
+      "Narb": "arabishte veriore e vjetër",
+      "Nbat": "nabateanisht",
+      "Newa": "neva",
+      "Nkoo": "nko",
+      "Nshu": "nyshuisht",
+      "Ogam": "ogamisht",
+      "Olck": "ol çiki",
+      "Orkh": "orkonisht",
+      "Orya": "orija",
+      "Osge": "osage",
+      "Osma": "osmaniaisht",
+      "Ougr": "ujgurishte e vjetër",
+      "Palm": "palmirenisht",
+      "Pauc": "pausinhauisht",
+      "Perm": "permike e vjetër",
+      "Phag": "fagspaisht",
+      "Phli": "palavishte mbishkrimesh",
+      "Phlp": "palavishte psalteri",
+      "Phnx": "fenikisht",
+      "Plrd": "polard fonetik",
+      "Prti": "persishte mbishkrimesh",
+      "Qaag": "zaugi",
+      "Rjng": "rexhangisht",
+      "Rohg": "hanifi",
+      "Runr": "runike",
+      "Samr": "samaritanisht",
+      "Sarb": "arabishte jugore e vjetër",
+      "Saur": "saurashtra",
+      "Sgnw": "shkrim sing",
+      "Shaw": "shavianisht",
+      "Shrd": "sharadisht",
+      "Sidd": "sidamisht",
+      "Sind": "kudavadisht",
+      "Sinh": "sinhal",
+      "Sogd": "sogdianisht",
+      "Sogo": "sogdianishte e vjetër",
+      "Sora": "sorasompengisht",
+      "Soyo": "sojomboisht",
+      "Sund": "sundan",
+      "Sylo": "siloti nagri",
+      "Syrc": "siriak",
+      "Tagb": "tagbanvaisht",
+      "Takr": "takri",
+      "Tale": "tai le",
+      "Talu": "tai lue i ri",
+      "Taml": "tamil",
+      "Tang": "tangut",
+      "Tavt": "tai viet",
+      "Telu": "telug",
+      "Tfng": "tifinag",
+      "Tglg": "tagalog",
+      "Thaa": "tanisht",
+      "Thai": "tajlandez",
+      "Tibt": "tibetisht",
+      "Tirh": "tirhuta",
+      "Tnsa": "tangsa",
+      "Toto": "toto",
+      "Ugar": "ugaritik",
+      "Vaii": "vai",
+      "Vith": "vithkuqi",
+      "Wara": "varang kshiti",
+      "Wcho": "vanço",
+      "Xpeo": "persian i vjetër",
+      "Xsux": "kuneiform sumero-akadian",
+      "Yezi": "jezidi",
+      "Yiii": "ji",
+      "Zanb": "katror zanabazar",
+      "Zinh": "zin",
+      "Zmth": "simbole matematikore",
+      "Zsye": "emoji",
+      "Zsym": "me simbole",
+      "Zxxx": "i pashkruar",
+      "Zyyy": "i zakonshëm",
+      "Zzzz": "i panjohur"
+    },
+    "settings": {
+      "custom_background": {
+        "header": "Parametrat e Sfondit të Personalizuar",
+        "tooltip": "Redakto sfondin të personalizuar"
+      },
+      "custom_data": {
+        "file": {
+          "label": "Shfletoni skedarët"
+        },
+        "or": "Ose",
+        "url": {
+          "placeholder": "Vendosni një url"
+        }
+      }
+    },
+    "shortcuts": {
+      "command": {
+        "copy": {
+          "label": "Kopjoni karakteristikat e përzgjedhura"
+        },
+        "first_node": {
+          "label": "Kaloni tek nyja e parë"
+        },
+        "keyboard_shortcuts": {
+          "label": "Shfaq shkurtimet e tastierës"
+        },
+        "last_node": {
+          "label": "Kaloni tek nyja e fundit"
+        },
+        "move": {
+          "label": "Lëvizni karakteristikat e përzgjedhura"
+        },
+        "redo": {
+          "label": "Ribëj veprimin e fundit"
+        },
+        "rotate": {
+          "label": "Rrotulloni karakteristikat e përzgjedhura"
+        },
+        "save": {
+          "label": "Ruaj ndryshimet"
+        },
+        "select_multi": {
+          "label": "Përzgjidhni disa karakterstika"
+        },
+        "select_one": {
+          "label": "Përzgjidhni një karakterstikë të vetme"
+        },
+        "undo": {
+          "label": "Zhbëj veprimin e fundit"
+        }
+      },
+      "commands": "Komandat",
+      "drawing": "Duke vizatuar",
+      "editing": "Duke edituar",
+      "help": "Ndihmë",
+      "key": {
+        "alt": "Alt",
+        "backspace": "Backspace",
+        "cmd": "Cmd",
+        "ctrl": "Ctrl",
+        "del": "Del",
+        "delete": "Fshij",
+        "end": "End",
+        "enter": "Enter",
+        "esc": "Esc",
+        "home": "Home",
+        "option": "Option",
+        "pause": "Pause",
+        "pgdn": "PgDn",
+        "pgup": "PgUp",
+        "shift": "Shift",
+        "space": "Space"
+      },
+      "navigation": "Navigimi",
+      "selecting_features": "Duke përzgjedhur karakteristikat",
+      "title": "Shkurtimet e tastierës",
+      "tooltip": "Shfaq në ekran shkurtimet e tastierës",
+      "with_node_selected": "Me nyjen e përzgjedhur"
+    },
+    "source_switch": {
+      "live": "drejtpërdrejt"
+    },
+    "splash": {
+      "start": "Editoni tani",
+      "text": "iD është një mjet familar por i fuqishëm për të kontribuar në hartën e hapur më të mirë në botë. Ky është vesioni {version}. Për më shumë informacion shihni {website} dhe raportoni problematikat në {github}.",
+      "welcome": "Mirësevini në iD OpenStreetMap editor"
+    },
+    "success": {
+      "events": "Eventet",
+      "help_link_text": "Detajet",
+      "help_link_url": "https://wiki.openstreetmap.org/wiki/FAQ#I_have_just_made_some_changes_to_the_map._How_do_I_get_to_see_my_changes.3F",
+      "just_edited": "Ju sapo edituat në OpenStreetMap!",
+      "languages": "Gjuhët: {languages}",
+      "like_osm": "Ju pëlqen OpenStreetMap? Krijoni kontakte me të tjerët:",
+      "missing": "Mungon diçka nga kjo listë?",
+      "more": "Më shumë",
+      "tell_us": "Na thuaj!",
+      "thank_you": "Faleminderit për përmirësimin e hartës.",
+      "thank_you_location": "Faleminderit për përmirësimin e hartës përreth {where}",
+      "view_on_osm": "Shikoni Ndryshimet në OSM"
+    },
+    "tag_reference": {
+      "description": "Përshkrim",
+      "on_wiki": "{tag} në wiki.osm.org",
+      "used_with": "përdorur me {type}"
+    },
+    "translate": {
+      "localized_translation_language": "Zgjidhni gjuhën",
+      "localized_translation_name": "Emër"
+    },
+    "undo": {
+      "nothing": "Asgjë për të zhbëj.",
+      "title": "Zhbëj",
+      "tooltip": "Zhbëj: {action}"
+    },
+    "units": {
+      "acres": "{quantity} ac",
+      "arcdegrees": "{quantity}°",
+      "arcminutes": "{quantity}′",
+      "arcseconds": "{quantity}″",
+      "area_pair": "{area1} ({area2})",
+      "coordinate": "{coordinate}{direction}",
+      "coordinate_pair": "{latitude}, {longitude}",
+      "east": "E",
+      "feet": "{quantity} ft",
+      "hectares": "{quantity} ha",
+      "kilometers": "{quantity} km",
+      "meters": "{quantity} m",
+      "miles": "{quantity} mi",
+      "north": "N",
+      "south": "S",
+      "square_feet": "{quantity} sq ft",
+      "square_kilometers": "{quantity} km²",
+      "square_meters": "{quantity} m²",
+      "square_miles": "{quantity} sq mi",
+      "west": "W"
+    },
+    "version": {
+      "whats_new": "Çfarë është e re në iD {version}"
+    },
+    "wikidata": {
+      "description": "Përshkrim"
+    },
+    "zoom_in_edit": "Zmadhoni për të edituar"
+  }
+}

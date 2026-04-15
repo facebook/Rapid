@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.133Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.be-tarask.json",
+    "hash": "104a46c9ae612ae8171a277eecdf1ee9"
+  },
+  "be-tarask": {
+    "QA": {
+      "keepRight": {
+        "error_parts": {
+          "this_node": "гэты вузел",
+          "this_relation": "гэты зьвязак"
+        }
+      }
+    },
+    "commit": {
+      "cancel": "Скасаваць"
+    },
+    "confirm": {
+      "cancel": "Скасаваць"
+    },
+    "geometry": {
+      "area": "зона",
+      "relation": "зьвязак"
+    },
+    "help": {
+      "areas": {
+        "title": "Зоны"
+      },
+      "feature_editor": {
+        "tags_h": "Тэґі"
+      },
+      "relations": {
+        "title": "Зьвязкі"
+      }
+    },
+    "info_panels": {
+      "measurement": {
+        "area": "Зона"
+      }
+    },
+    "inspector": {
+      "add_to_relation": "Дадаць у зьвязак",
+      "edit": "Рэдагаваць аб'ект",
+      "node": "Вузел",
+      "relation": "Зьвязак",
+      "relations": "Зьвязкі",
+      "tags": "Тэґі"
+    },
+    "intro": {
+      "areas": {
+        "title": "Зоны"
+      }
+    },
+    "map_data": {
+      "description": "Зьвесткі мапы",
+      "title": "Зьвесткі мапы"
+    },
+    "modes": {
+      "add_area": {
+        "title": "Зона"
+      }
+    },
+    "toolbar": {
+      "add_feature": "Дадаць аб'ект",
+      "inspect": "Панэль"
+    },
+    "translate": {
+      "localized_translation_name": "Назва"
+    }
+  }
+}

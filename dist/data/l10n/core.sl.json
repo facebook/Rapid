@@ -1,0 +1,1620 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.025Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.sl.json",
+    "hash": "f7945a8d8b17885e13173577ea29649e"
+  },
+  "sl": {
+    "QA": {
+      "keepRight": {
+        "detail_description": "Opis"
+      },
+      "osmose": {
+        "detail_title": "Podrobnosti"
+      }
+    },
+    "area_fill": {
+      "full": {
+        "description": "Polno zapolnjevanje",
+        "tooltip": "Narisano polje je v celoti zapolnjeno z vzorcem."
+      },
+      "partial": {
+        "description": "Delno zapolnjevanje (širši rob)",
+        "tooltip": "Polja so v notranjosti le debelo obrobljena z vzorcem (priporočljivo za začetnike)."
+      },
+      "wireframe": {
+        "description": "Brez zapolnjevanja (le obroba)",
+        "tooltip": "S tanko črto je izrisana le obroba polja."
+      }
+    },
+    "background": {
+      "backgrounds": "Ozadja",
+      "best_imagery": "Najbolj znan slikovni vir ozadja za to območje",
+      "brightness": "Svetlost",
+      "contrast": "Kontrast",
+      "custom": "Po meri",
+      "display_options": "Možnosti prikaza",
+      "imagery_problem_faq": "Prijavi težavo z ozadjem",
+      "key": "B",
+      "minimap": {
+        "description": "Pokaži mini-zemljevid",
+        "tooltip": "Pokaži oddaljen zemljevid za pomoč pri določanju trenutno prikazanega mesta."
+      },
+      "none": "Brez",
+      "offset": "Povlecite spodnje temnejše sivo področju za prilagoditev zamika ali pa vnesite zamik številčno v metrih.",
+      "overlays": "Prekrivni zemljevidi",
+      "reset": "ponastavi",
+      "saturation": "Nasičenost",
+      "sharpness": "Ostrina",
+      "switch": "Preklopi nazaj na to ozadje.",
+      "title": "Ozadje"
+    },
+    "bearing": {
+      "n": "S"
+    },
+    "commit": {
+      "about_changeset_comments": "O povzetkih sprememb",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/Good_changeset_comments",
+      "cancel": "Prekliči",
+      "created": "Ustvarjeno",
+      "deleted": "Izbrisano",
+      "download_changes": "Prejmi datoteko osmChange",
+      "google_warning": "V opombi je omenjeno podjetje Google: kopiranje podatkov iz zemljevida Google je strogo prepovedano!",
+      "modified": "Spremenjeno",
+      "request_review": "Nekdo naj preveri moje urejanje.",
+      "save": "Pošlji",
+      "title": "Pošlji na OpenStreetMap",
+      "upload_explanation": "Spremembe, ki ji boste naložili, bodo vidne na vseh zemljevidih, ki uporabljajo podatke OpenStreetMap.",
+      "upload_explanation_with_user": "Spremembe, ki jih objavite kot uporabnik {user}, bodo vidne na vseh zemljevidih, ki uporabljajo podatke OpenStreetMap.",
+      "warnings": "Opozorila"
+    },
+    "confirm": {
+      "cancel": "Prekliči",
+      "okay": "V redu"
+    },
+    "contributors": {
+      "list": "Spremembe uporabnikov {users}"
+    },
+    "filters": {
+      "boundaries": {
+        "description": "Meje",
+        "tooltip": "Administrativne meje"
+      },
+      "buildings": {
+        "description": "Zgradbe",
+        "tooltip": "Zgradbe, zavetišča, garaže ...."
+      },
+      "landuse": {
+        "description": "Uporaba zemljišča",
+        "tooltip": "Gozdovi, njive, polja, stanovanjska ali poslovna zemljišča ..."
+      },
+      "others": {
+        "tooltip": "Vse ostalo"
+      },
+      "past_future": {
+        "tooltip": "V načrtovanju, gradbišče, zapuščeno, zrušeno ..."
+      },
+      "paths": {
+        "description": "Poti",
+        "tooltip": "Pločniki, pešpoti, kolesarske poti ..."
+      },
+      "points": {
+        "description": "Točke",
+        "tooltip": "Točke POI"
+      },
+      "power": {
+        "description": "Energetski objekti",
+        "tooltip": "Električni daljnovodi, elektrarne, transformatorske postaje ..."
+      },
+      "rail": {
+        "description": "Železnice",
+        "tooltip": "Železnice"
+      },
+      "service_roads": {
+        "description": "Servisne ceste",
+        "tooltip": "Servisne poti, parkirne ceste, poti ..."
+      },
+      "traffic_roads": {
+        "description": "Prometne poti",
+        "tooltip": "Ceste, ulice, poti ..."
+      },
+      "water": {
+        "description": "Vode",
+        "tooltip": "Porečja, reke, jezera, ribniki ..."
+      }
+    },
+    "full_screen": "Preklopi celozaslonski način",
+    "geocoder": {
+      "no_results_worldwide": "Ni najdenih zadetkov",
+      "search": "Poišči po svetovnem zemljevidu ..."
+    },
+    "geolocate": {
+      "locating": "Poteka določevanje trenutne točke ...",
+      "title": "Pokaži mojo trenutno točko"
+    },
+    "geometry": {
+      "area": "področje",
+      "line": "črta",
+      "point": "točka",
+      "relation": "zveza",
+      "vertex": "ogljišče"
+    },
+    "help": {
+      "areas": {
+        "add_area_h": "Dodajanje mnogokotnikov",
+        "delete_area_h": "Brisanje mnogokotnikov",
+        "intro": "Z *mnogokotniki* ponazorimo predmete z natančno določenimi mejami, kot so jezera, zgradbe in stanovanjske soseske. Mnogokotnike narišemo okoli predmetov, na primer po obodu tlorisa zgradbe.",
+        "modify_area_h": "Urejanje mnogokotnikov",
+        "point_or_area_h": "Točke ali mnogokotniki?",
+        "title": "Mnogokotniki"
+      },
+      "editing": {
+        "backups_h": "Samodejne varnostne kopije",
+        "save_h": "Shrani",
+        "select_h": "Izbor",
+        "title": "Urejanje in shranjevanje",
+        "undo_redo_h": "Razveljavi in Ponovno uveljavi",
+        "upload_h": "Pošlji"
+      },
+      "feature_editor": {
+        "fields_h": "Polja"
+      },
+      "field": {
+        "restrictions": {
+          "about": {
+            "title": "O programu"
+          },
+          "tips": {
+            "title": "Namigi"
+          }
+        }
+      },
+      "help": {
+        "open_source_h": "Odprta koda",
+        "title": "Pomoč",
+        "welcome": "Dobrodošli v urejevalniku iD za [OpenStreetMap](https://www.openstreetmap.org/). S tem urejevalnikom lahko OpenStreetMap posodobite neposredno iz brskalnika."
+      },
+      "key": "H",
+      "lines": {
+        "title": "Črte"
+      },
+      "operations": {
+        "title": "Opravila"
+      },
+      "overview": {
+        "features_h": "Značilnosti zemljevida",
+        "navigation_h": "Usmerjanje",
+        "nodes_ways": "Točke pogosto imenujemo tudi *vozlišča*, črte in mnogokotna polja pa *poti*.",
+        "title": "Pregled"
+      },
+      "points": {
+        "title": "Točke"
+      },
+      "qa": {
+        "tools_h": "Orodja"
+      },
+      "relations": {
+        "boundary_h": "Meje",
+        "title": "Povezave"
+      },
+      "title": "Pomoč"
+    },
+    "help_translate": "Sodelujte pri prevodu",
+    "icons": {
+      "copy": "kopiraj",
+      "download": "prenos",
+      "information": "podrobnosti",
+      "remove": "odstrani",
+      "text": "besedilo",
+      "undo": "razveljavi"
+    },
+    "info_panels": {
+      "background": {
+        "accuracy": "Natančnost",
+        "description": "Opis",
+        "hide_tiles": "Skrij sličice",
+        "resolution": "Ločljivost",
+        "show_tiles": "Pokaži sličice",
+        "source": "Vir",
+        "title": "Ozadje",
+        "vintage": "Starinsko",
+        "zoom": "Približaj"
+      },
+      "history": {
+        "changeset": "Spremembe",
+        "edited_by": "Urejevalec",
+        "last_edit": "Zadnje urejanje",
+        "title": "Zgodovina",
+        "version": "Različica"
+      },
+      "location": {
+        "title": "Mesto",
+        "unknown_location": "Neznano mesto"
+      },
+      "measurement": {
+        "area": "Površina",
+        "center": "Središče",
+        "centroid": "Središčna točka",
+        "closed_area": "zaprt mnogokotnik",
+        "closed_line": "zaprta črta",
+        "distance": "Razdalja",
+        "geometry": "Geometrija",
+        "imperial": "Imperialne enote",
+        "length": "Dolžina",
+        "location": "Mesto",
+        "metric": "Metrične enote",
+        "node_count": "Število vozlišč",
+        "perimeter": "Obseg",
+        "title": "Merilo"
+      }
+    },
+    "inspector": {
+      "add": "Dodaj",
+      "add_fields": "Dodaj polje:",
+      "check": {
+        "no": "Ne",
+        "reverser": "Spremeni smer",
+        "yes": "Da"
+      },
+      "choose": "Izberite vrsto predmeta",
+      "details": "Podrobnosti",
+      "edit": "Urejanje predmeta",
+      "feature_list": "Iskanje po zemljevidu",
+      "fields": "Polja",
+      "incomplete": "<ni prejeto>",
+      "location": "Mesto",
+      "new_relation": "Nova zveza ...",
+      "node": "Vozlišče",
+      "none": "Brez",
+      "radio": {
+        "structure": {
+          "default": "Privzeto",
+          "layer": "Plast"
+        }
+      },
+      "relation": "Zveza",
+      "relations": "Povezave",
+      "remove": "Odstrani",
+      "role": "Vloga",
+      "search": "Poišči",
+      "show_more": "Pokaži več",
+      "type": "Vrsta",
+      "unknown": "Neznano",
+      "view_on_osm": "Odpri na openstreetmap.org",
+      "way": "Pot"
+    },
+    "intro": {
+      "areas": {
+        "choose_field": "**Izberite polje {field} s seznama.**",
+        "choose_playground": "**Izberte {preset} s seznama.**",
+        "retry_add_field": "Niste izbrali polja {field}. Poskusite znova.",
+        "search_playground": "**Poiščite predmet »{preset}«.**",
+        "title": "Mnogokotniki"
+      },
+      "buildings": {
+        "choose_category_building": "**Izberite kategorijo {category} s seznama.**",
+        "choose_preset_house": "Obstaja več različnih vrst zgradb, ta, ki ste jo vrisali, je nedvomno stanovanjska hiša.{br}Kadar niste prepričani, v katero skupino bi zgradbo dodali, izberite vrsto *Zgradba* **Izberite vrsto zgradbe: {preset}.**",
+        "choose_tank": "**Izberite {preset} s seznama.**",
+        "done_square": "Bodite pozorni, kako so sedaj oglišča postavljena pravilno. Spoznajmo še en trik.",
+        "retry_building": "Videti je, da imate nekaj težav s postavljanjem vozlišč na kote zgradbe. Poskusite znova!",
+        "search_tank": "**Poiščite »{preset}«.**",
+        "title": "Zgradbe"
+      },
+      "done": "končano",
+      "graph": {
+        "block_number": "<value for addr:block_number>",
+        "city": "Lepi Kot",
+        "countrycode": "si",
+        "county": "<value for addr:county>",
+        "district": "<value for addr:district>",
+        "hamlet": "<value for addr:hamlet>",
+        "name": {
+          "10th-avenue": "Ingoličeva ulica",
+          "11th-avenue": "Javorškova ulica",
+          "12th-avenue": "Kersnikova ulica",
+          "1st-avenue": "Aškerčeva ulica",
+          "2nd-avenue": "Bevkova ulica",
+          "4th-avenue": "Čandkova ulica",
+          "5th-avenue": "Dalmatinova ulica",
+          "6th-avenue": "Erjavčeva ulica",
+          "6th-street": "6. ulica",
+          "7th-avenue": "Frelihova ulica",
+          "8th-avenue": "Grumova ulica",
+          "9th-avenue": "Hribarjeva ulica",
+          "access-point-employment": "TopJob",
+          "adams-street": "Adamova ulica",
+          "andrews-elementary-school": "Osnovna šola Lada Weiderja",
+          "andrews-street": "Andrejeva ulica",
+          "armitage-street": "Javorjeva ulica",
+          "barrows-school": "OŠ Franceta Prešerna",
+          "battle-street": "Ulica Cesarja Vojca",
+          "bennett-street": "Ulica Pinij",
+          "bowman-park": "Park Upornikov",
+          "collins-drive": "Šolska cesta",
+          "conrail-railroad": "Mestna železnica",
+          "conservation-park": "Prečni park",
+          "constantine-street": "Jabolčna ulica",
+          "cushman-street": "Kušmanova ulica",
+          "dollar-tree": "Tretja roka",
+          "douglas-avenue": "Matičeva cesta",
+          "east-street": "Vzhodna ulica",
+          "elm-street": "Ulica Brestov",
+          "flower-street": "Cvetlična ulica",
+          "foster-street": "Ulica Mitke Mitketa",
+          "french-street": "Francoska ulica",
+          "garden-street": "Vrtičkarska ulica",
+          "gem-pawnbroker": "Od muhe do slona",
+          "golden-finch-framing": "Okvirarna",
+          "grant-avenue": "Pot mame Gelce",
+          "hoffman-pond": "Hoffmanov ribnik",
+          "hoffman-street": "Hoffmanova ulica",
+          "hook-avenue": "Hookova ulica",
+          "jefferson-street": "Ladotova ulica",
+          "kelsey-street": "AIqlina ulica",
+          "lafayette-park": "Park Osvoboditve",
+          "las-coffee-cafe": "Café Papillon",
+          "lincoln-avenue": "Drnovškova ulica",
+          "lowrys-books": "Knjigarna Cesar",
+          "lynns-garage": "AS Maček",
+          "main-street": "Glavna ulica",
+          "main-street-barbell": "Dremlov Fitness",
+          "main-street-cafe": "Kavarna Local",
+          "main-street-fitness": "Dremlov CrossFit",
+          "maple-street": "Široka ulica",
+          "marina-park": "Zalivski park",
+          "market-street": "Trgovska ulica",
+          "memory-isle": "Sveta Jeza",
+          "memory-isle-park": "Park Svete Jeze",
+          "michigan-avenue": "Srednja cesta",
+          "middle-street": "Srednja ulica",
+          "millard-street": "Ulica Stožcev",
+          "moore-street": "Mikčeva ulica",
+          "morris-avenue": "Ulica Gasilske brigade",
+          "mural-mall": "TC Banja",
+          "paisanos-bar-and-grill": "Qki Burger",
+          "paisley-emporium": "Zavod Druga Roka",
+          "paparazzi-tattoo": "TaaTuu",
+          "pealer-street": "Štembalova ulica",
+          "pine-street": "Tomaževa ulica",
+          "pizza-hut": "Pizza Neapolitana",
+          "portage-avenue": "Pot Frančiške Slavko",
+          "portage-river": "Zarečna reka",
+          "preferred-insurance-services": "Urban Chip d.o.o.",
+          "railroad-drive": "Železničarska ulica",
+          "river-city-appliance": "Tehnična trgovina Tehno",
+          "river-drive": "Ulica Carja Sekača",
+          "river-road": "Rečna pot",
+          "river-street": "Rečna ulica",
+          "riverside-cemetery": "Pokopališče Matere Božje",
+          "riverwalk-trail": "Rusjanov drevored",
+          "riviera-theatre": "Gledališče Špele Bele",
+          "rocky-river": "Dolga Reka",
+          "saint-joseph-river": "Joškova reka",
+          "scidmore-park": "Čučev park",
+          "scidmore-park-petting-zoo": "Mamukin živalski vrt",
+          "scouter-park": "Taborniški park",
+          "sherwin-williams": "Barvica d.o.o.",
+          "south-street": "Južna ulica",
+          "southern-michigan-bank": "Prava Banka",
+          "spring-street": "Češnjeva ulica",
+          "sturgeon-river-road": "Šiviljska cesta",
+          "three-rivers": "Lepi Kot",
+          "three-rivers-city-hall": "Mestna hiša Lepi Kot",
+          "three-rivers-elementary-school": "Osnovna šol Lepi Kot",
+          "three-rivers-fire-department": "Gasilski dom Lepi Kot",
+          "three-rivers-high-school": "Gimnazija Lepi Kot II.",
+          "three-rivers-middle-school": "Srednja šola Lepi Kot",
+          "three-rivers-municipal-airport": "Letališče Lepi Kot",
+          "three-rivers-post-office": "Pošta Lepi Kot",
+          "three-rivers-public-library": "Knjižnica Lepi Kot",
+          "unique-jewelry": "Zlati prstan",
+          "walnut-street": "Stara ulica",
+          "washington-street": "Ameriška ulica",
+          "water-street": "Nemška cesta",
+          "west-street": "Zahodna ulica",
+          "wheeler-street": "Ulica Slovenskih divizij",
+          "william-towing": "AS Zastava",
+          "willow-drive": "Brezova pot",
+          "wood-street": "Smrekova ulica",
+          "world-fare": "Darilnica"
+        },
+        "neighbourhood": "<value for addr:neighbourhood>",
+        "postcode": "7000",
+        "province": "<value for addr:province>",
+        "quarter": "<value for addr:quarter>",
+        "state": "<value for addr:state>",
+        "subdistrict": "<value for addr:subdistrict>",
+        "suburb": "<value for addr:suburb>"
+      },
+      "lines": {
+        "add_node": "Na črto je mogoče dodati nekaj vozlišč in spremeniti potek. Novo vozlišče dodamo z dvojnim klikom na želenem mestu. **Dvakrat kliknite na črto za dodajanje vozlišča.**",
+        "choose_category_road": "**Izberite kategorijo {category} s seznama.**",
+        "choose_preset_residential": "Obstaja več različnih vrst poti, ta, ki ste jo vrisali, vodi v stanovanjsko območje. **Izberite vrsto {preset}.**",
+        "delete_lines": "Seveda je dobro, da črte, ki so vrisane na mestih, kjer ni poti, izbrišete.{br}Tu je primer, kjer so načrtovali cesto  {street}, vendar je niso nikoli zgradili. Zemljevid izboljšamo, če te črte izbrišemo..",
+        "did_name_road": "Videti je odlično! Spoznati morate še način posodabljanja poti.",
+        "retry_intersect": "Cesta mora sekati cesto {name}. Poskusite znova!",
+        "start_drag_midpoint": "Na črti lahko opazite male trikotnike – vodila za vmesne točke. Vozlišče lahko naredite tudi tako, da primete in povlečete trikotnik na želeno mesto. **Potegnite vmesno točko in ustvarite novo vozlišče na poti.**",
+        "title": "Črte",
+        "update_line": "Včasih je treba popraviti obliko obstoječe črte, ki je na primer nad potjo. Ta črta ne opredeljuje poteka ceste. "
+      },
+      "navigation": {
+        "choose_street": "**Izberite zadetek {name} s seznama.**",
+        "editor_townhall": "Ko je predmet izbran, se ob robu zemljevida pojavi *urejevalnik predmeta*.",
+        "features": "S pojmom *predmet* označujemo krajevne značilnosti, ki jih vidimo na zemljevidu. Na OpenStreetMap lahko katerokoli značilnost zabeležimo in opišemo.",
+        "fields_townhall": "V srednjem delu so *vpisna polja* za dodajanje podatkov, kot sta naziv in naslov, in drugih podrobnosti.",
+        "nodes_ways": "Točke pogosto imenujemo tudi *vozlišča*, črte in mnogokotna polja pa *poti*.",
+        "points_lines_areas": "Predmeti zemljevida so opredeljeni s *točkami*, *črtami* in *mnogokotnimi polji*.",
+        "preset_townhall": "Na vrhu je izpisana vrsta predmeta. Točka na zemljevidu je postavljena nad predmetom »{preset}«.",
+        "search_street": "Po zemljevidu je predmete mogoče tudi iskati. **Poiščite »{name}«.**",
+        "selected_street": "Odlično! Predmet {name} je na zemljevidu označen.",
+        "selected_townhall": "Odlično. Točka je izbrana. Da je to res, nakazuje utripajoča obroba okoli predmeta.",
+        "title": "Usmerjanje"
+      },
+      "ok": "V redu",
+      "points": {
+        "choose_cafe": "**Izberite predmet {preset} s seznama.**",
+        "feature_editor": "Točka je označena kot kavarna. Vpisna polja omogočajo dodajanje podrobnosti o ponudbi kavarne.",
+        "search_cafe": "Obstaja več predmetov, ki jih je mogoče opredeliti s točkami. Točka, ki ste jo pravkar dodali, je kavarna. **Poiščite kavarno '{preset}'.**",
+        "title": "Točke",
+        "update": "Vpišimo še nekaj podrobnosti o kavarni. Spremenite lahko ime, dodate naslov ali pa vpišete vrsto hrane, ki jo v kavarni ponujajo. **Poskusite dodati nekaj podrobnosti.**"
+      },
+      "startediting": {
+        "save": "Ne pozabite sproti shranjevati vnesenih sprememb!",
+        "start": "Začnite kartografirati!",
+        "title": "Začnite urejati"
+      },
+      "welcome": {
+        "practice": "Predstavitev je namenjena spoznavanju zmožnosti. Spremembe, ki jih lahko naredite, ne bodo shranjene.",
+        "title": "Uvod",
+        "welcome": "Med predstavitvijo boste spoznali osnove urejanja zemljevidov na OpenStreetMap.",
+        "words": "Spoznali boste nove pojme in predmete na zemljevidu. Novosti so vedno zapisane *ležeče*."
+      }
+    },
+    "issues": {
+      "key": "I",
+      "warnings": "Opozorila"
+    },
+    "languageNames": {
+      "aa": "afarščina",
+      "ab": "abhaščina",
+      "ace": "ačejščina",
+      "ach": "ačolijščina",
+      "ada": "adangmejščina",
+      "ady": "adigejščina",
+      "ae": "avestijščina",
+      "af": "afrikanščina",
+      "afh": "afrihili",
+      "agq": "aghemščina",
+      "ain": "ainujščina",
+      "ak": "akanščina",
+      "akk": "akadščina",
+      "ale": "aleutščina",
+      "alt": "južna altajščina",
+      "am": "amharščina",
+      "an": "aragonščina",
+      "ang": "stara angleščina",
+      "ann": "obolo",
+      "anp": "angikaščina",
+      "ar": "arabščina",
+      "ar-001": "sodobna standardna arabščina",
+      "arc": "aramejščina",
+      "arn": "mapudungunščina",
+      "arp": "arapaščina",
+      "ars": "nadždska arabščina",
+      "arw": "aravaščina",
+      "as": "asamščina",
+      "asa": "asujščina",
+      "ast": "asturijščina",
+      "atj": "atikamekwščina",
+      "av": "avarščina",
+      "awa": "avadščina",
+      "ay": "ajmarščina",
+      "az": "azerbajdžanščina",
+      "ba": "baškirščina",
+      "bal": "beludžijščina",
+      "ban": "balijščina",
+      "bas": "basa",
+      "be": "beloruščina",
+      "bej": "bedža",
+      "bem": "bemba",
+      "bez": "benajščina",
+      "bg": "bolgarščina",
+      "bgc": "harjanščina",
+      "bgn": "zahodnobalučijščina",
+      "bho": "bodžpuri",
+      "bi": "bislamščina",
+      "bik": "bikolski jezik",
+      "bin": "edo",
+      "bla": "siksika",
+      "blo": "anii",
+      "bm": "bambarščina",
+      "bn": "bengalščina",
+      "bo": "tibetanščina",
+      "br": "bretonščina",
+      "bra": "bradžbakanščina",
+      "brx": "bodojščina",
+      "bs": "bosanščina",
+      "bua": "burjatščina",
+      "bug": "buginščina",
+      "byn": "blinščina",
+      "ca": "katalonščina",
+      "cad": "kadoščina",
+      "car": "karibski jezik",
+      "cay": "kajuščina",
+      "ccp": "chakma",
+      "ce": "čečenščina",
+      "ceb": "sebuanščina",
+      "cgg": "čigajščina",
+      "ch": "čamorščina",
+      "chb": "čibčevščina",
+      "chg": "čagatajščina",
+      "chk": "trukeščina",
+      "chm": "marijščina",
+      "chn": "činuški žargon",
+      "cho": "čoktavščina",
+      "chp": "čipevščina",
+      "chr": "čerokeščina",
+      "chy": "čejenščina",
+      "ckb": "osrednja kurdščina",
+      "clc": "čilkotinščina",
+      "co": "korziščina",
+      "cop": "koptščina",
+      "cr": "krijščina",
+      "crg": "mičifščina",
+      "crh": "krimska tatarščina",
+      "crj": "jugovzhodna krijščina",
+      "crk": "nižinska krijščina",
+      "crl": "severovzhodna krijščina",
+      "crm": "moose-krijščina",
+      "crr": "karolinska algonkinščina",
+      "crs": "sejšelska francoska kreolščina",
+      "cs": "češčina",
+      "csb": "kašubščina",
+      "csw": "močvirska krijščina",
+      "cu": "stara cerkvena slovanščina",
+      "cv": "čuvaščina",
+      "cy": "valižanščina",
+      "da": "danščina",
+      "dak": "dakotščina",
+      "dar": "darginščina",
+      "dav": "taitajščina",
+      "de": "nemščina",
+      "de-AT": "avstrijska nemščina",
+      "de-CH": "visoka nemščina (Švica)",
+      "del": "delavarščina",
+      "den": "slavejščina",
+      "dgr": "dogrib",
+      "din": "dinka",
+      "dje": "zarmajščina",
+      "doi": "dogri",
+      "dsb": "dolnja lužiška srbščina",
+      "dua": "duala",
+      "dum": "srednja nizozemščina",
+      "dv": "diveščina",
+      "dyo": "jola-fonjiščina",
+      "dyu": "diula",
+      "dz": "dzonka",
+      "dzg": "dazaga",
+      "ebu": "embujščina",
+      "ee": "evenščina",
+      "efi": "efiščina",
+      "egy": "stara egipčanščina",
+      "eka": "ekajuk",
+      "el": "grščina",
+      "elx": "elamščina",
+      "en": "angleščina",
+      "en-AU": "avstralska angleščina",
+      "en-CA": "kanadska angleščina",
+      "en-GB": "britanska angleščina",
+      "en-US": "ameriška angleščina",
+      "enm": "srednja angleščina",
+      "eo": "esperanto",
+      "es": "španščina",
+      "es-419": "latinskoameriška španščina",
+      "es-ES": "evropska španščina",
+      "es-MX": "mehiška španščina",
+      "et": "estonščina",
+      "eu": "baskovščina",
+      "ewo": "evondovščina",
+      "fa": "perzijščina",
+      "fa-AF": "darijščina",
+      "fan": "fangijščina",
+      "fat": "fantijščina",
+      "ff": "fulščina",
+      "fi": "finščina",
+      "fil": "filipinščina",
+      "fj": "fidžijščina",
+      "fo": "ferščina",
+      "fon": "fonščina",
+      "fr": "francoščina",
+      "fr-CA": "kanadska francoščina",
+      "fr-CH": "švicarska francoščina",
+      "frc": "cajunska francoščina",
+      "frm": "srednja francoščina",
+      "fro": "stara francoščina",
+      "frr": "severna frizijščina",
+      "frs": "vzhodna frizijščina",
+      "fur": "furlanščina",
+      "fy": "zahodna frizijščina",
+      "ga": "irščina",
+      "gaa": "ga",
+      "gag": "gagavščina",
+      "gay": "gajščina",
+      "gba": "gbajščina",
+      "gd": "škotska gelščina",
+      "gez": "etiopščina",
+      "gil": "kiribatščina",
+      "gl": "galicijščina",
+      "gmh": "srednja visoka nemščina",
+      "gn": "gvaranijščina",
+      "goh": "stara visoka nemščina",
+      "gon": "gondi",
+      "gor": "gorontalščina",
+      "got": "gotščina",
+      "grb": "grebščina",
+      "grc": "stara grščina",
+      "gsw": "nemščina (Švica)",
+      "gu": "gudžaratščina",
+      "guz": "gusijščina",
+      "gv": "manščina",
+      "gwi": "gvičin",
+      "ha": "havščina",
+      "hai": "haidščina",
+      "haw": "havajščina",
+      "hax": "južna haidščina",
+      "he": "hebrejščina",
+      "hi": "hindijščina",
+      "hil": "hiligajnonščina",
+      "hit": "hetitščina",
+      "hmn": "hmonščina",
+      "ho": "hiri motu",
+      "hr": "hrvaščina",
+      "hsb": "gornja lužiška srbščina",
+      "ht": "haitijska kreolščina",
+      "hu": "madžarščina",
+      "hup": "hupa",
+      "hur": "halkomelenščina",
+      "hy": "armenščina",
+      "hz": "herero",
+      "ia": "interlingva",
+      "iba": "ibanščina",
+      "ibb": "ibibijščina",
+      "id": "indonezijščina",
+      "ie": "interlingve",
+      "ig": "igboščina",
+      "ii": "sečuanska jiščina",
+      "ik": "inupiaščina",
+      "ikt": "zahodna kanadska inuktituščina",
+      "ilo": "ilokanščina",
+      "inh": "inguščina",
+      "io": "ido",
+      "is": "islandščina",
+      "it": "italijanščina",
+      "iu": "inuktitutščina",
+      "ja": "japonščina",
+      "jbo": "lojban",
+      "jgo": "ngomba",
+      "jmc": "mačamejščina",
+      "jpr": "judovska perzijščina",
+      "jrb": "judovska arabščina",
+      "jv": "javanščina",
+      "ka": "gruzijščina",
+      "kaa": "karakalpaščina",
+      "kab": "kabilščina",
+      "kac": "kačinščina",
+      "kaj": "jju",
+      "kam": "kambaščina",
+      "kaw": "kavi",
+      "kbd": "kabardinščina",
+      "kcg": "tjapska nigerijščina",
+      "kde": "makondščina",
+      "kea": "zelenortskootoška kreolščina",
+      "kfo": "koro",
+      "kg": "kongovščina",
+      "kgp": "kaingangščina",
+      "kha": "kasi",
+      "kho": "kotanščina",
+      "khq": "koyra chiini",
+      "ki": "kikujščina",
+      "kj": "kvanjama",
+      "kk": "kazaščina",
+      "kkj": "kako",
+      "kl": "grenlandščina",
+      "kln": "kalenjinščina",
+      "km": "kmerščina",
+      "kmb": "kimbundu",
+      "kn": "kanareščina",
+      "ko": "korejščina",
+      "koi": "komi-permjaščina",
+      "kok": "konkanščina",
+      "kos": "kosrajščina",
+      "kpe": "kpelejščina",
+      "kr": "kanurščina",
+      "krc": "karačaj-balkarščina",
+      "krl": "karelščina",
+      "kru": "kuruk",
+      "ks": "kašmirščina",
+      "ksb": "šambala",
+      "ksf": "bafia",
+      "ksh": "kölnsko narečje",
+      "ku": "kurdščina",
+      "kum": "kumiščina",
+      "kut": "kutenajščina",
+      "kv": "komijščina",
+      "kw": "kornijščina",
+      "kwk": "kvakvala",
+      "kxv": "kuvi",
+      "ky": "kirgiščina",
+      "la": "latinščina",
+      "lad": "ladinščina",
+      "lag": "langijščina",
+      "lah": "landa",
+      "lam": "lamba",
+      "lb": "luksemburščina",
+      "lez": "lezginščina",
+      "lg": "ganda",
+      "li": "limburščina",
+      "lij": "ligurščina",
+      "lil": "lilovetščina",
+      "lkt": "lakotščina",
+      "lmo": "lombardščina",
+      "ln": "lingala",
+      "lo": "laoščina",
+      "lol": "mongo",
+      "lou": "louisianska kreolščina",
+      "loz": "lozi",
+      "lrc": "severna lurijščina",
+      "lsm": "saamijščina",
+      "lt": "litovščina",
+      "lu": "luba-katanga",
+      "lua": "luba-lulua",
+      "lui": "luisenščina",
+      "lun": "lunda",
+      "lus": "mizojščina",
+      "luy": "luhijščina",
+      "lv": "latvijščina",
+      "mad": "madurščina",
+      "mag": "magadščina",
+      "mai": "maitili",
+      "mak": "makasarščina",
+      "man": "mandingo",
+      "mas": "masajščina",
+      "mdf": "mokšavščina",
+      "mdr": "mandarščina",
+      "men": "mende",
+      "mer": "meru",
+      "mfe": "morisjenščina",
+      "mg": "malgaščina",
+      "mga": "srednja irščina",
+      "mgh": "makuva-meto",
+      "mgo": "meta",
+      "mh": "marshallovščina",
+      "mi": "maorščina",
+      "mic": "mikmaščina",
+      "min": "minangkabau",
+      "mk": "makedonščina",
+      "ml": "malajalamščina",
+      "mn": "mongolščina",
+      "mnc": "mandžurščina",
+      "mni": "manipurščina",
+      "moe": "inuaimunščina",
+      "moh": "mohoščina",
+      "mos": "mosijščina",
+      "mr": "maratščina",
+      "ms": "malajščina",
+      "mt": "malteščina",
+      "mua": "mundang",
+      "mus": "creekovščina",
+      "mwl": "mirandeščina",
+      "mwr": "marvarščina",
+      "my": "burmanščina",
+      "myv": "erzjanščina",
+      "mzn": "mazanderanščina",
+      "na": "naurujščina",
+      "nan": "min nan kitajščina",
+      "nap": "napolitanščina",
+      "naq": "khoekhoe",
+      "nb": "knjižna norveščina",
+      "nd": "severna ndebelščina",
+      "nds": "nizka nemščina",
+      "nds-NL": "nizka saščina",
+      "ne": "nepalščina",
+      "new": "nevarščina",
+      "ng": "ndonga",
+      "nia": "niaščina",
+      "niu": "niuejščina",
+      "nl": "nizozemščina",
+      "nl-BE": "flamščina",
+      "nmg": "kwasio",
+      "nn": "novonorveščina",
+      "nnh": "ngiemboonščina",
+      "no": "norveščina",
+      "nog": "nogajščina",
+      "non": "stara nordijščina",
+      "nqo": "n’ko",
+      "nr": "južna ndebelščina",
+      "nso": "severna sotščina",
+      "nus": "nuerščina",
+      "nv": "navajščina",
+      "nwc": "klasična nevarščina",
+      "ny": "njanščina",
+      "nym": "njamveščina",
+      "nyn": "njankole",
+      "nyo": "njoro",
+      "nzi": "nzima",
+      "oc": "okcitanščina",
+      "oj": "anašinabščina",
+      "ojb": "severozahodna očipvejščina",
+      "ojc": "osrednja očipvejščina",
+      "ojs": "oči-krijščina",
+      "ojw": "zahodna očipvejščina",
+      "oka": "okanaganščina",
+      "om": "oromo",
+      "or": "odijščina",
+      "os": "osetinščina",
+      "osa": "osage",
+      "ota": "otomanska turščina",
+      "pa": "pandžabščina",
+      "pag": "pangasinanščina",
+      "pam": "pampanščina",
+      "pap": "papiamentu",
+      "pau": "palavanščina",
+      "pcm": "nigerijski pidžin",
+      "peo": "stara perzijščina",
+      "phn": "feničanščina",
+      "pi": "palijščina",
+      "pis": "pidžin",
+      "pl": "poljščina",
+      "pon": "ponpejščina",
+      "pqm": "maliseet-passamaquoddščina",
+      "prg": "stara pruščina",
+      "pro": "stara provansalščina",
+      "ps": "paštunščina",
+      "pt": "portugalščina",
+      "pt-BR": "brazilska portugalščina",
+      "pt-PT": "evropska portugalščina",
+      "qu": "kečuanščina",
+      "quc": "quiche",
+      "raj": "radžastanščina",
+      "rap": "rapanujščina",
+      "rar": "rarotongščina",
+      "rhg": "rohinščina",
+      "rm": "retoromanščina",
+      "rn": "rundščina",
+      "ro": "romunščina",
+      "ro-MD": "moldavščina",
+      "rof": "rombo",
+      "rom": "romščina",
+      "ru": "ruščina",
+      "rup": "aromunščina",
+      "rw": "ruandščina",
+      "rwk": "rwa",
+      "sa": "sanskrt",
+      "sad": "sandavščina",
+      "sah": "jakutščina",
+      "sam": "samaritanska aramejščina",
+      "saq": "samburščina",
+      "sas": "sasaščina",
+      "sat": "santalščina",
+      "sba": "ngambajščina",
+      "sbp": "sangujščina",
+      "sc": "sardinščina",
+      "scn": "sicilijanščina",
+      "sco": "škotščina",
+      "sd": "sindščina",
+      "sdh": "južna kurdščina",
+      "se": "severna samijščina",
+      "seh": "sena",
+      "sel": "selkupščina",
+      "ses": "koyraboro senni",
+      "sg": "sango",
+      "sga": "stara irščina",
+      "sh": "srbohrvaščina",
+      "shi": "tahelitska berberščina",
+      "shn": "šanščina",
+      "si": "sinhalščina",
+      "sid": "sidamščina",
+      "sk": "slovaščina",
+      "sl": "slovenščina",
+      "slh": "južna lušucidščina",
+      "sm": "samoanščina",
+      "sma": "južna samijščina",
+      "smj": "luleška samijščina",
+      "smn": "inarska samijščina",
+      "sms": "skoltska samijščina",
+      "sn": "šonščina",
+      "snk": "soninke",
+      "so": "somalščina",
+      "sq": "albanščina",
+      "sr": "srbščina",
+      "srn": "surinamska kreolščina",
+      "srr": "sererščina",
+      "ss": "svazijščina",
+      "ssy": "saho",
+      "st": "sesoto",
+      "str": "ožinska sališčina",
+      "su": "sundanščina",
+      "suk": "sukuma",
+      "sus": "susujščina",
+      "sux": "sumerščina",
+      "sv": "švedščina",
+      "sw": "svahili",
+      "sw-CD": "kongoški svahili",
+      "swb": "šikomor",
+      "syc": "klasična sirščina",
+      "syr": "sirščina",
+      "szl": "šlezijščina",
+      "ta": "tamilščina",
+      "tce": "južna tučonščina",
+      "te": "telugijščina",
+      "tem": "temnejščina",
+      "teo": "teso",
+      "tet": "tetumščina",
+      "tg": "tadžiščina",
+      "tgx": "tagiščina",
+      "th": "tajščina",
+      "tht": "taltanščina",
+      "ti": "tigrajščina",
+      "tig": "tigrejščina",
+      "tiv": "tivščina",
+      "tk": "turkmenščina",
+      "tkl": "tokelavščina",
+      "tl": "tagalogščina",
+      "tlh": "klingonščina",
+      "tli": "tlingitščina",
+      "tmh": "tamajaščina",
+      "tn": "cvanščina",
+      "to": "tongščina",
+      "tog": "malavijska tongščina",
+      "tok": "toki pona",
+      "tpi": "tok pisin",
+      "tr": "turščina",
+      "trv": "taroko",
+      "ts": "congščina",
+      "tsi": "tsimščina",
+      "tt": "tatarščina",
+      "ttm": "severna tučonščina",
+      "tum": "tumbukščina",
+      "tvl": "tuvalujščina",
+      "tw": "tvi",
+      "twq": "tasawaq",
+      "ty": "tahitščina",
+      "tyv": "tuvinščina",
+      "tzm": "tamašek (Srednji Atlas)",
+      "udm": "udmurtščina",
+      "ug": "ujgurščina",
+      "uga": "ugaritski jezik",
+      "uk": "ukrajinščina",
+      "umb": "umbundščina",
+      "ur": "urdujščina",
+      "uz": "uzbeščina",
+      "vai": "vajščina",
+      "ve": "venda",
+      "vec": "beneščina",
+      "vi": "vietnamščina",
+      "vmw": "makuva",
+      "vo": "volapik",
+      "vot": "votjaščina",
+      "vun": "vunjo",
+      "wa": "valonščina",
+      "wae": "walser",
+      "wal": "valamščina",
+      "war": "varajščina",
+      "was": "vašajščina",
+      "wbp": "varlpirščina",
+      "wo": "volofščina",
+      "wuu": "wu-kitajščina",
+      "xal": "kalmiščina",
+      "xh": "koščina",
+      "xnr": "kangri",
+      "xog": "sogščina",
+      "yao": "jaojščina",
+      "yap": "japščina",
+      "yav": "jangben",
+      "ybb": "jembajščina",
+      "yi": "jidiš",
+      "yo": "jorubščina",
+      "yrl": "nheengatu",
+      "yue": "kitajščina (kantonščina)",
+      "za": "džuangščina",
+      "zap": "zapoteščina",
+      "zbl": "znakovni jezik Bliss",
+      "zen": "zenaščina",
+      "zgh": "standardni maroški tamazig",
+      "zh": "kitajščina (mandarinščina)",
+      "zh-Hans": "poenostavljena mandarinska kitajščina",
+      "zh-Hant": "tradicionalna mandarinska kitajščina",
+      "zu": "zulujščina",
+      "zun": "zunijščina",
+      "zza": "zazajščina"
+    },
+    "loading_auth": "Vzpostavljanje povezave z OpenStreetMap ...",
+    "login": "Prijava",
+    "logout": "Odjava",
+    "map_data": {
+      "autohidden": "Nekateri predmeti so samodejno skriti, da jih na zaslonu ni prikazanih preveč. Za urejanje je treba zemljevid približati.",
+      "data_layers": "Podatkovne plasti",
+      "description": "Prikaz zemljevida",
+      "layers": {
+        "maproulette": {
+          "cancel": "Prekliči",
+          "detail_title": "Podrobnosti"
+        },
+        "osm": {
+          "tooltip": "Kartografski podatki OpenStreetMap"
+        }
+      },
+      "osmhidden": "Nekateri predmeti so samodejno skriti, ker je plast OpenStreetMap skrita.",
+      "title": "Prikaz zemljevida"
+    },
+    "mapillary": {
+      "tooltip": "Fotografije ulic prek storitve Mapillary",
+      "view_on_mapillary": "Pokaži sliko na spletišču Mapillary"
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Predmet je izbrisal uporabnik {user}.",
+        "location": "Predmet sta premaknita oba; vi in uporabnik {user}.",
+        "memberlist": "Člane zveze je spreminjal tudi uporabnik {user}.",
+        "nodelist": "Vozlišča sta preurejala oba; vi in uporabnik {user}."
+      }
+    },
+    "modes": {
+      "add_area": {
+        "description": "Dodajanje parkov, zgradb, jezer ali drugih področij na zemljevid.",
+        "title": "Mnogokotnik"
+      },
+      "add_line": {
+        "description": "Dodajanje cest, ulic, peš poti, kanalov ali drugih črtastih predmetov na zemljevid.",
+        "title": "Črta"
+      },
+      "add_note": {
+        "description": "Ali ste opazili problem? Obvestite urejevalce zemljevida.",
+        "title": "Opomba"
+      },
+      "add_point": {
+        "description": "Dodajanje restavracij, spomenikov, poštnih nabiralnikov ali drugih točk na zemljevid.",
+        "title": "Točka"
+      },
+      "browse": {
+        "description": "Premikanje po zemljevidu in približanje pogleda.",
+        "title": "Prebrskaj"
+      },
+      "drag_node": {
+        "connected_to_hidden": "Predmeta ni mogoče urejati, ker je povezan s skritim predmetom."
+      }
+    },
+    "note": {
+      "closed": "(zaprto)",
+      "note": "Opomba",
+      "title": "Uredi opombo"
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "Opomba je dodana.",
+          "point": "dodajanje točke ×",
+          "relation": "dodajanje zveze ×",
+          "vertex": "dodano vozlišče ×"
+        }
+      },
+      "cancel_draw": {
+        "annotation": "preklicano risanje ×"
+      },
+      "change_tags": {
+        "annotation": "spremenjene oznake ×"
+      },
+      "circularize": {
+        "title": "Zaokroži"
+      },
+      "connect": {
+        "annotation": {
+          "from_vertex": {
+            "to_area": "povezovanje poti z mnogokotnikom",
+            "to_line": "povezovanje poti s črto ×",
+            "to_point": "povezovanje poti s točko ×",
+            "to_vertex": "povezovanje poti z drugo potjo ×"
+          }
+        }
+      },
+      "continue": {
+        "annotation": {
+          "area": "risanje mnogokotnika ×",
+          "line": "nadaljevanje črte ×"
+        },
+        "description": "Nadaljuj to črto",
+        "not_eligible": "Od tod ni mogoče nadaljevati nobene črte.",
+        "title": "Nadaljuj"
+      },
+      "copy": {
+        "title": "Kopiraj"
+      },
+      "delete": {
+        "annotation": {
+          "area": "brisanje mnogokotnika ×",
+          "line": "brisanje črte ×",
+          "point": "brisanje točke ×",
+          "relation": "brisanje zveze ×",
+          "vertex": "izbrisano vozlišč ×"
+        },
+        "title": "Odstrani"
+      },
+      "disconnect": {
+        "connected_to_hidden": "Povezav predmeta ni mogoče prekiniti, ker je predmet povezan s skritim predmetom.",
+        "not_connected": "Ni dovolj črt oziroma mnogokotnikov za prekinitev vezi.",
+        "relation": "Predmeta ni mogoče odvezati, saj povezuje člane zveze.",
+        "title": "Razveži"
+      },
+      "merge": {
+        "conflicting_tags": "Predmetov ni mogoče združiti, ker so v njihovih oznakah neskladne vrednosti.",
+        "description": "Združi izbrane predmete.",
+        "incomplete_relation": "Teh predmetov ni mogoče združiti, ker vsaj en ni v celoti prejet.",
+        "not_adjacent": "Predmetov ni mogoče združiti, ker končne točke niso povezane.",
+        "not_eligible": "Izbranih predmetov ni mogoče združiti.",
+        "title": "Združi"
+      },
+      "move": {
+        "annotation": {
+          "area": "premikanje mnogokotnika ×",
+          "line": "premikanje črte ×",
+          "point": "premikanje točke ×",
+          "vertex": "premikanje vozlišča ×"
+        },
+        "title": "Premakni"
+      },
+      "orthogonalize": {
+        "title": "Poravnaj kote"
+      },
+      "paste": {
+        "title": "Prilepi"
+      },
+      "restriction": {
+        "annotation": {
+          "create": "dodajanje omejitve zavijanja ×",
+          "delete": "odstranjevanje omejitev zavijanja ×"
+        }
+      },
+      "reverse": {
+        "description": {
+          "line": "Obrne usmerjenost izbrane črte."
+        },
+        "title": "Obrni usmerjenost"
+      },
+      "rotate": {
+        "annotation": {
+          "area": "zasukanje mnogokotnika ×",
+          "line": "zasukanje črte ×"
+        },
+        "title": "Zasukaj"
+      },
+      "split": {
+        "connected_to_hidden": "Predmeta ni mogoče razdeliti, ker je povezan s skritim predmetom.",
+        "not_eligible": "Črt ni mogoče razdeliti na začetni ali končni točki.",
+        "title": "Razdeli"
+      },
+      "start": {
+        "annotation": {
+          "area": "dodajanje mnogokotnika ×",
+          "line": "dodajanje črte ×"
+        }
+      },
+      "straighten": {
+        "description": {
+          "line": "Poravnaj črto"
+        },
+        "title": "Poravnaj"
+      }
+    },
+    "photos": {
+      "hires": "Visoka ločljivost"
+    },
+    "preferences": {
+      "color_selection": {
+        "default": "Privzeto"
+      }
+    },
+    "rapid_menu": {
+      "category": {
+        "roads": "ceste"
+      },
+      "remove": "Odstrani"
+    },
+    "redo": {
+      "nothing": "Ni ponovnih uveljavitev",
+      "tooltip": "Ponovi: {action}"
+    },
+    "report_a_bug": "Pošlji sporočilo napaki",
+    "restore": {
+      "description": "Ali želite ponovno obnoviti še ne shranjene spremembe predhodne seje urejanja?",
+      "heading": "Nekatere spremembe še niso shranjene.",
+      "reset": "Zavrzi spremembe",
+      "restore": "Obnovi spremembe"
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Razdalja"
+      }
+    },
+    "save": {
+      "conflict": {
+        "count": "Spor {num} od {total}",
+        "delete": "Pusti izbrisano",
+        "done": "Vsi spori so razrešeni!",
+        "download_changes": "Lahko tudi prejmete datoteko osmChange",
+        "header": "Razreši spremembe v sporu",
+        "keep_local": "Ohrani moje",
+        "keep_remote": "Uporabi spremembe drugih",
+        "next": "Naslednji >",
+        "previous": "< Predhodni",
+        "restore": "Obnovi"
+      },
+      "error": "Med shranjevanjem je prišlo do napake",
+      "help": "Preverite narejene spremembe in jih pošljite na strežnik OpenStreetMap, da bodo na voljo tudi drugim uporabnikom.",
+      "no_changes": "Ni sprememb za shranjevanje.",
+      "status_code": "Strežnik je vrnil kodo stanja {code}",
+      "title": "Shrani",
+      "unknown_error_details": "Prepričajte se, da ste povezani na internet.",
+      "unsaved_changes": "Nekatere spremembe še niso shranjene.",
+      "uploading": "Poteka pošiljanje sprememb na OpenStreetMap ..."
+    },
+    "scriptNames": {
+      "Adlm": "adlamski",
+      "Arab": "arabski",
+      "Aran": "nastalik",
+      "Armi": "imperialno-aramejski",
+      "Armn": "armenski",
+      "Avst": "avestanski",
+      "Bali": "balijski",
+      "Batk": "bataški",
+      "Beng": "bengalski",
+      "Blis": "znakovna pisava Bliss",
+      "Bopo": "bopomofo",
+      "Brah": "bramanski",
+      "Brai": "braillova pisava",
+      "Bugi": "buginski",
+      "Buhd": "buhidski",
+      "Cakm": "čakmajski",
+      "Cans": "poenotena zlogovna pisava kanadskih staroselcev",
+      "Cher": "čerokeški",
+      "Cirt": "kirt",
+      "Copt": "koptski",
+      "Cprt": "ciprski",
+      "Cyrl": "cirilica",
+      "Cyrs": "starocerkvenoslovanska cirilica",
+      "Deva": "devanagarščica",
+      "Dsrt": "fonetska pisava deseret",
+      "Egyd": "demotska egipčanska pisava",
+      "Egyh": "hieratska egipčanska pisava",
+      "Egyp": "egipčanska slikovna pisava",
+      "Ethi": "etiopski",
+      "Geok": "cerkvenogruzijski",
+      "Geor": "gruzijski",
+      "Glag": "glagoliški",
+      "Goth": "gotski",
+      "Grek": "grški",
+      "Gujr": "gudžaratski",
+      "Guru": "gurmuki",
+      "Hanb": "han + bopomofo",
+      "Hang": "hangul",
+      "Hani": "kanji",
+      "Hano": "hanunski",
+      "Hans": "poenostavljena pisava han",
+      "Hant": "tradicionalna pisava han",
+      "Hebr": "hebrejski",
+      "Hira": "hiragana",
+      "Hmng": "pahavhmonska zlogovna pisava",
+      "Hrkt": "japonska zlogovnica",
+      "Hung": "staroogrski",
+      "Inds": "induški",
+      "Ital": "staroitalski",
+      "Jamo": "jamo",
+      "Java": "javanski",
+      "Jpan": "japonski",
+      "Kali": "karenski",
+      "Kana": "katakana",
+      "Khar": "gandarski",
+      "Khmr": "kmerski",
+      "Knda": "kanadski",
+      "Kore": "korejski",
+      "Kthi": "kajatski",
+      "Laoo": "laoški",
+      "Latf": "fraktura",
+      "Latg": "gelski latinični",
+      "Latn": "latinica",
+      "Lepc": "lepški",
+      "Limb": "limbuški",
+      "Lina": "linearna pisava A",
+      "Linb": "linearna pisava B",
+      "Lyci": "licijski",
+      "Lydi": "lidijski",
+      "Mand": "mandanski",
+      "Mani": "manihejski",
+      "Maya": "majevska slikovna pisava",
+      "Mero": "meroitski",
+      "Mlym": "malajalamski",
+      "Mong": "mongolska",
+      "Moon": "Moonova pisava za slepe",
+      "Mtei": "meiteiski",
+      "Mymr": "mjanmarski",
+      "Nkoo": "nkojski",
+      "Ogam": "ogamski",
+      "Olck": "santalski",
+      "Orkh": "orkonski",
+      "Orya": "orijski",
+      "Osma": "osmanski",
+      "Perm": "staropermijski",
+      "Phag": "pagpajski",
+      "Phli": "vrezani napisi pahlavi",
+      "Phlp": "psalmski pahlavi",
+      "Phlv": "knjižno palavanski",
+      "Phnx": "feničanski",
+      "Plrd": "Pollardova fonetska pisava",
+      "Rohg": "hanifi",
+      "Roro": "rongorongo",
+      "Runr": "runski",
+      "Samr": "samaritanski",
+      "Sara": "saratski",
+      "Sgnw": "znakovna pisava",
+      "Shaw": "šojevski",
+      "Sinh": "sinhalski",
+      "Sund": "sundanski",
+      "Sylo": "siletsko-nagarijski",
+      "Syrc": "sirijski",
+      "Syre": "sirska abeceda estrangelo",
+      "Syrj": "zahodnosirijski",
+      "Syrn": "vzhodnosirijski",
+      "Tagb": "tagbanski",
+      "Taml": "tamilski",
+      "Tavt": "tajsko-vietnamski",
+      "Telu": "teluški",
+      "Teng": "tengvarski",
+      "Tfng": "tifinajski",
+      "Tglg": "tagaloški",
+      "Thaa": "tanajski",
+      "Thai": "tajski",
+      "Tibt": "tibetanski",
+      "Ugar": "ugaritski",
+      "Vaii": "zlogovna pisava vai",
+      "Visp": "vidni govor",
+      "Xpeo": "staroperzijski",
+      "Xsux": "sumersko-akadski klinopis",
+      "Yiii": "jiški",
+      "Zinh": "podedovan",
+      "Zmth": "matematična znamenja",
+      "Zsye": "čustvenček",
+      "Zsym": "simboli",
+      "Zxxx": "nenapisano",
+      "Zyyy": "splošno",
+      "Zzzz": "neznan ali neveljaven zapis"
+    },
+    "settings": {
+      "custom_background": {
+        "tooltip": "Uredi ozadje po meri"
+      }
+    },
+    "shortcuts": {
+      "browsing": "Brskanje",
+      "command": {
+        "add_area": {
+          "label": "Način dodajanja »Mnogokotnikov« "
+        },
+        "add_line": {
+          "label": "Način dodajanja »Črt« "
+        },
+        "add_note": {
+          "key": "S",
+          "label": "Način dodajanja »Opomb« "
+        },
+        "add_point": {
+          "label": "Način dodajanja »Točk« "
+        },
+        "background_switch": {
+          "key": "O"
+        },
+        "change_parent": {
+          "label": "Preklopi nadrejeni način"
+        },
+        "circularize": {
+          "label": "Zaokroži zaključeno črto ali mnogokotnik"
+        },
+        "copy": {
+          "label": "Kopiraj označene predmete"
+        },
+        "delete": {
+          "label": "Izbriši označene predmete"
+        },
+        "disable_snap": {
+          "label": "Zadržite tipko za onemogočanje lepljenja točk"
+        },
+        "edit_menu": {
+          "label": "Preklopi meni urejanja"
+        },
+        "extract": {
+          "key": "V"
+        },
+        "first_node": {
+          "label": "Skoči na prvo vozlišče"
+        },
+        "keyboard_shortcuts": {
+          "label": "Pokaži tipkovne bližnjice"
+        },
+        "lasso": {
+          "label": "Izbor predmetov ali točk s potegom"
+        },
+        "last_node": {
+          "label": "Skoči na zadnje vozlišče"
+        },
+        "merge": {
+          "label": "Združi izbrane predmete"
+        },
+        "move": {
+          "label": "Premakni označene predmete"
+        },
+        "pan": {
+          "label": "Premakni zemljevid"
+        },
+        "paste": {
+          "label": "Prilepi kopirane predmete"
+        },
+        "redo": {
+          "label": "Ponovno uveljavi zadnje dejanje"
+        },
+        "rotate": {
+          "label": "Zasukaj izbrane predmete"
+        },
+        "save": {
+          "label": "Shrani spremembe"
+        },
+        "select_multi": {
+          "label": "Izbor več predmetov"
+        },
+        "select_one": {
+          "label": "Izbor enega predmeta"
+        },
+        "stop_line": {
+          "label": "Končaj risanje črte ali površine"
+        },
+        "straighten": {
+          "key": "J"
+        },
+        "toggle_all_cards": {
+          "label": "Preklopi vsa okna podrobnosti"
+        },
+        "toggle_background": {
+          "key": "O"
+        },
+        "toggle_background_card": {
+          "key": "O",
+          "label": "Preklopi okno ozadja"
+        },
+        "toggle_help": {
+          "key": "Z"
+        },
+        "toggle_history_card": {
+          "key": "Z",
+          "label": "Preklopi okno zgodovine"
+        },
+        "toggle_location_card": {
+          "label": "Preklopi okno mesta"
+        },
+        "toggle_measurement_card": {
+          "label": "Preklopi okno merila"
+        },
+        "toggle_osm_notes": {
+          "key": "S"
+        },
+        "toggle_streetside": {
+          "key": "J"
+        },
+        "undo": {
+          "label": "Razveljavi zadnje dejanje"
+        },
+        "wireframe": {
+          "key": "Z"
+        }
+      },
+      "commands": "Ukazi",
+      "display_options": "Možnosti prikaza",
+      "drawing": "Risanje",
+      "editing": "Urejanje",
+      "gesture": {
+        "drag": "potegni"
+      },
+      "help": "Pomoč",
+      "info": "Podrobnosti",
+      "key": {
+        "alt": "Alt",
+        "backspace": "Povratna tipka",
+        "cmd": "Cmd",
+        "ctrl": "Ctrl",
+        "del": "Del",
+        "delete": "Izbriši",
+        "end": "Na konec",
+        "enter": "Vnosna tipka",
+        "esc": "Ubežna tipka",
+        "home": "Domov",
+        "option": "Menijska tipka",
+        "pause": "Pavza",
+        "pgdn": "Stran dol",
+        "pgup": "Stran gor",
+        "return": "Vnosna tipka",
+        "shift": "Shift",
+        "space": "Preslednica"
+      },
+      "navigation": "Krmarjenje",
+      "or": "- oziroma -",
+      "selecting_features": "Izbiranje predmetov",
+      "tooltip": "Pokaži seznam tipkovnih bližnjic",
+      "with_node_selected": "Z izbranim vozliščem"
+    },
+    "source_switch": {
+      "dev": "razvojno",
+      "live": "objavljeno",
+      "lose_changes": "Nekatere spremembe še niso shranjene. Zamenjava strežnika zemljevida jih bo zavrgla. Ali ste prepričani, da želite zamenjati strežnik?"
+    },
+    "splash": {
+      "start": "Začni z urejanjem",
+      "text": "Urejevalnik iD je zmogljivo, uporabniku prijazno orodje za vnašanje podatkov na najboljši brezplačni svetovni zemljevid. Uporabljena je zadnja različica {version}. Več podrobnosti o urejevalniku je na voljo na {website}, poročila o hroščih pa se zbirajo na spletišču {github}.",
+      "walkthrough": "Predstavitev orodja",
+      "welcome": "Dobrodošli v iD, urejevalniku podatkov OpenStreetMap"
+    },
+    "streetside": {
+      "tooltip": "Ulične fotografije z Microsofta"
+    },
+    "success": {
+      "events": "Dogodki",
+      "help_link_text": "Podrobnosti",
+      "help_link_url": "https://wiki.openstreetmap.org/wiki/FAQ#I_have_just_made_some_changes_to_the_map._How_do_I_get_to_see_my_changes.3F",
+      "just_edited": "Zemljevid OSM je posodobljen!",
+      "languages": "Jeziki: {languages}",
+      "like_osm": "Vam je všeč OpenStreetMap? Povežite se z ostalimi:",
+      "missing": "Ali na seznamu kaj manjka?",
+      "more": "Več",
+      "tell_us": "Sporočite nam!",
+      "thank_you": "Hvala, da ste izboljšali zemljevid.",
+      "thank_you_location": "Hvala, da ste izboljšali zemljevid pri {where}.",
+      "view_on_osm": "Ogled paketa sprememb na OSM"
+    },
+    "tag_reference": {
+      "description": "Opis",
+      "on_wiki": "{tag} na wiki.osm.org",
+      "used_with": "uporabljeno: {type}"
+    },
+    "tooltip_keyhint": "Bližnjica:",
+    "translate": {
+      "localized_translation_language": "Izbor jezika",
+      "localized_translation_name": "Naziv"
+    },
+    "undo": {
+      "nothing": "Ni razveljavitev",
+      "title": "Razveljavi",
+      "tooltip": "Razveljavi: {action}"
+    },
+    "units": {
+      "arcdegrees": "{quantity}°",
+      "arcminutes": "{quantity}′",
+      "arcseconds": "{quantity}″",
+      "area_pair": "{area1} ({area2})",
+      "coordinate": "{coordinate}{direction}",
+      "coordinate_pair": "{latitude}, {longitude}",
+      "east": "V",
+      "hectares": "{quantity} ha",
+      "kilometers": "{quantity} km",
+      "meters": "{quantity} m",
+      "north": "S",
+      "south": "J",
+      "square_kilometers": "{quantity} km²",
+      "square_meters": "{quantity} m²",
+      "west": "Z"
+    },
+    "version": {
+      "whats_new": "Kaj je novega v urejevalniku iD {version}"
+    },
+    "wikidata": {
+      "description": "Opis",
+      "label": "Oznaka"
+    },
+    "zoom_in_edit": "Približaj za urejanje"
+  }
+}

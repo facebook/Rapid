@@ -1,0 +1,3664 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.128Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.ca.json",
+    "hash": "31a2365df32ffb87baa070c12bf17ea2"
+  },
+  "ca": {
+    "QA": {
+      "keepRight": {
+        "close": "Tanca (problema resolt)",
+        "close_comment": "Tanca i comenta",
+        "comment": "Comentari",
+        "comment_placeholder": "Escriviu un comentari per a compartir-lo amb altres usuaris.",
+        "detail_description": "Descripció",
+        "errorTypes": {
+          "20": {
+            "description": "Hi ha més d'un node en aquest lloc. IDs dels nodes: {var1}.",
+            "title": "Múltiples nodes al mateix lloc"
+          },
+          "30": {
+            "description": "{var1} està etiquetat amb \"{var2}\" i hauria de ser un bucle tancat.",
+            "title": "Àrea no tancada"
+          },
+          "40": {
+            "description": "El primer node {var1} de {var2} no està connectat a cap altra via.",
+            "title": "Direcció única impossible"
+          },
+          "41": {
+            "description": "L'últim node {var1} de {var2} no està connectat a cap altra via."
+          },
+          "42": {
+            "description": "No es pot arribar a {var1} perquè totes les vies que hi condueixen són de direcció única."
+          },
+          "43": {
+            "description": "No es pot sortir de {var1} perquè totes les vies que hi condueixen són de direcció única."
+          },
+          "50": {
+            "description": "{var1} és molt a prop però no connectada a la via {var2}.",
+            "title": "Quasi encreuament"
+          },
+          "60": {
+            "description": "{var1} usa l'etiqueta obsoleta \"{var2}\". Useu \"{var3}\" com a alternativa.",
+            "title": "Etiqueta obsoleta"
+          },
+          "70": {
+            "description": "{var1} té una etiqueta buida: \"{var2}\".",
+            "title": "Manca etiqueta"
+          },
+          "71": {
+            "description": "{var1} no té cap etiqueta."
+          },
+          "72": {
+            "description": "{var1} no és membre de cap via i no té cap etiqueta."
+          },
+          "73": {
+            "description": "{var1} té una etiqueta \"{var2}\" però no té etiqueta \"highway\"."
+          },
+          "74": {
+            "description": "{var1} té una etiqueta buida: \"{var2}\"."
+          },
+          "75": {
+            "description": "{var1} té \"{var2}\" com a nom però no té cap altra etiqueta."
+          },
+          "90": {
+            "description": "{var1} està etiquetada com a autopista i per tant, necessita una etiqueta \"ref\", \"nat_ref\" o \"int_ref\".",
+            "title": "Autopista sense l'etiqueta ref"
+          },
+          "100": {
+            "description": "{var1} està etiquetada com a lloc de pregària i per tant, necessita una etiqueta de religió.",
+            "title": "Lloc de pregària sense religió"
+          },
+          "110": {
+            "description": "{var1} està etiquetat com a \"{var2}\" i per tant necessita una etiqueta de nom.",
+            "title": "Punt d'interès sense nom"
+          },
+          "120": {
+            "description": "{var1} només té un node.",
+            "title": "Via sense nodes"
+          },
+          "130": {
+            "description": "{var1} no està connectada a la resta del mapa.",
+            "title": "Via desconnectada"
+          },
+          "150": {
+            "description": "{var1} d'un camí i una via de tren s'ha d'etiquetar com a \"railway=crossing\" o \"railway=level_crossing\".",
+            "title": "Pas a nivell sense etiqueta"
+          },
+          "160": {
+            "description": "Hi ha vies en diferents capes (p. ex. túnels o ponts) que es troben a {var1}.",
+            "title": "Conflicte de capes de vies"
+          },
+          "170": {
+            "description": "{var1} té una etiqueta FIXME: {var2}",
+            "title": "Element etiquetat amb FIXME"
+          },
+          "180": {
+            "description": "{var1} li manca una etiqueta \"type\".",
+            "title": "Manca el tipus de relació"
+          },
+          "190": {
+            "description": "{var1} interseca {var2} {var3} però no hi ha cap node d'encreuament, pont o túnel.",
+            "title": "Intersecció sense cap unió"
+          },
+          "200": {
+            "description": "{var1} se superposa a {var2} {var3}.",
+            "title": "Vies que se superposen"
+          },
+          "210": {
+            "description": "Hi ha un problema indeterminat amb vies que intersequen amb elles mateixes.",
+            "title": "Via que s'autointerseca"
+          },
+          "211": {
+            "description": "{var1} conté més d'un node múltiples vegades. Els nodes són {var2}. Això podria ser un error o no."
+          },
+          "212": {
+            "description": "{var1} només té dos nodes diferents i en conté un d'ells més d'un cop."
+          },
+          "220": {
+            "description": "{var1} està etiquetat amb \"{var2}\" on \"{var3}\" sembla \"{var4}\".",
+            "title": "Etiqueta mal escrita"
+          },
+          "221": {
+            "description": "{var1} té una etiqueta \"{var2}\" sospitosa."
+          },
+          "230": {
+            "description": "{var1} és un encreuament de vies en capes diferents.",
+            "title": "Conflicte de capes"
+          },
+          "231": {
+            "description": "{var1} és un encreuament de vies en capes diferents: {var2}.",
+            "layer": "(capa: {layer})"
+          },
+          "232": {
+            "description": "{var1} està etiquetat amb \"layer={var2}\". Això no té per què ser un error però sembla estrany."
+          },
+          "270": {
+            "description": "{var1} és un encreuament d'una autopista i un camí diferent de \"motorway\", \"motorway_link\", \"trunk\", \"rest_area\" o \"construction\". La connexió a \"service\" o \"unclassified\" només és vàlida si té \"access=no/private\" o si porta a una àrea de servei de l'autopista o si és a un \"service=parking_aisle\".",
+            "title": "Connexió a autopista inusual"
+          },
+          "280": {
+            "description": "Hi ha un problema indeterminat amb aquest límit.",
+            "title": "Problema de límit"
+          },
+          "281": {
+            "description": "{var1} no té nom.",
+            "title": "Manca el nom del límit"
+          },
+          "282": {
+            "description": "El límit de {var1} no té un admin_level numèric vàlid. No barregeu nivells administratius (p. ex. \"6;7\"). Etiqueteu sempre l'admin_level més baix de tots els límits.",
+            "title": "Manca el nivell del límit"
+          },
+          "283": {
+            "description": "El límit de {var1} no és un bucle tancat.",
+            "title": "El límit no és un bucle tancat"
+          },
+          "284": {
+            "description": "El límit de {var1} es parteix aquí.",
+            "title": "El límit està partit."
+          },
+          "285": {
+            "description": "{var1} té \"admin_level={var2}\" però pertany a una relació amb  \"admin_level\" més baix (p. ex. prioritat més alta); hauria de tenir l'\"admin_level\" més baix de totes les relacions.",
+            "title": "L'admin_level del límit és massa alt"
+          },
+          "290": {
+            "description": "Hi ha un problema indeterminat amb aquesta restricció.",
+            "title": "Problema de restricció"
+          },
+          "291": {
+            "description": "{var1} té un tipus de restricció desconegut.",
+            "title": "Manca el tipus de restricció"
+          },
+          "292": {
+            "description": "{var1} té {var2} membres \"des de\", però n'hauria de tenir 1.",
+            "title": "A la restricció li manca un camí \"des de\""
+          },
+          "293": {
+            "description": "{var1} té {var2} membres \"cap a\", però n'hauria de tenir 1.",
+            "title": "A la restricció li manca un camí \"cap a\""
+          },
+          "294": {
+            "description": "{var1} té membres \"des de\" o \"cap a\" que haurien de ser camins. {var2}.",
+            "title": "La restricció \"des de\" o \"cap a\" no és un camí"
+          },
+          "295": {
+            "description": "{var1} té una \"via\" (node {var2}) que no és el primer o últim membre de \"{var3}\" (via {var4}).",
+            "title": "La restricció \"via\" no és un extrem"
+          },
+          "296": {
+            "description": "{var1} té un tipus de restricció \"{var2}\" però l'angle és de {var3} graus. Pot ser que el tipus de restricció no sigui l'apropiat?",
+            "title": "L'angle de la restricció és inusual"
+          },
+          "297": {
+            "description": "{var1} no concorda amb la direcció de la via {var2} \"cap a\".",
+            "title": "Direcció incorrecta del camí \"cap a\""
+          },
+          "298": {
+            "description": "{var1} podria ser redundant. L'entrada ja és prohibida per l'etiqueta \"oneway\" a {var2}",
+            "title": "Restricció redundant - sentit únic"
+          },
+          "300": {
+            "description": "{var1} no té etiqueta \"maxspeed\" i està etiquetada com a autopista, autovia, primària o secundària.",
+            "title": "Manca la velocitat màxima"
+          },
+          "310": {
+            "description": "Hi ha un problema indeterminat amb aquesta rotonda.",
+            "title": "Problema de rotonda"
+          },
+          "311": {
+            "description": "{var1} forma part d'una rotonda però no és un bucle tancat. (Els carrils que es divideixen en aproximar-se a una rotonda no s'haurien d'etiquetar com a rotonda).",
+            "title": "El bucle de la rotonda no està tancat"
+          },
+          "312": {
+            "description": "Si {var1} és en un país amb circulació per la {var2}, l'orientació va en sentit contrari.",
+            "title": "Direcció incorrecta de la rotonda"
+          },
+          "313": {
+            "description": "{var1} només té {var2} altra/es carretera/es connectades. Les rotondes normalment en tenen 3 o més.",
+            "title": "Rotonda poc connectada"
+          },
+          "320": {
+            "description": "{var1} està etiquetat com a \"{var2}\" però no té cap connexió a cap altre \"{var3}\" o \"{var4}\".",
+            "title": "Connexió d'enllaç incorrecta"
+          },
+          "350": {
+            "description": "{var1} no té una etiqueta en comú amb les vies del voltant que mostri el propòsit d'aquest pont. Hi hauria d'haver una d'aquestes etiquetes: {var2}.",
+            "title": "Etiqueta de pont impròpia"
+          },
+          "360": {
+            "description": "Estaria bé que {var1} tingués una etiqueta amb el nom local \"name:XX={var2}\" on XX indica l'idioma del seu nom comú \"{var2}\".",
+            "title": "Manca l'etiqueta de nom local"
+          },
+          "370": {
+            "description": "{var1} té etiquetes en comú amb les vies del voltant {var2} {var3} i semblen redundants.",
+            "including_the_name": "(inclòs el nom {name})",
+            "title": "Llocs duplicats"
+          },
+          "380": {
+            "description": "{var1} està etiquetat com a \"{var2}\" però no té cap etiqueta física (p. ex. \"leisure\", \"building\", \"amenity\" o \"highway\").",
+            "title": "Etiqueta d'esport sense ús físic"
+          },
+          "390": {
+            "description": "{var1} no té l'etiqueta \"tracktype\".",
+            "title": "Manca el tipus de pista"
+          },
+          "400": {
+            "description": "Aquí hi ha un problema indeterminat amb la geometria.",
+            "title": "Problema de geometria"
+          },
+          "401": {
+            "description": "Les vies {var1} i {var2} s'ajunten aquí en un angle molt agut i no hi ha etiqueta de direcció única o restricció de gir que impedeixi girar.",
+            "title": "Manca la restricció de gir"
+          },
+          "402": {
+            "description": "{var1} es corba aquí en un angle molt agut.",
+            "title": "Angle impossible"
+          },
+          "410": {
+            "description": "Hi ha un problema indeterminat amb el lloc web de contacte o amb l'URL.",
+            "title": "Problema del lloc web"
+          },
+          "411": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} ha retornat el codi d'estat HTTP {var3}."
+          },
+          "412": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} conté el text sospitós \"{var3}\"."
+          },
+          "413": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} no conté les paraules clau \"{var3}\"."
+          },
+          "<100>": {
+            "description": "{var1} està etiquetada com a lloc de pregària i per tant, necessita una etiqueta de religió.",
+            "title": "Lloc de pregària sense religió"
+          },
+          "<110>": {
+            "description": "{var1} està etiquetat com a \"{var2}\" i per tant necessita una etiqueta de nom.",
+            "title": "Punt d'interès sense nom"
+          },
+          "<120>": {
+            "description": "{var1} només té un node.",
+            "title": "Via sense nodes"
+          },
+          "<130>": {
+            "description": "{var1} no està connectada a la resta del mapa.",
+            "title": "Via desconnectada"
+          },
+          "<150>": {
+            "description": "{var1} d'un camí i una via de tren s'ha d'etiquetar com a \"railway=crossing\" o \"railway=level_crossing\".",
+            "title": "Pas a nivell sense etiqueta"
+          },
+          "<160>": {
+            "description": "Hi ha vies en diferents capes (p. ex. túnels o ponts) que es troben a {var1}.",
+            "title": "Conflicte de capes de vies"
+          },
+          "<170>": {
+            "description": "{var1} té una etiqueta FIXME: {var2}",
+            "title": "Element etiquetat amb FIXME"
+          },
+          "<180>": {
+            "description": "{var1} li manca una etiqueta \"type\".",
+            "title": "Manca el tipus de relació"
+          },
+          "<190>": {
+            "description": "{var1} interseca {var2} {var3} però no hi ha cap node d'encreuament, pont o túnel.",
+            "title": "Intersecció sense cap unió"
+          },
+          "<200>": {
+            "description": "{var1} se superposa a {var2} {var3}.",
+            "title": "Vies que se superposen"
+          },
+          "<20>": {
+            "description": "Hi ha més d'un node en aquest lloc. IDs dels nodes: {var1}.",
+            "title": "Múltiples nodes al mateix lloc"
+          },
+          "<210>": {
+            "description": "Hi ha un problema indeterminat amb vies que intersequen amb elles mateixes.",
+            "title": "Via que s'autointerseca"
+          },
+          "<211>": {
+            "description": "{var1} conté més d'un node múltiples vegades. Els nodes són {var2}. Això podria ser un error o no."
+          },
+          "<212>": {
+            "description": "{var1} només té dos nodes diferents i en conté un d'ells més d'un cop."
+          },
+          "<220>": {
+            "description": "{var1} està etiquetat amb \"{var2}\" on \"{var3}\" sembla \"{var4}\".",
+            "title": "Etiqueta mal escrita"
+          },
+          "<221>": {
+            "description": "{var1} té una etiqueta \"{var2}\" sospitosa."
+          },
+          "<230>": {
+            "description": "{var1} és un encreuament de vies en capes diferents.",
+            "title": "Conflicte de capes"
+          },
+          "<231>": {
+            "description": "{var1} és un encreuament de vies en capes diferents: {var2}.",
+            "layer": "(capa: {layer})"
+          },
+          "<232>": {
+            "description": "{var1} està etiquetat amb \"layer={var2}\". Això no té per què ser un error però sembla estrany."
+          },
+          "<270>": {
+            "description": "{var1} és un encreuament d'una autopista i un camí diferent de \"motorway\", \"motorway_link\", \"trunk\", \"rest_area\" o \"construction\". La connexió a \"service\" o \"unclassified\" només és vàlida si té \"access=no/private\" o si porta a una àrea de servei de l'autopista o si és a un \"service=parking_aisle\".",
+            "title": "Connexió a autopista inusual"
+          },
+          "<280>": {
+            "description": "Hi ha un problema indeterminat amb aquest límit.",
+            "title": "Problema de límit"
+          },
+          "<281>": {
+            "description": "{var1} no té nom.",
+            "title": "Manca el nom del límit"
+          },
+          "<282>": {
+            "description": "El límit de {var1} no té un admin_level numèric vàlid. No barregeu nivells administratius (p. ex. \"6;7\"). Etiqueteu sempre l'admin_level més baix de tots els límits.",
+            "title": "Manca el nivell del límit"
+          },
+          "<283>": {
+            "description": "El límit de {var1} no és un bucle tancat.",
+            "title": "El límit no és un bucle tancat"
+          },
+          "<284>": {
+            "description": "El límit de {var1} es parteix aquí.",
+            "title": "El límit està partit."
+          },
+          "<285>": {
+            "description": "{var1} té \"admin_level={var2}\" però pertany a una relació amb  \"admin_level\" més baix (p. ex. prioritat més alta); hauria de tenir l'\"admin_level\" més baix de totes les relacions.",
+            "title": "L'admin_level del límit és massa alt"
+          },
+          "<290>": {
+            "description": "Hi ha un problema indeterminat amb aquesta restricció.",
+            "title": "Problema de restricció"
+          },
+          "<291>": {
+            "description": "{var1} té un tipus de restricció desconegut.",
+            "title": "Manca el tipus de restricció"
+          },
+          "<292>": {
+            "description": "{var1} té {var2} membres \"des de\", però n'hauria de tenir 1.",
+            "title": "A la restricció li manca un camí \"des de\""
+          },
+          "<293>": {
+            "description": "{var1} té {var2} membres \"cap a\", però n'hauria de tenir 1.",
+            "title": "A la restricció li manca un camí \"cap a\""
+          },
+          "<294>": {
+            "description": "{var1} té membres \"des de\" o \"cap a\" que haurien de ser camins. {var2}.",
+            "title": "La restricció \"des de\" o \"cap a\" no és un camí"
+          },
+          "<295>": {
+            "description": "{var1} té una \"via\" (node {var2}) que no és el primer o últim membre de \"{var3}\" (via {var4}).",
+            "title": "La restricció \"via\" no és un extrem"
+          },
+          "<296>": {
+            "description": "{var1} té un tipus de restricció \"{var2}\" però l'angle és de {var3} graus. Pot ser que el tipus de restricció no sigui l'apropiat?",
+            "title": "L'angle de la restricció és inusual"
+          },
+          "<297>": {
+            "description": "{var1} no concorda amb la direcció de la via {var2} \"cap a\".",
+            "title": "Direcció incorrecta del camí \"cap a\""
+          },
+          "<298>": {
+            "description": "{var1} podria ser redundant. L'entrada ja és prohibida per l'etiqueta \"oneway\" a {var2}",
+            "title": "Restricció redundant - sentit únic"
+          },
+          "<300>": {
+            "description": "{var1} no té etiqueta \"maxspeed\" i està etiquetada com a autopista, autovia, primària o secundària.",
+            "title": "Manca la velocitat màxima"
+          },
+          "<30>": {
+            "description": "{var1} està etiquetat amb \"{var2}\" i hauria de ser un bucle tancat.",
+            "title": "Àrea no tancada"
+          },
+          "<310>": {
+            "description": "Hi ha un problema indeterminat amb aquesta rotonda.",
+            "title": "Problema de rotonda"
+          },
+          "<311>": {
+            "description": "{var1} forma part d'una rotonda però no és un bucle tancat. (Els carrils que es divideixen en aproximar-se a una rotonda no s'haurien d'etiquetar com a rotonda).",
+            "title": "El bucle de la rotonda no està tancat"
+          },
+          "<312>": {
+            "description": "Si {var1} és en un país amb circulació per la {var2}, l'orientació va en sentit contrari.",
+            "title": "Direcció incorrecta de la rotonda"
+          },
+          "<313>": {
+            "description": "{var1} només té {var2} altra/es carretera/es connectades. Les rotondes normalment en tenen 3 o més.",
+            "title": "Rotonda poc connectada"
+          },
+          "<320>": {
+            "description": "{var1} està etiquetat com a \"{var2}\" però no té cap connexió a cap altre \"{var3}\" o \"{var4}\".",
+            "title": "Connexió d'enllaç incorrecta"
+          },
+          "<350>": {
+            "description": "{var1} no té una etiqueta en comú amb les vies del voltant que mostri el propòsit d'aquest pont. Hi hauria d'haver una d'aquestes etiquetes: {var2}.",
+            "title": "Etiqueta de pont impròpia"
+          },
+          "<360>": {
+            "description": "Estaria bé que {var1} tingués una etiqueta amb el nom local \"name:XX={var2}\" on XX indica l'idioma del seu nom comú \"{var2}\".",
+            "title": "Manca l'etiqueta de nom local"
+          },
+          "<370>": {
+            "description": "{var1} té etiquetes en comú amb les vies del voltant {var2} {var3} i semblen redundants.",
+            "including_the_name": "(inclòs el nom {name})",
+            "title": "Llocs duplicats"
+          },
+          "<380>": {
+            "description": "{var1} està etiquetat com a \"{var2}\" però no té cap etiqueta física (p. ex. \"leisure\", \"building\", \"amenity\" o \"highway\").",
+            "title": "Etiqueta d'esport sense ús físic"
+          },
+          "<390>": {
+            "description": "{var1} no té l'etiqueta \"tracktype\".",
+            "title": "Manca el tipus de pista"
+          },
+          "<400>": {
+            "description": "Aquí hi ha un problema indeterminat amb la geometria.",
+            "title": "Problema de geometria"
+          },
+          "<401>": {
+            "description": "Les vies {var1} i {var2} s'ajunten aquí en un angle molt agut i no hi ha etiqueta de direcció única o restricció de gir que impedeixi girar.",
+            "title": "Manca la restricció de gir"
+          },
+          "<402>": {
+            "description": "{var1} es corba aquí en un angle molt agut.",
+            "title": "Angle impossible"
+          },
+          "<40>": {
+            "description": "El primer node {var1} de {var2} no està connectat a cap altra via.",
+            "title": "Direcció única impossible"
+          },
+          "<410>": {
+            "description": "Hi ha un problema indeterminat amb el lloc web de contacte o amb l'URL.",
+            "title": "Problema del lloc web"
+          },
+          "<411>": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} ha retornat el codi d'estat HTTP {var3}."
+          },
+          "<412>": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} conté el text sospitós \"{var3}\"."
+          },
+          "<413>": {
+            "description": "{var1} pot tenir un URL antiquat: {var2} no conté les paraules clau \"{var3}\"."
+          },
+          "<41>": {
+            "description": "L'últim node {var1} de {var2} no està connectat a cap altra via."
+          },
+          "<42>": {
+            "description": "No es pot arribar a {var1} perquè totes les vies que hi condueixen són de direcció única."
+          },
+          "<43>": {
+            "description": "No es pot sortir de {var1} perquè totes les vies que hi condueixen són de direcció única."
+          },
+          "<50>": {
+            "description": "{var1} és molt a prop però no connectada a la via {var2}.",
+            "title": "Quasi encreuament"
+          },
+          "<60>": {
+            "description": "{var1} usa l'etiqueta obsoleta \"{var2}\". Useu \"{var3}\" com a alternativa.",
+            "title": "Etiqueta obsoleta"
+          },
+          "<70>": {
+            "description": "{var1} té una etiqueta buida: \"{var2}\".",
+            "title": "Manca etiqueta"
+          },
+          "<71>": {
+            "description": "{var1} no té cap etiqueta."
+          },
+          "<72>": {
+            "description": "{var1} no és membre de cap via i no té cap etiqueta."
+          },
+          "<73>": {
+            "description": "{var1} té una etiqueta \"{var2}\" però no té etiqueta \"highway\"."
+          },
+          "<74>": {
+            "description": "{var1} té una etiqueta buida: \"{var2}\"."
+          },
+          "<75>": {
+            "description": "{var1} té \"{var2}\" com a nom però no té cap altra etiqueta."
+          },
+          "<90>": {
+            "description": "{var1} està etiquetada com a autopista i per tant, necessita una etiqueta \"ref\", \"nat_ref\" o \"int_ref\".",
+            "title": "Autopista sense l'etiqueta ref"
+          }
+        },
+        "error_parts": {
+          "bank": "banc",
+          "cafe": "cafè",
+          "cinema": "cinema",
+          "courthouse": "jutjat",
+          "cycleway": "carril bici",
+          "cycleway_footpath": "carril bici/camí de vianants",
+          "fast_food": "menjar ràpid",
+          "from": "de",
+          "fuel": "carburant",
+          "highway": "camí",
+          "hospital": "hospital",
+          "left_hand": "a l'esquerra",
+          "library": "biblioteca",
+          "pharmacy": "farmàcia",
+          "place_of_worship": "lloc de culte",
+          "pub": "bar de copes",
+          "railway": "via",
+          "restaurant": "restaurant",
+          "right_hand": "a la dreta",
+          "riverbank": "ribera",
+          "school": "escola",
+          "theatre": "teatre",
+          "this_boundary": "aquest límit",
+          "this_bridge": "aquest pont",
+          "this_crossing": "aquesta cruïlla",
+          "this_cycleway": "aquest carril bici",
+          "this_cycleway_footpath": "aquest carril bici/camí de vianants",
+          "this_feature": "aquest objecte",
+          "this_highway": "aquesta camí",
+          "this_mini_roundabout": "aquesta mini-rotonda",
+          "this_node": "aquest node",
+          "this_oneway": "aquesta direcció única",
+          "this_railway": "aquesta via",
+          "this_railway_crossing": "aquesta cruïlla ferroviària",
+          "this_relation": "aquesta relació",
+          "this_riverbank": "aquesta ribera",
+          "this_roundabout": "aquesta rotonda",
+          "this_track": "aquesta traça",
+          "this_tunnel": "aquest túnel",
+          "this_turn_restriction": "aquesta restricció de gir",
+          "this_waterway": "aquest curs d'aigua",
+          "this_way": "aquesta via",
+          "to": "a",
+          "university": "universitat",
+          "waterway": "curs d'aigua"
+        },
+        "ignore": "Elimina (fals positiu)",
+        "ignore_comment": "Elimina i comenta",
+        "save_comment": "Desa el comentari",
+        "title": "KeepRight"
+      },
+      "osmose": {
+        "detail_title": "Detalls",
+        "elems_title": "Objectes",
+        "fix_title": "Directrius per arreglar",
+        "title": "Problema d'Osmose",
+        "trap_title": "Errors habituals"
+      }
+    },
+    "area_fill": {
+      "full": {
+        "description": "Emplenat total",
+        "tooltip": "Les àrees es dibuixen totalment plenes."
+      },
+      "partial": {
+        "description": "Emplenat parcial",
+        "tooltip": "Les àrees només s'omplen al voltant de la seva vora interior. (Recomanat per principiants)"
+      },
+      "wireframe": {
+        "description": "Sense emplenat (esquelet)",
+        "tooltip": "El mode d'esquelet fa més fàcil veure la imatgeria de fons."
+      }
+    },
+    "background": {
+      "backgrounds": "Fons",
+      "best_imagery": "Font d'imatgeria millor coneguda per a aquesta ubicació",
+      "brightness": "Brillantor",
+      "contrast": "Contrast",
+      "custom": "Personalitzar",
+      "description": "Configuració del fons",
+      "display_options": "Opcions de visualització",
+      "fix_misalignment": "Desplaçament de les imatges",
+      "imagery_problem_faq": "Informa d'un problema amb les imatges de fons",
+      "key": "B",
+      "location_panel": {
+        "description": "Mostra el panell d'ubicació",
+        "tooltip": "Mostra les coordenades i detalls regionals."
+      },
+      "minimap": {
+        "description": "Mostra la miniatura de mapa",
+        "tooltip": "Mostra un mapa amb menys zoom per ajudar a localitzar l'àrea que es mostra actualment."
+      },
+      "none": "Cap",
+      "offset": "Arrossegueu cap a qualsevol lloc de l'àrea grisa de sota per ajustar el desplaçament de les imatges o introduïu els valors del desplaçament en metres.",
+      "overlays": "Capes superposades",
+      "panel": {
+        "description": "Mostra el panell de fons",
+        "tooltip": "Mostra informació avançada del fons."
+      },
+      "reset": "reiniciar",
+      "reset_all": "Reinicia-ho tot",
+      "saturation": "Saturació",
+      "sharpness": "Agudesa",
+      "switch": "Tornar a aquest fons",
+      "title": "Fons"
+    },
+    "commit": {
+      "about_changeset_comments": "Quant als comentaris del conjunt de canvis",
+      "about_changeset_comments_link": "//wiki.openstreetmap.org/wiki/Good_changeset_comments",
+      "cancel": "Cancel·la",
+      "changes": "Canvis",
+      "comment_needed_message": "Abans afegiu un comentari per al conjunt de canvis.",
+      "created": "Creat",
+      "deleted": "Eliminat",
+      "download_changes": "Descarregar el fitxer osmChange",
+      "errors": "Errors",
+      "google_warning": "Mencioneu Google en aquest comentari: recordeu que la còpia de Google Maps és estrictament prohibida.",
+      "modified": "Modificat",
+      "outstanding_errors_message": "Abans resolgueu tots els errors. En queden {count}-",
+      "request_review": "M'agradaria que algú revisés les meves modificacions.",
+      "request_review_info": "No sabeu del cert alguna cosa? Convideu a algun mapejador amb experiència a comprovar la vostra feina un cop estigui publicada.",
+      "save": "Puja",
+      "title": "Puja a l'OpenStreetMap",
+      "upload_explanation": "Els canvis que deseu seran visibles a tots els mapes que utilitzin dades d'OpenStreetMap.",
+      "upload_explanation_with_user": "Els canvis que deseu com a {user} seran visibles en tots els mapes que utilitzin dades d'OpenStreetMap.",
+      "warnings": "Avisos"
+    },
+    "confirm": {
+      "cancel": "Cancel·lar",
+      "okay": "D'acord"
+    },
+    "contributors": {
+      "list": "Edicions fetes per {users}",
+      "truncated_list": {
+        "one": "Edicions fetes per {users} i {count} més",
+        "other": "Edicions fetes per {users} i {count} més"
+      }
+    },
+    "feature_info": {
+      "hidden_warning": {
+        "one": "{count} objecte ocult",
+        "other": "{count} objectes ocults"
+      }
+    },
+    "filters": {
+      "aerialways": {
+        "description": "Objectes aeris",
+        "tooltip": "Telecadires, telecabines, tirolines, etc."
+      },
+      "boundaries": {
+        "description": "Límits",
+        "tooltip": "Límits administratius"
+      },
+      "building_parts": {
+        "description": "Parts d'edificis",
+        "tooltip": "Edificis en 3D i components del sostre"
+      },
+      "buildings": {
+        "description": "Edificis",
+        "tooltip": "Edificis, refugis, garatges, etc."
+      },
+      "indoor": {
+        "description": "Objectes interiors",
+        "tooltip": "Sales, passadissos, escales, etc."
+      },
+      "landuse": {
+        "description": "Ús del territori",
+        "tooltip": "Boscos, camps, parcs, residencial, comercial, etc."
+      },
+      "others": {
+        "description": "Altres objectes",
+        "tooltip": "Tota la resta"
+      },
+      "past_future": {
+        "description": "Objectes del passat/futur",
+        "tooltip": "Proposat, en construcció, abandonat, enderrocat, etc."
+      },
+      "paths": {
+        "description": "Camins",
+        "tooltip": "Voreres, camins per vianants, carrils bici, etc."
+      },
+      "pistes": {
+        "description": "Pistes d'esquí",
+        "tooltip": "Pendents per esquiar, circuits de trineus, camins de patinatge sobre gel, etc."
+      },
+      "points": {
+        "description": "Punts",
+        "tooltip": "Punts d'Interès"
+      },
+      "power": {
+        "description": "Objectes elèctrics",
+        "tooltip": "Línies elèctriques, centrals, subestacions, etc."
+      },
+      "rail": {
+        "description": "Elements ferroviaris",
+        "tooltip": "Vies fèrries"
+      },
+      "service_roads": {
+        "description": "Vies de servei",
+        "tooltip": "Vies de servei, carrils d'aparcament, pistes, etc."
+      },
+      "traffic_roads": {
+        "description": "Carreteres pel trànsit",
+        "tooltip": "Autopistes, carrers, etc."
+      },
+      "water": {
+        "description": "Objectes aquàtics",
+        "tooltip": "Rius, llacs, basses, conques, etc."
+      }
+    },
+    "full_screen": "Commuta la pantalla completa",
+    "geocoder": {
+      "no_results_worldwide": "No s'han trobat resultats",
+      "search": "Cerca mundialment..."
+    },
+    "geolocate": {
+      "locating": "Localitzant, espereu si us plau...",
+      "location_unavailable": "La ubicació no és disponible.",
+      "title": "Mostra la meva ubicació"
+    },
+    "geometry": {
+      "area": "àrea",
+      "line": "línia",
+      "note": "nota",
+      "point": "punt",
+      "relation": "relació",
+      "vertex": "vèrtex"
+    },
+    "help": {
+      "areas": {
+        "add_area_command": "Per afegir una àrea, premeu el botó {area_icon} **{area}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `3`.",
+        "add_area_continue": "Continueu col·locant nodes al llarg de la vora de l'àrea {leftclick} fent clic, {tap_icon} tocant, o prement la tecla `{space}`. Mentre dibuixeu, podeu ampliar o arrossegar el mapa per a afegir més detalls.",
+        "add_area_draw": "A continuació, col·loqueu la primera cantonada de la zona. Amb el ratolí, situeu el cursor sobre qualsevol cantonada i {leftclick} clic esquerre per col·locar un node. En una pantalla tàctil, {tap_icon} toca la ubicació. De manera alternativa, també podeu prémer la tecla `{space}` mentre apunteu el cursor del ratolí a la posició desitjada.",
+        "add_area_finish": "Per finalitzar una àrea, torneu a clicar o a fer un toc al primer o l'últim node o premeu `{return}`.",
+        "add_area_h": "Afegint àrees",
+        "delete_area": "Si una àrea és completament incorrecte, per exemple un edifici que no existeix al món real, és correcte eliminar-la. Vigileu quan elimineu objectes: les imatges de fons que esteu usant pot estar antiquada, i un edifici que sembla erroni pot ser que simplement s'hagi construït de nou.",
+        "delete_area_command": "Per esborrar una àrea, {rightclick} cliqueu amb el botó dret o {longpress_icon} mantingueu premuda l'àrea per mostrar el menú d'edició, després useu l'operació {delete_icon} **{delete}**.",
+        "delete_area_h": "Eliminant àrees",
+        "intro": "Les *àrees* s'usen per mostrar les fronteres d'objectes com ara llacs, edificis i àrees residencials. Les àrees s'haurien de traçar al voltant del límit de l'objecte que representen, per exemple, al voltant de la base d'un edifici.",
+        "modify_area_addnode": "També podeu crear nodes nous al llarg d'una àrea {leftclick}**x2** fent doble clic, {doubletap_icon} fent doble toc a una vora o arrossegant els triangles petits als punts del mig entre nodes.",
+        "modify_area_dragnode": "Sovint veureu àrees que no tenen una forma correcta, per exemple un edifici que no concorda amb les imatges de fons. Per ajustar la forma d'una àrea, primer cal seleccionar-la. Tots els nodes de l'àrea es mostraran com a petits cercles. Podeu arrossegar els nodes a llocs millors.",
+        "modify_area_h": "Modificant àrees",
+        "point_or_area": "Molts objectes es poden representar com a punts o àrees. Hauríeu de cartografiar edificis i perímetres de propietats com a àrees quan sigui possible. Ubiqueu punts dins d'una àrea d'edificis per representar negocis, serveis i altres objectes ubicats dins de l'edifici.",
+        "point_or_area_h": "Punts o àrees?",
+        "square_area_command": "Molts objectes d'àrea com ara edificis tenen les cantonades quadrades. Per quadrar les cantonades d'una àrea, {rightclick} cliqueu amb el botó dret o {longpress_icon} mantingueu premuda la vora de l'àrea i escolliu l'operació {orthogonalize_icon} **{orthogonalize}** del menú d'edició.",
+        "square_area_h": "Quadra les cantonades",
+        "title": "Àrees"
+      },
+      "editing": {
+        "backups": "Si resulta que tanqueu el navegador abans de desar, les vostres edicions encara estaran emmagatzemades localment. iD us oferirà restaurar la vostra feina quan torneu més tard amb el mateix navegador i dispositiu.",
+        "backups_h": "Copia de seguretat automàtica",
+        "keyboard": "Podeu veure una llista de dreceres de teclat prement la tecla `{shortcuts_key}`.",
+        "keyboard_h": "Dreceres de teclat",
+        "multiselect": "Seleccionant diversos objectes a la vegada, podreu editar-los ràpidament tots de cop.",
+        "multiselect_h": "Selecció múltiple",
+        "multiselect_lasso": "Una altra manera de seleccionar diversos objectes és mantenir premuda la tecla {shift}`, després mantenir premut el {leftclick} botó esquerre del ratolí i arrossegar-lo per dibuixar un llaç de selecció. Se seleccionaran tots els punts dins de l'àrea del llaç.",
+        "multiselect_shift_click": "Amb un ratolí i teclat, mantingueu premut `{shift}` i {leftclick} cliqueu objectes amb el botó esquerre per afegir-los a la selecció. En pantalles tàctils, {longpress_icon} mantingueu un toc en un objecte mentre {tap_icon} toqueu objectes addicionals amb un altre dit.",
+        "save": "Premeu el botó {save_icon} **{save}** per finalitzar les vostres edicions i enviar-les a OpenStreetMap. Penseu a desar la vostra feina freqüentment!",
+        "save_h": "Desament",
+        "save_validation": "A la pantalla de desar, tindreu l'oportunitat de revisar el que heu fet. iD també farà comprovacions bàsiques de dades que manquin i pot oferir suggeriments útils i alertes si alguna cosa no sembla correcta.",
+        "select_h": "Selecció",
+        "select_left_click": "{leftclick} Cliqueu amb el botó esquerre o {tap_icon} feu un toc a un objecte per seleccionar-lo. Això el ressaltarà amb una resplendor polsant i mostrarà més detalls sobre l'objecte a la barra lateral.",
+        "select_right_click": "{rightclick} Cliqueu amb el botó dret o {longpress_icon} mantingueu premut un objecte per mostrar el menú d'edició, que proporciona operacions com ara copiar, girar o eliminar.",
+        "select_space": "La tecla `{space}` també es pot usar en comptes de clicar amb el botó esquerre per seleccionar i dibuixar.",
+        "title": "Edició i desament",
+        "undo_redo": "Les vostres edicions s'emmagatzemen localment al vostre navegador fins que escolliu desar-les al servidor d'OpenStreetMap. Podeu desfer edicions prement el botó  {undo_icon} **{undo}** i refer-les prement el botó {redo_icon} **{redo}**.",
+        "undo_redo_h": "Desfer i refer",
+        "upload": "Abans de pujar els vostres canvis heu d'introduir un [comentari del conjunt de canvis](https://wiki.openstreetmap.org/wiki/Good_changeset_comments). Després premeu **{upload}** per enviar els vostres canvis a OpenStreetMap, on seran fusionats al mapa i visibles per tothom.",
+        "upload_h": "Pujada"
+      },
+      "feature_editor": {
+        "definitions": "La secció de dalt mostra el tipus d'objecte. La secció del mig conté els *camps* que mostren els atributs dels objectes com ara el nom o l'adreça.",
+        "fields_add_field": "També podeu usar el menú desplegable \"Afegeix camps\" per afegir més camps, com ara una descripció, un enllaç a la Viquipèdia, accés per cadires de rodes i altres.",
+        "fields_all_fields": "La secció \"{fields}\" conté tots els detalls dels objectes que podeu editar. A l'OpenStreetMap tots els camps són opcionals, i ja està bé si deixeu un camp buit quan no n'estigueu segur.",
+        "fields_example": "Cada tipus d'objecte mostrarà diferents camps. Per exemple, una carretera pot mostrar camps per la seva superfície i el límit de velocitat, però un restaurant pot mostrar camps pel tipus de menjar que serveix i per les hores que és obert.",
+        "fields_h": "Camps",
+        "intro": "L'*editor d'objectes* apareix al costat del mapa i permet veure i editar tota la informació pels objectes seleccionats.",
+        "tags_all_tags": "Sota la secció de camps, podeu expandir la secció \"{tags}\" per editar qualsevol de les etiquetes d'OpenStreetMap per l'objecte seleccionat. Cada etiqueta consisteix en una *clau* i un *valor*, elements de les dades que defineixen tots els objectes emmagatzemats a OpenStreetMap.",
+        "tags_h": "Etiquetes",
+        "tags_resources": "Editar les etiquetes dels objectes requereix un coneixement intermedi sobre OpenStreetMap. Hauríeu de consultar recursos com la [Wiki d'OpenStreetMap](https://wiki.openstreetmap.org/wiki/Main_Page) o [Taginfo](https://taginfo.openstreetmap.org/) per aprendre més sobre les pràctiques d'etiquetatge acceptades a OpenStreetMap.",
+        "title": "Editor d'objectes",
+        "type": "Podeu prémer el tipus d'objecte per canviar l'objecte a un tipus diferent. Tot el que existeix en el món real pot ser afegit a OpenStreetMap, per tant hi ha milers de tipus d'objectes per escollir.",
+        "type_h": "Tipus d'objectes",
+        "type_picker": "L'espai per escollir el tipus mostra els tipus d'objectes més comuns com ara parcs, hospitals, restaurants, carreteres i edificis. Podeu cercar qualsevol cosa escrivint a la caixa de cerca. També podeu prémer la icona {inspect} **Info** del costat del tipus d'objecte per veure'n més detalls."
+      },
+      "field": {
+        "restrictions": {
+          "about": {
+            "about": "Aquest camp permet inspeccionar i modificar restriccions de gir. Mostra un model de la intersecció seleccionada incloent altres carreteres connectades properes.",
+            "from_via_to": "Una restricció de gir sempre conté: un **camí DES DE**, un **camí CAP A**, i o un **node VIA** o un o més **camins VIA**.",
+            "maxdist": "El botó lliscant \"{distField}\" controla com de lluny es busquen les carreteres connectades addicionals.",
+            "maxvia": "El botó lliscant \"{viaField}\" ajusta quants camins es poden incloure a la cerca. (Truc: és millor simple)",
+            "title": "Més informació"
+          },
+          "inspecting": {
+            "about": "Mantingueu-vos sobre qualsevol segment **DES DE** per veure si té alguna restricció de gir. Es dibuixarà cada possible destinació **CAP A** amb una ombra acolorida mostrant si existeixen restriccions.",
+            "allow_shadow": "{allowShadow} **Permés CAP A**",
+            "from_shadow": "{fromShadow} **segment DES DE**",
+            "only": "\"Únicament\" vol dir que un vehicle que agafi aquest camí només pot escollir aquesta opció, per exemple \"Només recte\".",
+            "only_shadow": "{onlyShadow} **Únicament CAP A**",
+            "restrict_shadow": "{restrictShadow} **Restringit CAP A**",
+            "restricted": "\"Restringit\" vol dir que hi ha una restricció de gir, per exemple \"Prohibit girar a l'esquerra\".",
+            "title": "Inspeccionant"
+          },
+          "modifying": {
+            "about": "Per modificar restriccions de gir, primer cliqueu a algun segment inicial **DES DE** per seleccionar-lo. El segment seleccionat bategarà i totes les possibles destinacions **CAP A** apareixeran com a símbols de gir.",
+            "allow_turn": "{allowTurn} **Permès CAP A**",
+            "indicators": "Després, cliqueu a un símbol de girar per commutar-lo entre \"Permès\", \"Restringit\" i \"Únic\".",
+            "only_turn": "{onlyTurn} **Únicament CAP A**",
+            "restrict_turn": "{restrictTurn} **Restringit CAP A**",
+            "title": "Modificant"
+          },
+          "tips": {
+            "indirect": "**Algunes restriccions mostren el text \"(indirecta)\" i es dibuixen més lleugeres.**",
+            "indirect_example": "Aquestes restriccions existeixen a causa d'una restricció propera. Per exemple, una restricció de \"Només seguir recte\" crearà indirectament una restricció de \"Prohibit girar\" per tots els altres camins de la intersecció.",
+            "indirect_noedit": "No podeu editar les restriccions indirectes. Alternativament, editeu les restriccions directes properes.",
+            "simple": "**Prefereix restriccions simples en comptes de complexes.**",
+            "simple_example": "Per exemple, eviteu crear una restricció de via-camí si és suficient amb una  restricció de gir més simple de via-node.",
+            "title": "Consells"
+          },
+          "title": "Activa l'ajuda per a les restriccions"
+        }
+      },
+      "gps": {
+        "intro": "Les traces de GPS recollides són una font de dades de valor per l'OpenStreetMap. Aquest editor suporta fitxer *.gpx*, *.geojson*, i *.kml* del vostre dispositiu local. Podeu recollir traces de GPS amb un telèfon intel·ligent, un rellotge d'esports o altres dispositius de GPS.",
+        "survey": "Per informació sobre com mostrejar amb GPS, llegiu [Mapant amb un telèfon intel·ligent, GPS, o paper](http://learnosm.org/en/mobile-mapping/).",
+        "title": "Traces de GPS",
+        "tracing": "La traça de GPS no s'envia a OpenStreetMap - la millor manera d'usar-la és dibuixar al mapa, usant-la com a guia pels nous objectes que afegiu.",
+        "upload": "També podeu  [pujar les vostres dades de GPS a OpenStreetMap](https://www.openstreetmap.org/trace/create) perquè les utilitzin altres usuaris.",
+        "using": "Per usar una traça de GPS per mapar, arrossegueu i deixeu anar el fitxer de dades a l'editor de mapes. Si és reconegut, serà dibuixat al mapa com a una línia porpra brillant. Obriu el panell de {data_icon} **{map_data}** al costat del mapa per habilitar, deshabilitar o fer zoom a les vostres dades de GPS.",
+        "using_h": "Fent servir traces de GPS"
+      },
+      "help": {
+        "before_start": "Us hauríeu de familiaritzar amb l'OpenStreetMap i amb aquest editor abans de començar a editar. L'iD conté un tutorial per ensenyar-vos els conceptes bàsics sobre l'edició de l'OpenStreetMap. Premeu el botó \"{start_the_walkthrough}\" en aquesta pantalla per començar el tutorial - només us portarà uns 15 minuts.",
+        "before_start_h": "Abans de començar",
+        "open_data": "Les modificacions que feu en aquest mapa seran visibles per tothom que faci servir l'OpenStreetMap. Les vostres modificacions poden basar-se en el coneixement personal, en mesures sobre el terreny, imatges aèries o fotografies a nivell de carrer. Copiar de fonts comercials, com el Google Maps, [és estricament prohibit] (https://www.openstreetmap.org/copyright).",
+        "open_data_h": "Dades Obertes",
+        "open_source": "L'editor iD es una projecte col·laboratiu de codi obert, i utilitzeu la versió {version}. El codi font és disponible [al GitHub](https://github.com/openstreetmap/iD). ",
+        "open_source_h": "Font Oberta",
+        "open_source_help": "Podeu ajudar l'iD [traduint-lo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [informant-ne d'errors](https://github.com/openstreetmap/iD/issues).",
+        "title": "Ajuda",
+        "welcome": "Benvingut al editor iD per l'[OpenStreetMap] (https://www.openstreetmap.org/). Amb aquest editor pots actualitzar l'OpenStreeMap des del teu navegador web."
+      },
+      "imagery": {
+        "choosing": "Per veure quines fonts d'imatges hi ha disponibles per editar, obriu el panell de {layers_icon} **{background_settings}** del costat del mapa.",
+        "intro": "Les imatges de fons que apareixen sota el mapa de dades són un recurs important per mapejar. Aquestes imatges poden ser fotos aèries preses des de satèl·lits, avions i drons, o poden ser mapes històrics escanejats o altres fonts de dades disponibles lliurement.",
+        "offset": "A vegades les imatges estan desplaçades lleugerament de dades precises del mapa. Si veieu moltes carreteres o edificis desplaçats respecta les imatges de fons, pot ser que les incorrectes siguin les imatges, per tant no les mogueu perquè concordin amb el fons. Millor que ajusteu el fons de manera que concordi amb les dades existents expandint  la secció\"{imagery_offset}\" de la part de baix del panell de configuració del fons.",
+        "offset_change": "Premeu els botons amb triangle petit per ajustar el desplaçament de les imatges en petits passos, o mantingueu el {leftclick} botó esquerre del ratolí i arrossegueu dins del quadrat gris per desplaçar les imatges i alinear-les.",
+        "offsets_h": "Ajusta el desplaçament de les imatges",
+        "sources": "Els [mapes de Bing](https://www.bing.com/maps/) de la capa de satèl·lit o les millors imatges locals se seleccionen com a fons per defecte. Depenent d'on estigueu editant, hi ha múltiples fonts d'imatges disponibles. Algunes poden ser més noves o tenir resolucions més altes, per tant sempre és útil comprovar i veure quina capa és millor usar com a referències per mapejar.",
+        "sources_h": "Fonts d'imatges",
+        "title": "Imatges de fons"
+      },
+      "key": "H",
+      "lines": {
+        "add_line": "Per afegir una línia, premeu el botó {line_icon} **{line}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `2`.",
+        "add_line_continue": "Continueu col·locant nodes al llarg de la forma de la línia {leftclick} fent clic, {tap_icon} tocant, o prement la tecla `{space}`. Mentre dibuixeu, podeu ampliar o arrossegar el mapa per a afegir més detalls.",
+        "add_line_draw": "A continuació, marqueu la ubicació inicial de la línia. Amb un ratolí, col·loqueu el cursor on ha de començar la línia i {leftclick} clic esquerre per col·locar un node. En una pantalla tàctil, {tap_icon} toca la ubicació. De manera alternativa, també podeu prémer la tecla `{space}` mentre apunteu el cursor del ratolí a la posició desitjada.",
+        "add_line_finish": "Per finalitzar una línia, torneu a clicar o a fer un toc a l'últim node o premeu `{return}`.",
+        "add_line_h": "Afegint línies",
+        "connect_line": "Tenir les carreteres ben connectades és important pel mapa i essencial per generar indicacions per conduir.",
+        "connect_line_display": "Les connexions entre carreteres es dibuixen amb cercles grisos. Els extrems d'una línia es dibuixen amb cercles blancs més grans si no connecten amb res.",
+        "connect_line_drag": "Per connectar una línia amb un altre objecte, arrossegueu un dels nodes d'una de les línies cap a l'altre objecte fins que ambdós objectes s'ajuntin. Truc: Podeu mantenir premuda la tecla `{alt}` per prevenir que els nodes es connectin a altres objectes.",
+        "connect_line_h": "Connectant línies",
+        "connect_line_tag": "Si sabeu que la connexió té semàfors o passos de vianants, podeu afegir-los seleccionant el node de la connexió i seleccionant el tipus d'objecte correcte usant l'editor d'objectes.",
+        "delete_line": "Si una línia és completament incorrecte, per exemple una carretera que no existeix al món real, és correcte eliminar-la. Vigileu quan elimineu objectes: les imatges de fons que esteu usant pot estar antiquada, i una carretera que sembla errònia pot ser que simplement s'hagi construït de nou.",
+        "delete_line_command": "Per esborrar una línia, {rightclick} cliqueu amb el botó dret o {longpress_icon} mantingueu premuda la línia per mostrar el menú d'edició, després useu l'operació {delete_icon} **{delete}**.",
+        "delete_line_h": "Eliminant línies",
+        "disconnect_line_command": "Per desconnectar una carretera d'un altre objecte, {rightclick} cliqueu amb el botó dret o {longpress_icon} mantingueu premut el node de la connexió i escolliu l'operació {disconnect_icon} **{disconnect}** del menú d'edició.",
+        "disconnect_line_h": "Desconnectant línies",
+        "intro": "Les *línies* s'utilitzen per representar objectes com carreteres, vies de tren i rius. Les línies s'han de dibuixar al centre de l'objecte que representen.",
+        "modify_line_addnode": "També podeu crear nodes nous al llarg d'una línia {leftclick}**x2** fent doble clic, {doubletap_icon} fent doble toc a la línia o arrossegant els triangles petits als punts del mig entre nodes.",
+        "modify_line_dragnode": "Sovint veureu línies que no tenen una forma correcta, per exemple una carretera que no concorda amb les imatges de fons. Per ajustar la forma d'una línia, primer cal seleccionar-la. Tots els nodes de la línia es mostraran com a petits cercles. Podeu arrossegar els nodes a llocs millors.",
+        "modify_line_h": "Modificant línies",
+        "move_line_command": "Per moure una línia sencera, {rightclick} cliqueu amb el botó dret la línia i escolliu l'operació {move_icon} **{move}** del menú d'edició. Després moveu el ratolí i {leftclick} cliqueu amb el botó dret per situar la línia a la nova ubicació.",
+        "move_line_connected": "Les línies que estan connectades a altres objectes estaran connectades mentre les moveu a una nova ubicació. iD pot impedir que moveu una línia al llarg d'una altra línia connectada.",
+        "move_line_h": "Movent línies",
+        "title": "Línies"
+      },
+      "notes": {
+        "add_note": "Per afegir una nota nova, premeu el botó {note_icon} **{note}** a la barra d'eines de sobre el mapa o premeu la tecla de drecera `{add_note_key}`.",
+        "add_note_h": "Addició de notes",
+        "intro": "Les *notes* s'utilitzen per alertar als altres usuaris que un objecte requereix arreglar-lo o atenció. Les notes marquen una ubicació específica al mapa. Per veure les notes existents o per afegir-ne de noves, obriu el panell de {data_icon} **{map_data}** i habiliteu la capa {osm_notes}.",
+        "move_note": "Per moure una nota, {leftclick} cliqueu amb el botó esquerre i arrossegueu-lo amb el ratolí o {touchdrag_icon} feu un toc i arrossegueu-lo en una pantalla tàctil. Només es poden moure les notes noves.",
+        "place_note": "Després, situeu la nota nova al mapa. Amb el ratolí, posicioneu el cursor on hauria d'anar la nota i {leftclick} cliqueu amb el botó esquerre. En una pantalla tàctil, {tap_icon} feu un toc a la ubicació.",
+        "save_note": "Heu de desar les edicions de notes individualment prement el botó sota els comentaris de la nota. Les edicions de notes **no** s'inclouen al conjunt de canvis que puges a OpenStreetMap.",
+        "save_note_h": "Desant notes",
+        "title": "Notes",
+        "update_note": "Les notes existents es poden actualitzar tancant-les, reobrint-les o afegint-hi un comentari. Tancar una nota indica que el problema s'ha resolt. Reobrir una nota indica que el problema original no està resolt.",
+        "update_note_h": "Tancant, reobrint i comentant"
+      },
+      "operations": {
+        "circularize": "{circularize_icon} **{circularize}** torna àrees i línies tancades en cercles.",
+        "continue": "{continue_icon} **{continue}** permet estendre línies existents des dels seus extrems.",
+        "copy_paste": "{copy_icon} **{copy}** i {paste_icon} **{paste}** us permet duplicar objectes.",
+        "delete": "{delete_icon} **{delete}** elimina objects del mapa. Tot el que no existeix en el món real hauria d'esborrar-se.",
+        "disconnect": "{disconnect_icon} **{disconnect}** separa línies i àrees connectades. Podeu desconnectar objectes sencers o només els punts seleccionats.",
+        "downgrade": "{downgrade_icon} **{downgrade}** elimina la majoria d'etiquetes excepte la informació de l'edifici i de l'adreça. Això us pot anar bé quan un negoci tanca però les instal·lacions es mantenen.",
+        "extract": "{extract_icon} **{extract}** separa punts de línies. També treu punts fora d'edificis i altres àrees.",
+        "intro": "Les *operacions* són ordres especials que podeu usar per editar objectes.  {rightclick} Cliqueu amb el botó esquerre o {longpress_icon} mantingueu premut qualsevol objecte per veure les operacions disponibles.",
+        "intro_2": "Cada operació té les seves pròpies dreceres de teclat. La majoria d'operacions es poden aplicar a múltiples objectes a la vegada.",
+        "merge": "{merge_icon} **{merge}** combina diversos objectes en un de sol. Podeu fusionar àrees per crear multipolígons, fusionar línies per crear línies més llargues i fusionar punts a qualsevol cosa per transferir les seves etiquetes.",
+        "move": "{move_icon} **{move}** permet arrossegar objectes pel mapa.",
+        "orthogonalize": "{orthogonalize_icon} **{orthogonalize}** encaixa les cantonades d'àrees i línies a 90°. Podeu quadrar cantonades individuals o objectes sencers.",
+        "reflect": "{reflect_short_icon} **{reflect_short}** i {reflect_long_icon} **{reflect_long}** reflecteixen objectes al llarg del seu eix curt i llarg.",
+        "reverse": "{reverse_icon} **{reverse}** canvia la direcció d'objectes. La direcció és important per coses com ara carreteres d'un sol sentit, senyals de trànsit, rius i penya-segats.",
+        "rotate": "{rotate_icon} **{rotate}** us permet girar objectes al voltant dels seus punts centrals.",
+        "split": "{split_icon} **{split}** divideix línies pels punts seleccionats. Si també estan seleccionades línies específiques, només es dividiran aquestes.",
+        "straighten": "{straighten_icon} **{straighten}** elimina corbes de línies. També pot alinear grups de punts en files ordenades.",
+        "title": "Operaccions"
+      },
+      "overview": {
+        "features": "Utilitzem la paraula *objectes* per descriure les coses que es mostren al mapa, com vies, edificis o punts d'interès. Qualsevol cosa del món real es pot representar al mapa com un objecte a OpenStreetmap. Els objectes del mapa s´hi representen utilitzant *punts*, *línies*, o *àrees*.",
+        "features_h": "Objectes del mapa",
+        "navigation_h": "Navegació",
+        "navigation_zoom": "Us podeu acostar o allunyar movent la {mousewheel_icon} rodeta del ratolí o del ratolí tàctil, o {pinch_icon} pessigant amb dos dits a una pantalla tàctil. També podeu prémer els botons {plus} / {minus} al llarg del costat del mapa o les tecles  `+`, `-` del teclat.",
+        "nodes_ways": "A l'OpenStreetMap, els punts de vegades els anomenem *nodes*, i les línies i àrees de vegades les anomenem *vies*.",
+        "title": "Visió general"
+      },
+      "points": {
+        "add_point": "Per afegir un punt, premeu el botó {point_icon} **{point}** a la barra d'eines de sobre del mapa o premeu la tecla de drecera `1`.",
+        "add_point_finish": "A continuació, col·loqueu el nou punt en el mapa. Amb un ratolí, col·loqueu el cursor on ha d'anar el punt i feu {leftclick} clic esquerre. En una pantalla tàctil, {tap_icon} toca la ubicació. De manera alternativa, també podeu prémer la tecla `{space}` mentre apunteu el cursor del ratolí a la posició desitjada.",
+        "add_point_h": "Afegint punts",
+        "delete_point": "Està bé esborrar objectes que no existeixin al món real. En esborrar un objecte d'OpenStreetMap l'elimineu del mapa que tothom utilitza, per tant hauríeu de saber del cert que l'objecte ja no hi és abans d'esborrar-lo.",
+        "delete_point_command": "Per esborrar un punt, {rightclick} cliqueu amb el botó dret o {longpress_icon} mantingueu premut el punt per mostrar el menú d'edició, després useu l'operació {delete_icon} **{delete}**.",
+        "delete_point_h": "Eliminant punts",
+        "intro": "Els *punts* es poden fer servir per representar objectes com ara botigues, restaurants i monuments. Marquen una ubicació específica i descriuen el que es troba allà.",
+        "move_point": "Per moure un punt, {leftclick} cliqueu amb el botó esquerre i arrossegueu-lo amb el ratolí o {touchdrag_icon} feu un toc i arrossegueu-lo en una pantalla tàctil.",
+        "move_point_h": "Movent punts",
+        "title": "Punts"
+      },
+      "qa": {
+        "intro": "*Control de qualitat* Les eines de (Q/A) poden trobar etiquetes impròpies, carreteres desconnectades i altres problemes a OpenStreetMap, que els mapejadors poden arreglar. Per veure els problemes de Q/A existents, obriu el panell de {data_icon} **{map_data}** i habiliteu una capa específica de Q/A.",
+        "issues": "Manegar problemes del control de qualitat és semblant a manegar notes. Seleccioneu un marcador per veure els detalls del problema a la barra lateral. Cada eina té les seves capacitats, però generalment podeu comentar i/o tancar els problemes.",
+        "issues_h": "Gestionant problemes",
+        "title": "Control de qualitat",
+        "tools_h": "Eines"
+      },
+      "relations": {
+        "boundary": "Una relació de *frontera* és un grup d'un o més objectes de línies que junts formen una frontera administrativa.",
+        "boundary_add": "Per afegir un objecte a una relació de frontera, seleccioneu l'objecte i desplaceu-vos cap avall fins a la secció \"{relations}\" de l'editor d'objectes, després premeu el botó {plus} d'afegir per afegir aquest objecte a una relació propera existent o a una relació nova.",
+        "boundary_h": "Límits",
+        "edit_relation": "A baix de tot de l'editor d'objectes, podeu expandir la secció \"{relations}\" per veure si l'objecte seleccionat és membre d'alguna relació. Allà podeu seleccionar una relació per editar-la.",
+        "edit_relation_add": "Per afegir un objecte a una relació, seleccioneu l'objecte, després premeu el botó {plus} d'afegir de la secció \"{relacions}\" de l'editor d'objectes. Podeu escollir de la llista de relacions properes o bé escollir l'opció \"{new_relation}\".",
+        "edit_relation_delete": "També podeu prémer el botó {delete_icon} **{delete}** per eliminar l'objecte seleccionat de la relació. Si elimineu tots els membres d'una relació, la relació serà esborrada automàticament.",
+        "edit_relation_h": "Editant relacions",
+        "intro": "Una *relació* és un tipus especial d'objecte de l'OpenStreetMap que agrupa altres objectes. Els objectes que pertanyen a una relació s'anomenen *membres* i cada membre pot tenir un *rol* en la relació.",
+        "maintain_relation": "En la majoria dels casos, iD mantindrà les relacions automàticament mentre editeu. Heu de vigilar quan reemplaceu objectes que són membres de relacions. Per exemple, si elimineu una secció d'una carretera i en dibuixeu una secció nova per reemplaçar-la, hauríeu d'afegir la nova secció a la mateixa relació (rutes, restriccions de gir, etc.) que l'original.",
+        "maintain_relation_h": "Mantenint  les relacions",
+        "multipolygon": "Una relació de *multipolígon* és un grup d'un o més objectes *exteriors* i un o més objectes interiors. Els objectes exteriors defineixen els límits exteriors del multipolígon i els objectes interiors defineixen subàrees o forats retallats de l'interior del multipolígon.",
+        "multipolygon_create": "Per crear un multipolígon, per exemple un edifici amb un forat, dibuixeu la vora exterior com a una àrea i la vora interior com a una línia o un tipus diferent d'àrea. Després, `{shift}`+{leftclick} cliqueu amb el botó esquerre per seleccionar ambdós objectes, {rightclick} cliqueu amb el botó dret per mostrar el menú d'edició i escolliu l'operació {merge_icon} **{merge}**.",
+        "multipolygon_h": "Multipolígon",
+        "multipolygon_merge": "Fusionant diverses línies o àrees crearà una nova relació de multipolígon amb totes les àrees seleccionades com a membres. iD escollirà automàticament els rols interiors i exteriors basant-se en quins objectes estan continguts dins d'altres objectes.",
+        "relation_types_h": "Tipus de relacions",
+        "route": "Una relació de *ruta* és un grup d'un o més objectes de línies que junts formen una xarxa de la ruta, com ara una ruta de bus, de tren o d'autopista.",
+        "route_add": "Per afegir un objecte a una relació de ruta, seleccioneu l'objecte i desplaceu-vos cap avall fins a la secció \"{relations}\" de l'editor d'objectes, després premeu el botó {plus} d'afegir per afegir aquest objecte a una relació propera existent o a una relació nova.",
+        "route_h": "Rutes",
+        "title": "Relacions",
+        "turn_restriction": "Una relació de *restricció de gir* és un grup de diversos segments de carreteres en una intersecció. Les restriccions consisteixen en una carretera *des de*, un node de *via* o carretera, i una carretera *cap a*.",
+        "turn_restriction_editing": "Al camp \"{turn_restrictions}\", seleccioneu una carretera \"des de\", i mireu si el gir és permès o restringit a les carreteres \"cap a\". Podeu prémer les icones de gir per commutar-les entre permès i restringit. iD crearà relacions automàticament i definirà els rols \"des de\", via i \"cap a\" basat en la vostra tria.",
+        "turn_restriction_field": "Per editar restriccions de gir, seleccioneu un node d'encreuament on dues o més carreteres es troben. L'editor d'objectes mostrarà un camp especial de \"{turn_restrictions}\" que conté un model de la intersecció.",
+        "turn_restriction_h": "Restriccions de gir"
+      },
+      "streetlevel": {
+        "photos": "Quan està habilitat, la capa superposada de fotos mostra una línia al llarg de la seqüència de fotos. Als nivells de zoom més alts, un cercle marca la ubicació de cada foto, i a nivells de zoom encara més alts, un con indica la direcció que la càmera estava enfocant quan es va prendre la foto.",
+        "title": "Fotografies a peu de carrer",
+        "using": "Per usar fotos a peu de carrer per mapar, obriu el panell de {data_icon} **{map_data}** al costat del mapa per habilitar o deshabilitar les capes superposades de fotos disponibles.",
+        "using_h": "Fent servir fotografies a peu de carrer",
+        "viewer": "Quan seleccioneu una de les ubicacions de fotos, un visor de fotos apareixerà a la cantonada inferior del mapa. El visor de fotos conté controls per avançar endavant i endarrere en la seqüència d'imatges. També mostra el nom d'usuari de la persona que va capturar la imatge, la data en què va ser presa i un enllaç per veure la imatge al seu lloc original."
+      },
+      "title": "Ajuda"
+    },
+    "help_translate": "Ajuda a traduir-lo",
+    "icons": {
+      "copy": "copia",
+      "deselect": "no seleccionis",
+      "download": "baixa",
+      "favorite": "preferit",
+      "information": "informació",
+      "list": "llista",
+      "remove": "elimina",
+      "text": "text",
+      "undo": "desfés",
+      "view_on": "mostra-ho en {domain}",
+      "visit_website": "visiteu la pàgina web",
+      "zoom_to": "escala a"
+    },
+    "info_panels": {
+      "background": {
+        "accuracy": "Precisió",
+        "description": "Descripció",
+        "hide_tiles": "Oculta les tessel·les",
+        "resolution": "Resolució",
+        "show_tiles": "Mostra les tessel·les",
+        "source": "Font",
+        "title": "Fons",
+        "vintage": "Antic",
+        "zoom": "Zoom"
+      },
+      "history": {
+        "changeset": "Conjunt de modificacions",
+        "edited_by": "Modificat per",
+        "last_edit": "Darrera modificació",
+        "no_history": "No hi ha cap historial (objecte nou)",
+        "note_comments": "Comentaris",
+        "note_created_date": "Data de creació",
+        "note_created_user": "Creat per",
+        "note_link_text": "Nota a openstreetmap.org",
+        "note_no_history": "Sense historial (Nota nova)",
+        "title": "Història",
+        "version": "Versió"
+      },
+      "location": {
+        "title": "Ubicació",
+        "unknown_location": "Ubicació desconeguda"
+      },
+      "measurement": {
+        "area": "Àrea",
+        "center": "Center",
+        "centroid": "Centroide",
+        "closed_area": "Àrea tancada",
+        "closed_line": "Línia tancada",
+        "distance": "Distància",
+        "geometry": "Geometria",
+        "imperial": "Imperial",
+        "length": "Longitud",
+        "location": "Ubicació",
+        "metric": "Mètric",
+        "node_count": "Nombre de nodes",
+        "perimeter": "Perímetre",
+        "title": "Mesurament"
+      },
+      "selected": {
+        "one": "{n} seleccionat",
+        "other": "{n} seleccionats"
+      }
+    },
+    "inspector": {
+      "add": "Afegir",
+      "add_fields": "Afegeix un camp:",
+      "add_to_relation": "Afegeix a una relació",
+      "back_tooltip": "Canvia el tipus d'objecte",
+      "check": {
+        "no": "No",
+        "reverser": "Canvia la direcció",
+        "yes": "Sí"
+      },
+      "choose": "Seleccioneu el tipus d'objecte",
+      "choose_relation": "Trieu una relació superior",
+      "details": "Detalls",
+      "display_name": {
+        "direction": "{direction}",
+        "from_to": "des de {from} cap a {to}",
+        "from_to_via": "des de {from} cap a {to} via {via}",
+        "network": "{network}",
+        "network_direction": "{network} {direction}",
+        "network_from_to": "{network} des de {from} cap a {to}",
+        "network_from_to_via": "{network} des de {from} cap a {to} via {via}",
+        "network_ref": "{network} {ref}",
+        "network_ref_direction": "{network} {ref} {direction}",
+        "network_ref_from_to": "{network} {ref} des de {from} cap a {to}",
+        "network_ref_from_to_via": "{network} {ref} des de {from} cap a {to} via {via}",
+        "ref": "{ref}",
+        "ref_direction": "{ref} {direction}",
+        "ref_from_to": "{ref} des de {from} cap a {to}",
+        "ref_from_to_via": "{ref} des de {from} cap a {to} via {via}"
+      },
+      "edit": "Edita l'objecte",
+      "edit_reference": "edita/tradueix la documentació",
+      "feature_list": "Cerca objectes",
+      "feature_type": "Tipus d'objecte",
+      "features": "Objectes",
+      "fields": "Camps",
+      "incomplete": "<no baixat>",
+      "key_value": "clau=valor",
+      "location": "Ubicació",
+      "lock": {
+        "suggestion": "El camp \"{label}\" està bloquejat perquè hi ha una etiqueta Wikidata. Podeu eliminar-la o editar l'etiqueta a la secció \"Etiquetes\"."
+      },
+      "members": "Membres",
+      "multiple_roles": "Rols múltiples",
+      "multiple_types": "Tipus múltiples",
+      "multiple_values": "Valors múltiples",
+      "new_relation": "Nova relació…",
+      "no_documentation_key": "No hi ha documentació disponible.",
+      "node": "Node",
+      "none": "Cap",
+      "radio": {
+        "structure": {
+          "default": "Per defecte",
+          "layer": "Capa"
+        }
+      },
+      "relation": "Relació",
+      "relations": "Relacions",
+      "remove": "Eliminar",
+      "results": {
+        "one": "{n} resultat per {search}",
+        "other": "{n} resultats per {search}"
+      },
+      "role": "Rol",
+      "search": "Cercar",
+      "show_more": "Mostra'n més",
+      "tags": "Etiquetes",
+      "title_count": "{title} ({count})",
+      "type": "Tipus",
+      "unknown": "Desconegut",
+      "unshared_value_tooltip": "no compartit per tots els objectes",
+      "view_on_keepRight": "Mostra-ho al keepright.at",
+      "view_on_osm": "Mostra-ho a openstreetmap.org",
+      "view_on_osmose": "Mostra-ho a osmose.openstreetmap.fr",
+      "way": "Via",
+      "wiki_en_reference": "Mostra la documentació en anglès",
+      "wiki_reference": "Mostra la documentació",
+      "zoom_to": {
+        "no_selection": "No hi ha res a ampliar.",
+        "title": "Amplia la selecció"
+      }
+    },
+    "intro": {
+      "areas": {
+        "add_field": "Aquesta zona de jocs no té un nom oficial, per tant, no afegirem res al camp {name}.{br}Altrament, afegirem alguns detalls addicionals sobre aquesta zona de joc al camp {description}. **Obriu la llista Afegir camp.** ",
+        "add_playground": "Les *àrees* s'usen per mostrar els límits d'objectes com ara llacs, edificis i àrees residencials.{br}També es poden fer servir per cartografiar més al detall molts objectes que normalment potser inclouríeu com a punts. **Premeu el botó {area_icon} {area} per afegir una àrea nova.**",
+        "choose_field": "**Escolliu {field} de la llista.**",
+        "choose_playground": "**Escolliu {preset} de la llista.**",
+        "continue_playground": "Continueu dibuixant l'àrea afegint més nodes al llarg dels límits de la zona de joc. És correcte connectar l'àrea als camins de vianants.{br}Truc: podeu mantenir premuda la tecla `{alt}` per prevenir que els nodes es connectin a altres objectes. **Continueu dibuixant una àrea per la zona de joc.**",
+        "describe_playground": "**Afegiu una descripció, després feu clic al botó {button} per tancar l'editor d'objectes.**",
+        "finish_area_click": "Acabeu l'àrea prement `{return}` o tornant a clicar al primer o últim node.",
+        "finish_area_tap": "Acabeu l'àrea `{tap_icon}` fent un altre toc al primer o últim node, o prement `{return}` al teclat.",
+        "finish_playground": "**Acabeu de dibuixar una àrea per la zona de joc.**",
+        "play": "Bona feina! Proveu de dibuixar unes quantes àrees més i descobriu quins altres tipus d'objectes d'àrea podeu afegir a OpenStreetMap. **Quan vulgueu continuar amb el següent capítol, premeu '{next}'.**",
+        "retry_add_field": "No heu seleccionat «{field}». **Feu clic aquí per a intentar-ho un altra vegada",
+        "search_playground": "**Cerqueu «{preset}».**",
+        "start_playground": "Afegim aquesta zona de joc al mapa dibuixant una àrea. Les àrees es dibuixen situant *nodes* seguint el límit extern de l'objecte.",
+        "starting_node_click": " **Cliqueu o premeu `{space}` per situar el primer node a una de les cantonades de la zona de joc.**",
+        "starting_node_tap": " **{tap_icon} Feu un toc per situar el primer node a una de les cantonades de la zona de joc.**",
+        "title": "Àrees"
+      },
+      "buildings": {
+        "add_building": "L'OpenStreetMap és la base de dades d'edificis més gran del món. {br}Podeu millorar aquesta base de dades dibuixant edificis que encara no estiguin al mapa. **Premeu el botó {area_icon} {area} per afegir una nova àrea.**",
+        "add_tank": "Ara traçarem aquest tanc d'emmagatzematge circular. **Premeu el botó {area_icon} {area} per afegir una àrea nova.**",
+        "building_corner_click": " **Cliqueu o premeu `{space}` per posar un node inicial a una de les cantonades de l'edifici.**",
+        "building_corner_tap": " **{tap_icon} Feu un toc a una de les cantonades de l'edifici per situar el primer node.**",
+        "choose_category_building": "**Escolliu {category} de la llista.**",
+        "choose_preset_house": "Hi ha molts tipus d'edificis, però aquest és clarament una casa.{br}Si no esteu segur del tipus, és correcte de simplement triar un tipus d'edifici genèric. **Trieu el tipus «{preset}».**",
+        "choose_tank": "**Escolliu {preset} de la llista.**",
+        "circle_tank": "**Premeu el botó {circularize_icon} {circularize} per fer el tanc rodó.**",
+        "continue_building": "Continueu situant nodes per traçar el contorn de l'edifici. Recordeu que podeu ampliar el mapa si voleu afegir més detalls.",
+        "continue_tank": "Afegiu uns quants nodes més al voltant del contorn. El cercle es crearà fora dels nodes que dibuixeu.",
+        "done_square": "Veieu com les cantonades de l'edifici han canviat de lloc? Aprenguem un altre truc pràctic. ",
+        "edit_menu_building_touch": "**{longpress_icon} Mantingueu premut l'edifici que heu creat per mostrar el menú d'edició.**",
+        "edit_menu_tank_touch": "**{longpress_icon} Mantingueu premut el tanc d'emmagatzematge que heu creat per mostrar el menú d'edició.**",
+        "finish_building": "**Acabeu de traçar l'edifici.**",
+        "finish_tank": "**Acabeu de traçar el tanc.**",
+        "play": "Bona feina! Practiqueu traçant uns quants edificis més i proveu algunes de les altres operacions del menú d'edició. **Quan estigueu preparats per continuar al capítol següent, premeu '{next}'.**",
+        "retry_building": "Sembla que heu tingut problemes situant els nodes a les cantonades del edifici. Torneu-ho a provar!",
+        "retry_circle": "No heu premut el botó {circularize_icon} {circularize}. Torneu-ho a intentar.",
+        "retry_square": "No heu premut el botó {orthogonalize_icon} {orthogonalize}. Torneu-ho a intentar.",
+        "rightclick_building": "**{rightclick} Cliqueu amb el botó dret per seleccionar l'edifici que heu creat i mostrar el menú d'edició.**",
+        "rightclick_tank": "**{rightclick} Cliqueu amb el botó dret per seleccionar el dipòsit d'emmagatzematge que heu creat i mostrar el menú d'edició.**",
+        "search_tank": "**Cerqueu «{preset}».**",
+        "square_building": "La casa que acabeu d'afegir farà més bona pinta amb unes cantonades perfectament quadrades. **Premeu el botó {orthogonalize_icon} {orthogonalize} per adreçar la forma de l'edifici.**",
+        "start_building": "Afegiu aquesta casa al mapa traçant el seu contorn.{br}Els edificis s'haurien de traçar al voltant de la seva planta el més acuradament possible.",
+        "start_tank": "No us preocupeu, no cal dibuixar un cercle perfecte. Serà suficient si dibuixeu una àrea dins del tanc que toqui el seu contorn.",
+        "tank_edge_click": "**Cliqueu o premeu `{space}` per situar el node inicial al contorn del tanc.**",
+        "tank_edge_tap": " **{tap_icon} Feu un toc al contorn del tanc per situar el primer node.**",
+        "title": "Edificis"
+      },
+      "done": "fet",
+      "graph": {
+        "block_number": "<value for addr:block_number>",
+        "city": "Tresrius",
+        "countrycode": "es",
+        "county": "<value for addr:county>",
+        "district": "<value for addr:district>",
+        "hamlet": "<value for addr:hamlet>",
+        "name": {
+          "10th-avenue": "10a Avinguda",
+          "11th-avenue": "11a Avinguda",
+          "12th-avenue": "12a Avinguda",
+          "1st-avenue": "1a Avinguda",
+          "2nd-avenue": "2a Avinguda",
+          "4th-avenue": "4a Avinguda",
+          "5th-avenue": "5a Avinguda",
+          "6th-avenue": "6a Avinguda",
+          "6th-street": "Carrer Maria Mercè Marçal",
+          "7th-avenue": "7a Avinguda",
+          "8th-avenue": "8a Avinguda",
+          "9th-avenue": "9a Avinguda",
+          "access-point-employment": "Planificació laboral",
+          "adams-street": "Carrer Antoni Maria Alcover",
+          "andrews-elementary-school": "Escola de primària Almogàvers",
+          "andrews-street": "Carrer Montserrat Roig",
+          "armitage-street": "Carrer Frederica Montseny",
+          "barrows-school": "Escola Francesc Ferrer i Guàrdia",
+          "battle-street": "Carrer Salvador Seguí",
+          "bennett-street": "Carrer Francesc de Borja Moll",
+          "bowman-park": "Parc Bowman",
+          "collins-drive": "Camí de les Escoles",
+          "conrail-railroad": "Via Mediterrània",
+          "conservation-park": "Parc Conservation",
+          "constantine-street": "Carrer Guillem Agulló",
+          "cushman-street": "Carrer Josep Moragues",
+          "dollar-tree": "Les gangues",
+          "douglas-avenue": "Avinguda Lluís Companys",
+          "east-street": "Carrer de Llevant",
+          "elm-street": "Carrer del Sindicat",
+          "flower-street": "Carrer dels Jocs Florals",
+          "foster-street": "Carrer de Vicent Andrés Estellés",
+          "french-street": "Carrer del Nord",
+          "garden-street": "Carrer dels Horts",
+          "gem-pawnbroker": "L'escanyapobres",
+          "golden-finch-framing": "Marcs Octubre",
+          "grant-avenue": "Avinguda Joan Fuster",
+          "hoffman-pond": "Estany de Salses",
+          "hoffman-street": "Carrer de Salses",
+          "hook-avenue": "Avinguda Ramon Llull",
+          "jefferson-street": "Carrer dels Angelets de la Terra",
+          "kelsey-street": "Carrer dels Miquelets",
+          "lafayette-park": "Parc de la Llibertat",
+          "las-coffee-cafe": "Cafeteria dels Maquis",
+          "lincoln-avenue": "Avinguda dels Països Catalans",
+          "lowrys-books": "Llibreria Tres i Quatre",
+          "lynns-garage": "Taller Mecànic Gabriela",
+          "main-street": "Carrer Major",
+          "main-street-barbell": "Complex esportiu del carrer Major",
+          "main-street-cafe": "Cafè del carrer Major",
+          "main-street-fitness": "Gimnàs del carrer Major",
+          "maple-street": "Carrer Oliveres",
+          "marina-park": "Parc Karl Marx",
+          "market-street": "Carrer del Mercat",
+          "memory-isle": "Illa dels Braus",
+          "memory-isle-park": "Parc de l'Illa dels Braus",
+          "michigan-avenue": "Avinguda dels Països Catalans",
+          "middle-street": "Carrer del Mig",
+          "millard-street": "Carrer de la Revolució",
+          "moore-street": "Carrer de l'Havana",
+          "morris-avenue": "Avinguda Andreu Nin",
+          "mural-mall": "Centre comercial del Mural",
+          "paisanos-bar-and-grill": "Bar i brasa de la terra",
+          "paisley-emporium": "Estigui tranquil",
+          "paparazzi-tattoo": "Tatuatges Sense Por",
+          "pealer-street": "Carrer Enric Valor",
+          "pine-street": "Carrer del Pi",
+          "pizza-hut": "Pizza Hut",
+          "portage-avenue": "Avinguda Jaume I",
+          "portage-river": "Riu Sénia",
+          "preferred-insurance-services": "Servei d'Assegurances Optimistes",
+          "railroad-drive": "Camí de la via",
+          "river-city-appliance": "Electrodomèstics Duran",
+          "river-drive": "Carrer del riu",
+          "river-road": "Carretera del Riu",
+          "river-street": "Carrer del Riu",
+          "riverside-cemetery": "Cementiri de la Rivera",
+          "riverwalk-trail": "Camí del Passeig Fluvial",
+          "riviera-theatre": "Teatre de l'Ateneu",
+          "rocky-river": "Riu Rocallós",
+          "saint-joseph-river": "Riu Sant Josep",
+          "scidmore-park": "Parc Charles Darwin",
+          "scidmore-park-petting-zoo": "Zoo de mascotes del Parc Charles Darwin",
+          "scouter-park": "Parc Ramon Margalef",
+          "sherwin-williams": "Cooperativa Colors",
+          "south-street": "Carrer València",
+          "southern-michigan-bank": "Banc Mediterrani",
+          "spring-street": "Carrer Quico Sabaté",
+          "sturgeon-river-road": "Carretera del Riu Fartet",
+          "three-rivers": "Tresrius",
+          "three-rivers-city-hall": "Ajuntament de Tresrius",
+          "three-rivers-elementary-school": "Escola primària de Tresrius",
+          "three-rivers-fire-department": "Bombers de Tresrius",
+          "three-rivers-high-school": "Centre de Formació Professional de Tresrius",
+          "three-rivers-middle-school": "Institut de Tresrius",
+          "three-rivers-municipal-airport": "Aeroport municipal de Tresrius",
+          "three-rivers-post-office": "Oficina de correus de Tresrius",
+          "three-rivers-public-library": "Biblioteca pública de Tresrius",
+          "unique-jewelry": "Joieria Singular",
+          "walnut-street": "Carrer de la Noguera",
+          "washington-street": "Carrer Barcelona",
+          "water-street": "Carrer de l'Aigua",
+          "west-street": "Carrer de la Franja de Ponent",
+          "wheeler-street": "Carrer de la Victòria",
+          "william-towing": "Taller l'Espavilat",
+          "willow-drive": "Camí de les Alzines",
+          "wood-street": "Carrer dels Maquis",
+          "world-fare": "De tot i més"
+        },
+        "neighbourhood": "<value for addr:neighbourhood>",
+        "postcode": "49093",
+        "province": "<value for addr:province>",
+        "quarter": "<value for addr:quarter>",
+        "state": "<value for addr:state>",
+        "subdistrict": "<value for addr:subdistrict>",
+        "suburb": "<value for addr:suburb>"
+      },
+      "lines": {
+        "add_line": "Les *línies* s'utilitzen per representar objectes com ara carreteres, vies de tren i rius. **Premeu el botó {line_icon}{line} per afegir una línia nova.**",
+        "add_node": "Podem afegir alguns nodes a aquesta línia per millorar la seva forma. Una manera d'afegir nodes és clicant dos cops la línia allà on vulguem afegir el node. **Cliqueu dos cops a la línia per crear un node nou.**",
+        "add_node_touch": "Podem afegir alguns nodes a aquesta línia per millorar la seva forma. Una manera d'afegir nodes és fer un {doubletap_icon} doble toc a la línia allà on vulguem afegir el node. **Feu un doble toc a la línia per crear un nou node.**",
+        "add_to_selection_click": "Podeu mantenir `{shift}` mentre cliqueu per seleccionar diverses coses. **Majús+clicar a {ohter2}.**",
+        "add_to_selection_touch": "**{longpress_icon} Mantingeu premut {selected} i després {tap_icon} feu un toc {other2} amb un altre dit per seleccionar-los tots dos.**",
+        "choose_category_road": "**Seleccioneu {category} de la llista.**",
+        "choose_preset_residential": "Hi ha molts tipus de vies, però les més comunes són els carrers residencials. **Trieu el tipus «{preset}».**",
+        "continue_drag_midpoint": "Aquesta línia fa més bona pinta! Continueu ajustant aquesta línia fins que la corba coincideixi amb la forma de la carretera. **Quan estigueu satisfets amb com queda, premeu {ok}.**",
+        "continue_line": "Continueu dibuixant la línia per la nova carretera. Recordeu que podeu arrossegar o fer zoom al mapa si ho necessiteu.",
+        "delete_lines": "És convenient esborrar els trams de carrer que no existeixin realment.{br}Aquí hi ha un exemple on es va planejar un {street} però mai es va fer. Podem millorar aquesta zona del mapa si esborrem les línies supèrflues. ",
+        "did_name_road": "Fa bona pinta! Ara aprendrem com modificar la forma d'una línia.",
+        "did_split_multi": "Bona feina! Ara el {street1} està partit en dues parts. La part de dalt es pot eliminar. **Seleccioneu la part de dalt del {street2}.**",
+        "did_split_single": "**Seleccioneu la part de dalt del {street2}.**",
+        "drag_to_intersection": "**Arrossegueu l'extrem fins on aquestes carreteres s'haurien de creuar.**",
+        "edit_menu_intersection_touch": "**{longpress_icon} Mantingueu premut el node d'intersecció.**",
+        "finish_drag_endpoint": "**Deixeu anar el botó del ratolí per acabar d'arrossegar.**",
+        "finish_drag_endpoint_touch": "**Deixeu anar el node per acabar d'arrossegar.**",
+        "finish_line_click": "Quan hàgiu acabat, cliqueu l'últim node un altre cop o premeu `{return}`.",
+        "finish_line_tap": "Quan hàgiu acabat, {tap_icon} feu un toc a l'últim node un altre cop o premeu `{return}` al teclat.",
+        "finish_road": "**Acabeu de dibuixar la carretera.**",
+        "intersect": "Continueu dibuixant la línia situant més nodes al llarg de la carretera.{br}Les carreteres, així com els camins i rutes de ferri, han d'estar connectades correctament a les altres per tal que les aplicacions de navegació funcionin. **Situeu un node d'intersecció a {name} per connectar les dues línies.**",
+        "line_draw_info": "A OpenStreetMap, les línies s'haurien de dibuixar pel bell mig del carrer. Podeu arrossegar i ampliar el mapa si cal mentre dibuixeu.",
+        "missing_road": "Aquí hi falta un carrer. Afegim-lo!",
+        "multi_delete": "**Premeu el botó {delete_icon} {delete} per eliminar les línies extres.**",
+        "multi_edit_menu_touch": "**{longpress_icon} Mantingueu premuda una de les línies per mostrar el menú d'edició.**",
+        "multi_rightclick": "**{rightclick} Cliqueu amb el botó dret a una o més línies per mostrar el menú d'edició.**",
+        "multi_select": "Ara {selected} està seleccionat. Seleccioneu també {other1}.",
+        "multi_select_success": "Bé! Ara ambdues línies a esborrar estan seleccionades.",
+        "name_road": "**Poseu un nom a aquesta carretera, després premeu cliqueu el botó {button} o `{esc}` per tancar l'editor d'objectes.**",
+        "play": "Fantàstic! Useu les habilitats que heu après en aquest capítol per practicar editant algunes línies més. **Quan estigueu preparats per continuar al capítol següent, premeu '{next}'.**",
+        "retry_delete": "No heu premut el botó {delete_icon} {delete}. Torneu-ho a intentar.",
+        "retry_intersect": "La carretera ha d'intersecar «{name}». Torneu a intentar-ho!",
+        "retry_preset_residential": "No heu seleccionat el tipus de {preset}. **Premeu aquest botó per tornar a escollir.**",
+        "retry_split": "No heu premut el botó {split_icon} {split}. Torneu-ho a intentar.",
+        "rightclick_intersection": "**{rightclick} Cliqueu amb el botó dret al node de la intersecció.**",
+        "split_intersection": "**Premeu el botó {split_icon} {split} per partir el {street}.**",
+        "split_street": "L'últim carrer real és {street1}, per tant *partirem* {street2} en aquesta intersecció i eliminarem tot el que en quedi per sobre.",
+        "spot_looks_good": "Aquest lloc fa bona pinta.",
+        "start_drag_endpoint": "Quan una línia està seleccionada, podeu ajustar qualsevol dels seus nodes clicant i mantenint premut el {leftclick} botó esquerre del ratolí mentre l'arrossegueu.",
+        "start_drag_endpoint_touch": "Quan una línia està seleccionada, podeu {touchdrag_icon} fer un toc i arrossegar qualsevol dels seus nodes per ajustar-los.",
+        "start_drag_midpoint": "Es dibuixen petits triangles al *punt mitjà* entre nodes. Una altra manera de crear nodes nous és arrossegant el punt mitjà a una nova ubicació. **Arrossegueu el triangle del punt mitjà per crear un node nou al llarg de la corba de la carretera.**",
+        "start_line": "**Comenceu una nova línia clicant a l'extrem superior d'aquest carrer que falta.**",
+        "start_line_tap": "**Comenceu una nova línia {tap_icon} fent un toc a l'extrem superior d'aquest carrer que falta.**",
+        "title": "Línies",
+        "update_line": "De vegades necessitareu modificar la forma d'una línia ja existent. Aquí teniu una línia que es podria millorar,"
+      },
+      "navigation": {
+        "choose_street": "**Trieu «{name}» de la llista per seleccionar-ho.**",
+        "click_townhall": "Tots els objectes del mapa es poden seleccionar {leftclick} clicant-hi. **Cliqueu al punt per a seleccionar-lo.**",
+        "close_townhall": "**Tanqueu l'editor d'objectes prement el {button} botó de la cantonada de dalt o `{esc}`.**",
+        "editor_street": "Per aquest carrer seleccionat, l'editor d'objectes mostra camps com '{field1}' i '{field2}'. **Tanqueu l'editor d'objectes prement el {button} botó o `{esc}`.**",
+        "editor_townhall": "Quan un objecte es selecciona,  es mostra **l'editor d'objectes** al costat del mapa",
+        "features": "Utilitzem la paraula *objectes* per descriure les coses que es mostren al mapa. Qualsevol cosa del món real es pot representar al mapa com un objecte a OpenStreetmap",
+        "fields_townhall": "La part central del editor d'objectes conté *camps* que mostren els atributs del objecte, com el seu nom i la seva adreça.",
+        "map_info": "L'àrea principal del mapa mostra les dades d'OpenStreetMap sobre un fons.",
+        "nodes_ways": "A OpenStreetMap els punts de vegades els anomenem *nodes* i les línies i àrees de vegades les anomenem *vies*.",
+        "play": "Desplaceu-vos pel mapa i seleccioneu alguns altres objectes per veure quin tipus de coses es poden incloure a OpenStreetMap. **Quan estigueu preparats per continuar al següent capítol, premeu '{next}'.**",
+        "points_lines_areas": "Els objectes del mapa es representen usant *punts, línies o àrees.*",
+        "preset_townhall": "La part superior del editor d'objectes mostra el tipus d'objecte. Aquest punt és un {preset}.",
+        "search_street": "També podeu cercar objectes a la pantalla actual o a tot el món. **Cerca per '{name}'.**",
+        "selected_street": "Bé! Ara heu seleccionat {name}.",
+        "selected_townhall": "Bé! Ara el punt està seleccionat. Els objectes seleccionats es mostren amb un contorn realçat.",
+        "street_different_fields": "Els camps que es mostren per un carrer són diferents dels camps que es mostren per l'ajuntament.",
+        "tap_townhall": "Tots els objectes del mapa es poden seleccionar {tap_icon} prement-los. **Premeu el punt per a seleccionar-lo.**",
+        "title": "Navegació",
+        "zoom": "Podeu acostar o allunyar el mapa movent la {mousewheel_icon} rodeta del ratolí o ratolí tàctil o clicant els botons {plus} / {minus}. **Escaleu el mapa!**"
+      },
+      "ok": "D'acord",
+      "points": {
+        "add_close": "L'editor d'objectes recordarà automàticament tots els vostres canvis.  **Quan hàgiu acabat d'afegir el nom, premeu el {button} botó o `{esc}` per tancar l'editor d'objectes.**",
+        "add_name": "Ara suposem que coneixeu aquest cafè i sabeu el seu nom. **Afegiu un nom al cafè.**",
+        "add_point": "Marquen ubicacions concretes i descriuen què hi ha. **Premeu el botó {point_icon} {point} per afegir un punt nou.**",
+        "choose_cafe": "**Trieu «{preset}» de la llista.**",
+        "delete": "Està bé esborrar objectes que no existeixin al món real.{br}En esborrar un objecte d'OpenStreetMap el suprimiu del mapa que tothom utilitza, per tant hauríeu de saber del cert que l'objecte ja no hi és abans d'esborrar-lo. **Premeu el botó {delete_icon} {delete} per esborrar el punt.**",
+        "edit_menu_touch": "Podeu {longpress_icon} mantenir premut qualsevol objecte per veure el *menú d'edició*, això mostra la llista de les operacions d'edició que es poden fer. **Mantingueu premut el punt que heu creat per veure el menú d'edició. **",
+        "feature_editor": "Ara el punt està marcat com un cafè. Utilitzant l'editor d'objectes podem afegir més informació d'aquest cafè.",
+        "fields_info": "A l'OpenStreetMap tots els camps són opcionals, i ja estarà bé si deixeu un camp buit quan no n'estigueu segur.",
+        "place_point": "Per situar un nou punt al mapa, situeu el cursor del ratolí allà on hauria de ser, després {leftclick} cliqueu el botó esquerre del ratolí o premeu `{space}`. **Moveu el punter del ratolí sobre aquest edifici, després cliqueu el botó esquerre del ratolí o premeu `{space}`.**",
+        "place_point_touch": "Per situar el punt nou al mapa, {tap_icon} premeu la ubicació on hauria de ser. **Premeu el centre d'aquest edifici.**",
+        "play": "Ara que sabeu com crear i editar punts, proveu de crear uns quants punts més per practicar! **Quan estigueu preparat per continuar al següent capítol, premeu '{next}'.**",
+        "points_info": "Els *punts* es poden usar per representar objectes com ara botigues, restaurants i monuments.",
+        "reselect": "Sovint hi ha punts que ja existeixen, però tenen errors o són incomplets. Podem editar els punts existents. **Seleccioneu el cafè que acabeu de crear.**",
+        "rightclick": "Podeu {rightclick} clicar el botó dret sobre qualsevol objecte per veure el *menú d'edició*, que mostrarà la llista de les operacions d'edició que es poden fer.{br}Clicar el botó dret és equivalent a control-clicar o clicar amb 2 dits. **Cliqueu el botó dret per seleccionar el punt que heu creat i veure el menú d'edició.**",
+        "search_cafe": "Hi ha molts objectes diferents que es poden representar amb un punt. El punt que heu afegit és un cafè. **Cerca per  '{preset}'.**",
+        "title": "Punts",
+        "undo": "Sempre podeu desfer qualsevol canvi fins que deseu les vostres edicions a OpenStreetMap. **Premeu el botó {undo_icon} {undo} per recuperar el punt.**",
+        "update": "Ara podem afegir alguns detalls més d'aquest cafè. Podeu canviar el seu nom, afegir el tipus de menjar o una adreça. **Modifiqueu els detalls del cafè.**",
+        "update_close": "**Quan hàgiu acabat de modificar el cafè, premeu el {button} botó o `{esc}`  per tancar l'editor d'objectes.**"
+      },
+      "startediting": {
+        "help": "Ara ja esteu a punt per editar l'OpenStreetMap!{br}Poder tornar a fer aquest tutorial quan vulgueu o veure més documentació prement el botó {help_icon} {help} o la tecla `{help_key}`.",
+        "save": "No oblideu que els canvis s'han de desar regularment!",
+        "shortcuts": "Podeu veure una llista d'ordres amb les seves dreceres de teclat prement la tecla `{shortcuts_key}`.",
+        "start": "Comenceu a editar el mapa!",
+        "title": "Comenceu a editar"
+      },
+      "welcome": {
+        "chapters": "Podeu usar els botons de sota saltar-vos capítols en qualsevol moment o per tornar a començar un capítol si us encalleu. Comencem ja! **Premeu '{next}' per continuar.**",
+        "practice": "Totes les dades d'aquesta visita guiada són per fer proves i els canvis que pugueu fer finalment no es desaran.",
+        "title": "Us donem la benvinguda",
+        "welcome": "Us donem la benvinguda! Aquesta visita guiada us ensenyarà els conceptes bàsics de l'edició a OpenStreetMap.",
+        "words": "Aquesta visita guiada introduirà algunes paraules i conceptes nous. Quan s'introdueixi una paraula nova es mostrarà en cursiva."
+      }
+    },
+    "issues": {
+      "almost_junction": {
+        "highway-highway": {
+          "reference": "Els camins que intersequen haurien de compartir un vèrtex d'unió."
+        },
+        "message": "{feature} és molt a prop però no connectat a {feature2}",
+        "self": {
+          "message": "{feature} acaba molt a prop d'ell mateix però no es reconnecta"
+        },
+        "tip": "Cerca objectes que possiblement haurien d'estar connectats a als objectes propers",
+        "title": "Quasi encreuament"
+      },
+      "area_as_point": {
+        "message": "{feature} hauria de ser una àrea i no un punt"
+      },
+      "close_nodes": {
+        "detached": {
+          "message": "{feature} és massa a prop de {feature2}",
+          "reference": "Els punts separats no haurien de compartir ubicació."
+        },
+        "message": "Dos punts a {way} estan molt junts",
+        "reference": "Els punts redundants en una via haurien de fusionar-se o separar-se.",
+        "tip": "Cerca punts atapeïts i redundants",
+        "title": "Punts molt propers"
+      },
+      "crossing_ways": {
+        "aeroway-aeroway": {
+          "reference": "Les vies aèries creuades haurien d'estar connectades."
+        },
+        "aeroway-building": {
+          "reference": "Les vies aèries que creuen edificis haurien d'utilitzar ponts o diferents capes."
+        },
+        "aeroway-highway": {
+          "reference": "Les vies aèries que creuen vies de ferrocarril haurien d'estar connectades."
+        },
+        "aeroway-railway": {
+          "reference": "Les vies aèries que creuen autopistes haurien d'estar connectades."
+        },
+        "bridge-bridge": {
+          "reference": "Els ponts que es creuen haurien d'usar capes diferents."
+        },
+        "bridge-bridge_connectable": {
+          "reference": "Els ponts que es creuen haurien d'estar connectats o usar capes diferents."
+        },
+        "building-building": {
+          "reference": "Els edificis no haurien d'intersecar excepte si estan en capes diferents."
+        },
+        "building-highway": {
+          "reference": "Els camins que creuen edificis haurien d'usar ponts, túnels o capes diferents."
+        },
+        "building-railway": {
+          "reference": "Les vies fèrries que creuen edificis haurien d'usar ponts, túnels o capes diferents."
+        },
+        "building-waterway": {
+          "reference": "Els cursos d'aigua que creuen edificis haurien d'usar túnels o capes diferents."
+        },
+        "highway-highway": {
+          "reference": "Els camins que es creuen haurien d'usar ponts, túnels o interseccions."
+        },
+        "highway-railway": {
+          "reference": "Els camins que creuen vies fèrries haurien d'usar ponts, túnels o passos a nivell."
+        },
+        "highway-waterway": {
+          "reference": "Els camins que creuen cursos d'aigua haurien d'usar ponts, túnels o guals."
+        },
+        "indoor-indoor": {
+          "reference": "Els objectes d'interior que es creuen haurien d'usar nivells diferents."
+        },
+        "indoor-indoor_connectable": {
+          "reference": "Els objectes d'interior que es creuen haurien d'estar connectats o usar nivells diferents."
+        },
+        "message": "{feature} creua {feature2}",
+        "railway-railway": {
+          "reference": "Les vies fèrries que es creuen haurien d'estar connectades o usar ponts o túnels."
+        },
+        "railway-waterway": {
+          "reference": "Les vies fèrries que creuen cursos d'aigua haurien d'usar ponts o túnels."
+        },
+        "tip": "Cerca objectes que es creuen entre si incorrectament",
+        "title": "Vies que es creuen",
+        "tunnel-tunnel": {
+          "reference": "Els túnels que es creuen haurien d'usar capes diferents."
+        },
+        "tunnel-tunnel_connectable": {
+          "reference": "Els túnels que es creuen haurien d'estar connectats o usar capes diferents."
+        },
+        "waterway-waterway": {
+          "reference": "Els cursos d'aigua que es creuen haurien d'estar connectats o usar túnels."
+        }
+      },
+      "disable_all": "Inhabilita-ho tot",
+      "disconnected_way": {
+        "routable": {
+          "message": {
+            "one": "{highway} està desconnectat d'altres carreteres o camins",
+            "other": "{count} objectes que es poden encaminar només estan connectats entre ells"
+          },
+          "reference": "Tots els carrers, camins i rutes de ferri s'han de connectar formant una única xarxa. Aquest element (o petita col·lecció d'objectes) es troba desconnectat de la xarxa o només connectat mitjançant un únic element que poques aplicacions consideren al planificar la ruta."
+        },
+        "tip": "Cerca carreteres, camins i rutes de ferri que no es poden encaminar.",
+        "title": "Vies desconnectades"
+      },
+      "enable_all": "Habilita-ho tot",
+      "fix": {
+        "add_a_bridge": {
+          "annotation": "S'ha afegit un pont.",
+          "title": "Afegeix un pont"
+        },
+        "add_a_tunnel": {
+          "annotation": "S'ha afegit un túnel.",
+          "title": "Afegeix un túnel"
+        },
+        "address_the_concern": {
+          "title": "Resol la preocupació"
+        },
+        "connect_almost_junction": {
+          "annotation": "S'han connectat objectes molt propers."
+        },
+        "connect_crossing_features": {
+          "annotation": "S'han connectat objectes que es creuen."
+        },
+        "connect_endpoints": {
+          "annotation": "S'han connectat els extrems d'una via.",
+          "title": "Connecta els extrems"
+        },
+        "connect_feature": {
+          "title": "Connecta aquest objecte"
+        },
+        "connect_features": {
+          "title": "Connecta els objectes"
+        },
+        "connect_using_crossing": {
+          "title": "Connecta usant un encreuament"
+        },
+        "connect_using_ford": {
+          "title": "Connecta amb un gual"
+        },
+        "continue_from_end": {
+          "title": "Continua dibuixant des del final"
+        },
+        "continue_from_start": {
+          "title": "Continua dibuixant des de l'inici"
+        },
+        "convert_to_line": {
+          "annotation": "S'ha convertit una àrea a línia.",
+          "title": "Converteix això a una línia"
+        },
+        "delete_feature": {
+          "title": "Elimina aquest objecte"
+        },
+        "extract_point": {
+          "title": "Extreu aquest punt"
+        },
+        "ignore_issue": {
+          "title": "Ignora aquest problema"
+        },
+        "merge_close_vertices": {
+          "annotation": "S'han fusionat punts molt propers d'una via."
+        },
+        "merge_points": {
+          "title": "Fusiona aquests punts"
+        },
+        "move_points_apart": {
+          "title": "Separa aquests punts"
+        },
+        "move_tags": {
+          "annotation": "S'han mogut les etiquetes.",
+          "title": "Mou les etiquetes"
+        },
+        "remove_from_relation": {
+          "title": "Elimina de la relació"
+        },
+        "remove_generic_name": {
+          "annotation": "S'ha eliminat un nom genèric."
+        },
+        "remove_mistaken_name": {
+          "annotation": "S'ha eliminat un nom erroni."
+        },
+        "remove_private_info": {
+          "annotation": "S'ha eliminat informació privada."
+        },
+        "remove_proprietary_data": {
+          "title": "S'han eliminat totes les dades privatives"
+        },
+        "remove_tag": {
+          "annotation": "S'ha eliminat l'etiqueta.",
+          "title": "Elimina l'etiqueta"
+        },
+        "remove_tags": {
+          "title": "Elimina les etiquetes"
+        },
+        "remove_the_name": {
+          "title": "Elimina el nom"
+        },
+        "reposition_features": {
+          "title": "Reposiciona els objectes"
+        },
+        "reverse_feature": {
+          "title": "Inverteix aquest objecte"
+        },
+        "select_preset": {
+          "title": "Seleccioneu el tipus d'objecte"
+        },
+        "select_road_type": {
+          "title": "Seleccioneu el tipus de carretera"
+        },
+        "set_as_inner": {
+          "title": "Estableix com a interior"
+        },
+        "set_as_outer": {
+          "title": "Estableix com a exterior"
+        },
+        "square_feature": {
+          "title": "Quadra aquest objecte"
+        },
+        "tag_as_disconnected": {
+          "annotation": "S'han etiquetat objectes molt propers com a desconnectats.",
+          "title": "Etiqueta com a desconnectat"
+        },
+        "tag_as_not": {
+          "annotation": "No afegida: etiqueta",
+          "title": "L'etiqueta no té el mateix \"{name}\""
+        },
+        "tag_as_unsquare": {
+          "annotation": "S'ha etiquetat una via com a què no té cantonades quadrades.",
+          "title": "Etiqueta com a físicament no quadrat"
+        },
+        "tag_this_as_higher": {
+          "title": "Etiqueta-ho com a més alt"
+        },
+        "tag_this_as_lower": {
+          "title": "Etiqueta-ho com a més baix"
+        },
+        "upgrade_tags": {
+          "annotation": "S'han actualitzat les etiquetes antigues.",
+          "title": "Actualitza l'etiqueta"
+        },
+        "use_different_layers": {
+          "title": "Usa capes diferents"
+        },
+        "use_different_layers_or_levels": {
+          "title": "Usa capes o nivells diferents"
+        },
+        "use_different_levels": {
+          "title": "Usa nivells diferents"
+        }
+      },
+      "fix_all": {
+        "annotation": "S'han arreglat diversos problemes de validació.",
+        "title": "Arregla-ho tot"
+      },
+      "fix_one": {
+        "title": "arregla-ho"
+      },
+      "fixme_tag": {
+        "message": "{feature} té una petició d'\"Arregla'm\"",
+        "reference": "Una etiqueta \"fixme\" indica que un mapejador ha demanat ajuda amb un objecte."
+      },
+      "generic_name": {
+        "message": "{feature} té el nom sospitós \"{name}\"",
+        "message_language": "{feature} té el nom sospitós \"{name}\" en {language}",
+        "reference": "Els noms haurien de ser els noms reals dels objectes sobre el terreny."
+      },
+      "help_request": {
+        "tip": "Cerca objectes en què altres han demanat assistència",
+        "title": "Peticions d'ajuda"
+      },
+      "impossible_oneway": {
+        "highway": {
+          "end": {
+            "message": "{feature} no té cap sortida",
+            "reference": "Les carreteres de direcció única han de portar a altres carreteres."
+          },
+          "start": {
+            "message": "{feature} no és accessible",
+            "reference": "Les carreteres de direcció única han de ser accessible via altres carreteres."
+          }
+        },
+        "tip": "Cerca problemes d'encaminament amb objectes de direcció única",
+        "title": "Direccions úniques impossibles",
+        "waterway": {
+          "connected": {
+            "end": {
+              "message": "{feature} flueix en direcció contrària a un curs d'aigua connectat"
+            },
+            "reference": "Els segments de cursos d'aigua haurien de fluir tots en la mateixa direcció.",
+            "start": {
+              "message": "{feature} flueix allunyant-se d'un curs d'aigua connectat"
+            }
+          }
+        }
+      },
+      "incompatible_source": {
+        "feature": {
+          "message": "{feature} desa \"{value}\" com una font de dades"
+        },
+        "reference": {
+          "amap": "Els productes Amap són propietaris i no es poden utilitzar com a referències",
+          "baidu": "Els productes Baidu són propietaris i no es poden utilitzar com a referències",
+          "google": "Els productes Google són propietaris i no es poden utilitzar com a referències"
+        },
+        "tip": "Cerca objectes amb etiquetes de font sospitoses",
+        "title": "Fonts sospitoses"
+      },
+      "invalid_format": {
+        "email": {
+          "message": "{feature} té una adreça de correu electrònic no vàlida",
+          "reference": "Les adreces de correu electrònic han de tenir la forma \"usuari@exemple.com\"."
+        },
+        "tip": "Cerca etiquetes amb formats inesperats",
+        "title": "Formatació no vàlida"
+      },
+      "key": "I",
+      "line_as_area": {
+        "message": "{feature} hauria de ser una línia i no una àrea"
+      },
+      "line_as_point": {
+        "message": "{feature} hauria de ser una línia i no un punt"
+      },
+      "mismatched_geometry": {
+        "reference": "La majoria d'objectes estan limitats a certs tipus de geometries.",
+        "tip": "Cerca objectes amb etiquetes i geometria en conflicte",
+        "title": "Geometria que no concorda"
+      },
+      "missing_role": {
+        "message": "{member} no té cap rol dins {relation}",
+        "multipolygon": {
+          "reference": "Els membres de mulipolígons han de tenir un rol \"inner\" o \"outer\"."
+        },
+        "tip": "Cerca relacions sense rols dels membres o rols incorrectes",
+        "title": "Manquen rols"
+      },
+      "missing_tag": {
+        "any": {
+          "message": "{feature} no té cap etiqueta"
+        },
+        "descriptive": {
+          "message": "{feature} no té cap etiqueta descriptiva"
+        },
+        "reference": "Els objectes han de tenir etiquetes que defineixin què són.",
+        "relation_type": {
+          "message": "{feature} és una relació sense un tipus"
+        },
+        "tip": "Cerca objectes que els falten etiquetes descriptives",
+        "title": "Manquen etiquetes"
+      },
+      "no_issues": {
+        "hidden_issues": {
+          "disabled_rules": "Problemes amb les regles inhabilitades: {count}",
+          "disabled_rules_elsewhere": "Problemes en altres llocs amb les regles inhabilitades: {count}",
+          "elsewhere": "Problemes en altres llocs: {count}",
+          "everything_else": "Problemes amb tota la resta: {count}",
+          "everything_else_elsewhere": "Problemes en altres llocs amb tota la resta: {count}",
+          "ignored_issues": "Problemes ignorats: {count}",
+          "ignored_issues_elsewhere": "Problemes ignorats en altres llocs: {count}",
+          "none": "Els problemes que es detectin apareixeran aquí"
+        },
+        "message": {
+          "edits": "Les vostres edicions semblen correctes",
+          "edits_in_view": "Les vostres edicions a la vista semblen correctes",
+          "everything": "Sembla que tot està bé",
+          "everything_in_view": "Tot el que es veu sembla correcte",
+          "no_edits": "Encara no heu editat res"
+        }
+      },
+      "old_multipolygon": {
+        "message": "{multipolygon} té etiquetes mal posades",
+        "reference": "Els multipolígons haurien d'estar etiquetats a la relació, no a les seves vies exteriors."
+      },
+      "options": {
+        "what": {
+          "all": "Tot",
+          "edited": "Les meves edicions",
+          "title": "Comprovacions:"
+        },
+        "where": {
+          "all": "A tot arreu",
+          "title": "On:",
+          "visible": "A la vista"
+        }
+      },
+      "outdated_tags": {
+        "incomplete": {
+          "message": "{feature} té etiquetes incompletes",
+          "reference": "Alguns objectes haurien de tenir etiquetes addicionals."
+        },
+        "message": "{feature} té etiquetes antiquades",
+        "noncanonical_brand": {
+          "message": "{feature} sembla un objecte comú amb etiquetes no estàndards",
+          "message_incomplete": "{feature} sembla un objecte comú amb etiquetes incompletes",
+          "reference": "Alguns objectes, com per exemple cadenes comercials o oficines de correus, s'espera que tinguin certes etiquetes en comú."
+        },
+        "reference": "Algunes etiquetes canvien amb el temps i s'haurien d'actualitzar.",
+        "tip": "Cerca objectes amb etiquetes obsoletes que es poden actualitzar",
+        "title": "Etiquetes antiquades"
+      },
+      "point_as_area": {
+        "message": "{feature} hauria de ser un punt i no una àrea"
+      },
+      "point_as_line": {
+        "message": "{feature} hauria de ser un punt i no una línia"
+      },
+      "point_as_vertex": {
+        "message": "{feature} hauria de ser un punt independent segons les seves etiquetes",
+        "reference": "Alguns objectes no haurien de formar part de línies o àrees."
+      },
+      "private_data": {
+        "contact": {
+          "message": "{feature} podria tenir etiquetes amb informació de contacte privada"
+        },
+        "reference": "Les dades sensibles com ara números de telèfon personals no s'haurien d'etiquetar.",
+        "tip": "Cerca objectes que poden tenir informació privada",
+        "title": "Informació privada"
+      },
+      "reset_ignored": "Reinicialitza els ignorats",
+      "resolved_tooltip": "Avisos resolts amb les vostres edicions",
+      "rules": "Regles",
+      "suggested": "Actualitzacions suggerides:",
+      "suspicious_name": {
+        "tip": "Cerca objectes amb noms genèrics o sospitosos",
+        "title": "Noms sospitosos"
+      },
+      "tag_suggests_area": {
+        "message": "{feature} hauria de ser una àrea tancada segons l'etiqueta \"{tag}\"",
+        "reference": "Les àrees han de tenir els extrems connectats."
+      },
+      "title": "Problemes",
+      "unclosed_multipolygon_part": {
+        "message": "{feature} té una part no tancada",
+        "reference": "Totes les parts internes i externes d'un multipolígon haurien de tenir extrems connectats."
+      },
+      "unknown_road": {
+        "message": "{feature} no té classificació",
+        "reference": "Les carreteres sense un tipus específic poden no aparèixer en mapes o en encaminar."
+      },
+      "unsquare_way": {
+        "buildings": {
+          "reference": "Els edificis amb cantonades no quadrades sovint es poden dibuixar més acuradament."
+        },
+        "message": "{feature} té cantonades no quadrades",
+        "tip": "Cerca objectes amb cantonades no quadrades que es poden dibuixar millor",
+        "title": "Cantonades no quadrades (fins a {val}°)"
+      },
+      "vertex_as_point": {
+        "message": "{feature} hauria d'estar connectat a una línea o àrea basada amb aquestes etiquetes",
+        "reference": "Alguns objectes no haurien de ser punts independents."
+      },
+      "warnings": "Avisos"
+    },
+    "kartaview": {
+      "title": "KartaView",
+      "tooltip": "Imatges a peu de carrer des de KartView"
+    },
+    "languageNames": {
+      "aa": "àfar",
+      "ab": "abkhaz",
+      "ace": "atjeh",
+      "ach": "acoli",
+      "ada": "adangme",
+      "ady": "adigué",
+      "ae": "avèstic",
+      "af": "afrikaans",
+      "afh": "afrihili",
+      "agq": "aghem",
+      "ain": "ainu",
+      "ak": "àkan",
+      "akk": "accadi",
+      "akz": "alabama",
+      "ale": "aleuta",
+      "aln": "albanès geg",
+      "alt": "altaic meridional",
+      "am": "amhàric",
+      "an": "aragonès",
+      "ang": "anglès antic",
+      "ann": "obolo",
+      "anp": "angika",
+      "ar": "àrab",
+      "ar-001": "àrab estàndard modern",
+      "arc": "arameu",
+      "arn": "mapudungu",
+      "aro": "araona",
+      "arp": "arapaho",
+      "ars": "àrab najdi",
+      "arw": "arauac",
+      "arz": "àrab egipci",
+      "as": "assamès",
+      "asa": "pare",
+      "ast": "asturià",
+      "atj": "atacama",
+      "av": "àvar",
+      "awa": "awadhi",
+      "ay": "aimara",
+      "az": "azerbaidjanès",
+      "ba": "baixkir",
+      "bal": "balutxi",
+      "ban": "balinès",
+      "bar": "bavarès",
+      "bas": "basa",
+      "bax": "bamum",
+      "bbj": "ghomala",
+      "be": "belarús",
+      "bej": "beja",
+      "bem": "bemba",
+      "bez": "bena",
+      "bfd": "bafut",
+      "bfq": "badaga",
+      "bg": "búlgar",
+      "bgc": "haryanvi",
+      "bgn": "balutxi occidental",
+      "bho": "bhojpuri",
+      "bi": "bislama",
+      "bik": "bicol",
+      "bin": "edo",
+      "bkm": "kom",
+      "bla": "blackfoot",
+      "blo": "anii",
+      "bm": "bambara",
+      "bn": "bengalí",
+      "bo": "tibetà",
+      "br": "bretó",
+      "bra": "braj",
+      "brh": "brahui",
+      "brx": "bodo",
+      "bs": "bosnià",
+      "bss": "akoose",
+      "bua": "buriat",
+      "bug": "bugui",
+      "bum": "bulu",
+      "byn": "bilin",
+      "byv": "medumba",
+      "ca": "català",
+      "cad": "caddo",
+      "car": "carib",
+      "cay": "cayuga",
+      "cch": "atsam",
+      "ccp": "chakma",
+      "ce": "txetxè",
+      "ceb": "cebuà",
+      "cgg": "chiga",
+      "ch": "chamorro",
+      "chb": "txibtxa",
+      "chg": "txagatai",
+      "chk": "chuuk",
+      "chm": "mari",
+      "chn": "pidgin chinook",
+      "cho": "choctaw",
+      "chp": "chipewyan",
+      "chr": "cherokee",
+      "chy": "xeiene",
+      "ckb": "sorani",
+      "clc": "chilcotin",
+      "co": "cors",
+      "cop": "copte",
+      "cr": "cree",
+      "crg": "michif",
+      "crh": "tàtar de Crimea",
+      "crj": "cree sud-oriental",
+      "crk": "cree de la plana",
+      "crl": "cree nord-oriental",
+      "crm": "moose cree",
+      "crr": "algonquí de Carolina",
+      "crs": "francès crioll de les Seychelles",
+      "cs": "txec",
+      "csb": "caixubi",
+      "csw": "swampy cree",
+      "cu": "eslau eclesiàstic",
+      "cv": "txuvaix",
+      "cy": "gal·lès",
+      "da": "danès",
+      "dak": "dakota",
+      "dar": "darguà",
+      "dav": "taita",
+      "de": "alemany",
+      "de-AT": "alemany austríac",
+      "de-CH": "alemany estàndard suís",
+      "del": "delaware",
+      "den": "slavi",
+      "dgr": "dogrib",
+      "din": "dinka",
+      "dje": "zarma",
+      "doi": "dogri",
+      "dsb": "baix sòrab",
+      "dua": "douala",
+      "dum": "neerlandès mitjà",
+      "dv": "divehi",
+      "dyo": "diola",
+      "dyu": "jula",
+      "dz": "dzongka",
+      "dzg": "dazaga",
+      "ebu": "embu",
+      "ee": "ewe",
+      "efi": "efik",
+      "egl": "emilià",
+      "egy": "egipci antic",
+      "eka": "ekajuk",
+      "el": "grec",
+      "elx": "elamita",
+      "en": "anglès",
+      "en-AU": "anglès australià",
+      "en-CA": "anglès canadenc",
+      "en-GB": "anglès britànic",
+      "en-US": "anglès americà",
+      "enm": "anglès mitjà",
+      "eo": "esperanto",
+      "es": "espanyol",
+      "es-419": "espanyol llatinoamericà",
+      "es-ES": "espanyol europeu",
+      "es-MX": "espanyol de Mèxic",
+      "et": "estonià",
+      "eu": "basc",
+      "ewo": "ewondo",
+      "ext": "extremeny",
+      "fa": "persa",
+      "fa-AF": "dari",
+      "fan": "fang",
+      "fat": "fanti",
+      "ff": "ful",
+      "fi": "finès",
+      "fil": "filipí",
+      "fj": "fijià",
+      "fo": "feroès",
+      "fon": "fon",
+      "fr": "francès",
+      "fr-CA": "francès canadenc",
+      "fr-CH": "francès suís",
+      "frc": "francès cajun",
+      "frm": "francès mitjà",
+      "fro": "francès antic",
+      "frr": "frisó septentrional",
+      "frs": "frisó oriental",
+      "fur": "friülà",
+      "fy": "frisó occidental",
+      "ga": "irlandès",
+      "gaa": "ga",
+      "gag": "gagaús",
+      "gan": "xinès gan",
+      "gay": "gayo",
+      "gba": "gbaya",
+      "gd": "gaèlic escocès",
+      "gez": "gueez",
+      "gil": "gilbertès",
+      "gl": "gallec",
+      "glk": "gilaki",
+      "gmh": "alt alemany mitjà",
+      "gn": "guaraní",
+      "goh": "alt alemany antic",
+      "gon": "gondi",
+      "gor": "gorontalo",
+      "got": "gòtic",
+      "grb": "grebo",
+      "grc": "grec antic",
+      "gsw": "alemany suís",
+      "gu": "gujarati",
+      "guc": "wayú",
+      "guz": "gusí",
+      "gv": "manx",
+      "gwi": "gwich’in",
+      "ha": "haussa",
+      "hai": "haida",
+      "hak": "xinès hakka",
+      "haw": "hawaià",
+      "hax": "haida meridional",
+      "he": "hebreu",
+      "hi": "hindi",
+      "hif": "hindi de Fiji",
+      "hil": "híligaynon",
+      "hit": "hitita",
+      "hmn": "hmong",
+      "ho": "hiri motu",
+      "hr": "croat",
+      "hsb": "alt sòrab",
+      "hsn": "xinès xiang",
+      "ht": "crioll d’Haití",
+      "hu": "hongarès",
+      "hup": "hupa",
+      "hur": "halkomelem",
+      "hy": "armeni",
+      "hz": "herero",
+      "ia": "interlingua",
+      "iba": "iban",
+      "ibb": "ibibio",
+      "id": "indonesi",
+      "ie": "interlingue",
+      "ig": "igbo",
+      "ii": "yi sichuan",
+      "ik": "inupiak",
+      "ikt": "inuktitut occidental canadenc",
+      "ilo": "ilocano",
+      "inh": "ingúix",
+      "io": "ido",
+      "is": "islandès",
+      "it": "italià",
+      "iu": "inuktitut",
+      "ja": "japonès",
+      "jam": "crioll anglès de Jamaica",
+      "jbo": "lojban",
+      "jgo": "ngomba",
+      "jmc": "machame",
+      "jpr": "judeopersa",
+      "jrb": "judeoàrab",
+      "jv": "javanès",
+      "ka": "georgià",
+      "kaa": "karakalpak",
+      "kab": "cabilenc",
+      "kac": "katxin",
+      "kaj": "jju",
+      "kam": "kamba",
+      "kaw": "kawi",
+      "kbd": "kabardí",
+      "kbl": "kanembu",
+      "kcg": "tyap",
+      "kde": "makonde",
+      "kea": "crioll capverdià",
+      "ken": "kenyang",
+      "kfo": "koro",
+      "kg": "kongo",
+      "kgp": "kaingà",
+      "kha": "khasi",
+      "kho": "khotanès",
+      "khq": "koyra chiini",
+      "ki": "kikuiu",
+      "kj": "kuanyama",
+      "kk": "kazakh",
+      "kkj": "kako",
+      "kl": "groenlandès",
+      "kln": "kalenjin",
+      "km": "khmer",
+      "kmb": "kimbundu",
+      "kn": "kannada",
+      "ko": "coreà",
+      "koi": "komi-permiac",
+      "kok": "concani",
+      "kos": "kosraeà",
+      "kpe": "kpelle",
+      "kr": "kanuri",
+      "krc": "karatxai-balkar",
+      "kri": "krio",
+      "krl": "carelià",
+      "kru": "kurukh",
+      "ks": "caixmiri",
+      "ksb": "shambala",
+      "ksf": "bafia",
+      "ksh": "kölsch",
+      "ku": "kurd",
+      "kum": "kúmik",
+      "kut": "kutenai",
+      "kv": "komi",
+      "kw": "còrnic",
+      "kwk": "kwak’wala",
+      "kxv": "kuvi",
+      "ky": "kirguís",
+      "la": "llatí",
+      "lad": "judeocastellà",
+      "lag": "langi",
+      "lah": "panjabi occidental",
+      "lam": "lamba",
+      "lb": "luxemburguès",
+      "lez": "lesguià",
+      "lg": "ganda",
+      "li": "limburguès",
+      "lij": "lígur",
+      "lil": "lillooet",
+      "lkt": "lakota",
+      "lmo": "llombard",
+      "ln": "lingala",
+      "lo": "laosià",
+      "lol": "mongo",
+      "lou": "crioll francès de Louisiana",
+      "loz": "lozi",
+      "lrc": "luri septentrional",
+      "lsm": "saamia",
+      "lt": "lituà",
+      "lu": "luba katanga",
+      "lua": "luba-lulua",
+      "lui": "luisenyo",
+      "lun": "lunda",
+      "lus": "mizo",
+      "luy": "luyia",
+      "lv": "letó",
+      "lzh": "xinès clàssic",
+      "lzz": "laz",
+      "mad": "madurès",
+      "maf": "mafa",
+      "mag": "magahi",
+      "mai": "maithili",
+      "mak": "makassar",
+      "man": "mandinga",
+      "mas": "massai",
+      "mde": "maba",
+      "mdf": "mordovià moksa",
+      "mdr": "mandar",
+      "men": "mende",
+      "mer": "meru",
+      "mfe": "mauricià",
+      "mg": "malgaix",
+      "mga": "gaèlic irlandès mitjà",
+      "mgh": "makhuwa-metto",
+      "mgo": "meta’",
+      "mh": "marshallès",
+      "mi": "maori",
+      "mic": "micmac",
+      "min": "minangkabau",
+      "mk": "macedoni",
+      "ml": "malaiàlam",
+      "mn": "mongol",
+      "mnc": "manxú",
+      "mni": "manipurí",
+      "moe": "innu-aimun",
+      "moh": "mohawk",
+      "mos": "moore",
+      "mr": "marathi",
+      "mrj": "mari occidental",
+      "ms": "malai",
+      "mt": "maltès",
+      "mua": "mundang",
+      "mus": "creek",
+      "mwl": "mirandès",
+      "mwr": "marwari",
+      "my": "birmà",
+      "mye": "myene",
+      "myv": "mordovià erza",
+      "mzn": "mazanderani",
+      "na": "nauruà",
+      "nan": "xinès min del sud",
+      "nap": "napolità",
+      "naq": "nama",
+      "nb": "noruec bokmål",
+      "nd": "ndebele septentrional",
+      "nds": "baix alemany",
+      "nds-NL": "baix saxó",
+      "ne": "nepalès",
+      "new": "newari",
+      "ng": "ndonga",
+      "nia": "nias",
+      "niu": "niueà",
+      "nl": "neerlandès",
+      "nl-BE": "flamenc",
+      "nmg": "bissio",
+      "nn": "noruec nynorsk",
+      "nnh": "ngiemboon",
+      "no": "noruec",
+      "nog": "nogai",
+      "non": "nòrdic antic",
+      "nov": "novial",
+      "nqo": "n’Ko",
+      "nr": "ndebele meridional",
+      "nso": "sotho septentrional",
+      "nus": "nuer",
+      "nv": "navaho",
+      "nwc": "newari clàssic",
+      "ny": "nyanja",
+      "nym": "nyamwesi",
+      "nyn": "nyankole",
+      "nyo": "nyoro",
+      "nzi": "nzema",
+      "oc": "occità",
+      "oj": "ojibwa",
+      "ojb": "ojibwa septentrional",
+      "ojc": "ojibwa central",
+      "ojs": "oji-cree",
+      "ojw": "ojibwa occidental",
+      "oka": "okanagà",
+      "om": "oromo",
+      "or": "oriya",
+      "os": "osseta",
+      "osa": "osage",
+      "ota": "turc otomà",
+      "pa": "panjabi",
+      "pag": "pangasinan",
+      "pal": "pahlavi",
+      "pam": "pampanga",
+      "pap": "papiament",
+      "pau": "palauà",
+      "pcd": "picard",
+      "pcm": "pidgin de Nigèria",
+      "pdc": "alemany pennsilvanià",
+      "peo": "persa antic",
+      "pfl": "alemany palatí",
+      "phn": "fenici",
+      "pi": "pali",
+      "pis": "pidgin",
+      "pl": "polonès",
+      "pms": "piemontès",
+      "pnt": "pòntic",
+      "pon": "ponapeà",
+      "pqm": "maliseet-passamaquoddy",
+      "prg": "prussià",
+      "pro": "provençal antic",
+      "ps": "paixtu",
+      "pt": "portuguès",
+      "pt-BR": "portuguès del Brasil",
+      "pt-PT": "portuguès de Portugal",
+      "qu": "quítxua",
+      "quc": "k’iche’",
+      "raj": "rajasthani",
+      "rap": "rapanui",
+      "rar": "rarotongà",
+      "rgn": "romanyès",
+      "rhg": "rohingya",
+      "rm": "retoromànic",
+      "rn": "rundi",
+      "ro": "romanès",
+      "ro-MD": "moldau",
+      "rof": "rombo",
+      "rom": "romaní",
+      "ru": "rus",
+      "rup": "aromanès",
+      "rw": "ruandès",
+      "rwk": "rwo",
+      "sa": "sànscrit",
+      "sad": "sandawe",
+      "sah": "iacut",
+      "sam": "arameu samarità",
+      "saq": "samburu",
+      "sas": "sasak",
+      "sat": "santali",
+      "sba": "ngambay",
+      "sbp": "sangu",
+      "sc": "sard",
+      "scn": "sicilià",
+      "sco": "escocès",
+      "sd": "sindi",
+      "sdc": "sasserès",
+      "sdh": "kurd meridional",
+      "se": "sami septentrional",
+      "see": "seneca",
+      "seh": "sena",
+      "sel": "selkup",
+      "ses": "songhai oriental",
+      "sg": "sango",
+      "sga": "irlandès antic",
+      "sh": "serbocroat",
+      "shi": "taixelhit",
+      "shn": "xan",
+      "shu": "àrab txadià",
+      "si": "singalès",
+      "sid": "sidamo",
+      "sk": "eslovac",
+      "sl": "eslovè",
+      "slh": "lushootseed meridional",
+      "sm": "samoà",
+      "sma": "sami meridional",
+      "smj": "sami lule",
+      "smn": "sami d’Inari",
+      "sms": "sami skolt",
+      "sn": "shona",
+      "snk": "soninke",
+      "so": "somali",
+      "sog": "sogdià",
+      "sq": "albanès",
+      "sr": "serbi",
+      "srn": "sranan",
+      "srr": "serer",
+      "ss": "swazi",
+      "ssy": "saho",
+      "st": "sotho meridional",
+      "str": "straits salish",
+      "su": "sondanès",
+      "suk": "sukuma",
+      "sus": "susú",
+      "sux": "sumeri",
+      "sv": "suec",
+      "sw": "suahili",
+      "sw-CD": "suahili del Congo",
+      "swb": "comorià",
+      "syc": "siríac clàssic",
+      "syr": "siríac",
+      "szl": "silesià",
+      "ta": "tàmil",
+      "tce": "tutxone meridional",
+      "te": "telugu",
+      "tem": "temne",
+      "teo": "teso",
+      "ter": "terena",
+      "tet": "tètum",
+      "tg": "tadjik",
+      "tgx": "tagish",
+      "th": "tai",
+      "tht": "tahltà",
+      "ti": "tigrinya",
+      "tig": "tigre",
+      "tiv": "tiv",
+      "tk": "turcman",
+      "tkl": "tokelauès",
+      "tkr": "tsakhur",
+      "tl": "tagal",
+      "tlh": "klingonià",
+      "tli": "tlingit",
+      "tly": "talix",
+      "tmh": "amazic",
+      "tn": "setswana",
+      "to": "tongalès",
+      "tog": "tonga",
+      "tok": "toki pona",
+      "tpi": "tok pisin",
+      "tr": "turc",
+      "trv": "taroko",
+      "ts": "tsonga",
+      "tsi": "tsimshià",
+      "tt": "tàtar",
+      "ttm": "tutxone septentrional",
+      "ttt": "tat meridional",
+      "tum": "tumbuka",
+      "tvl": "tuvaluà",
+      "tw": "twi",
+      "twq": "tasawaq",
+      "ty": "tahitià",
+      "tyv": "tuvinià",
+      "tzm": "amazic del Marroc central",
+      "udm": "udmurt",
+      "ug": "uigur",
+      "uga": "ugarític",
+      "uk": "ucraïnès",
+      "umb": "umbundu",
+      "ur": "urdú",
+      "uz": "uzbek",
+      "ve": "venda",
+      "vec": "vènet",
+      "vep": "vepse",
+      "vi": "vietnamita",
+      "vls": "flamenc occidental",
+      "vmw": "makua",
+      "vo": "volapük",
+      "vot": "vòtic",
+      "vun": "vunjo",
+      "wa": "való",
+      "wae": "walser",
+      "wal": "wolaita",
+      "war": "waray",
+      "was": "washo",
+      "wbp": "warlpiri",
+      "wo": "wòlof",
+      "wuu": "xinès wu",
+      "xal": "calmuc",
+      "xh": "xosa",
+      "xmf": "mingrelià",
+      "xnr": "kangri",
+      "xog": "soga",
+      "yao": "yao",
+      "yap": "yapeà",
+      "yav": "yangben",
+      "ybb": "yemba",
+      "yi": "ídix",
+      "yo": "ioruba",
+      "yrl": "nheengatú",
+      "yue": "xinès, cantonès",
+      "za": "zhuang",
+      "zap": "zapoteca",
+      "zbl": "símbols Bliss",
+      "zea": "zelandès",
+      "zen": "zenaga",
+      "zgh": "amazic estàndard marroquí",
+      "zh": "xinès, mandarí",
+      "zh-Hans": "xinès mandarí (simplificat)",
+      "zh-Hant": "xinès mandarí (tradicional)",
+      "zu": "zulu",
+      "zun": "zuni",
+      "zza": "zaza"
+    },
+    "loading_auth": "Connectant a OpenStreetMap...",
+    "login": "Inicia la sessió",
+    "logout": "Tanca la sessió",
+    "map_data": {
+      "autohidden": "Aquests objectes s'han ocultat automàticament perquè n'haurien aparegut massa a la pantalla. Us podeu acostar per editar-los.",
+      "data_layers": "Capes de dades",
+      "description": "Dades del mapa",
+      "history_panel": {
+        "title": "Mostra el panell de l'historial",
+        "tooltip": "Mostra els detalls de la versió pels objectes seleccionats."
+      },
+      "key": "U",
+      "layers": {
+        "custom": {
+          "title": "Dades del mapa personalitzat",
+          "tooltip": "Arrossegueu i deixeu anar un fitxer de dades a la pàgina, o bé cliqueu el botó per configurar",
+          "zoom": "Escala a les dades"
+        },
+        "keepRight": {
+          "title": "Problemes de KeepRight",
+          "tooltip": "Problemes de dades detectats per keepright.at"
+        },
+        "maproulette": {
+          "cancel": "Cancel·la",
+          "detail_title": "Detalls"
+        },
+        "notes": {
+          "title": "Notes d'OpenStreetMap",
+          "tooltip": "Dades de la nota d'OpenStreetMap"
+        },
+        "osm": {
+          "title": "Dades d'OpenStreetMap",
+          "tooltip": "Dades del mapa d'OpenStreetMap"
+        },
+        "osmose": {
+          "title": "Problemes d'Osmose",
+          "tooltip": "Problemes de dades detectats per osmose.openstreetmap.fr"
+        }
+      },
+      "measurement_panel": {
+        "title": "Mostra el panell de mesuraments",
+        "tooltip": "Mostra els valors de geometria per la selecció."
+      },
+      "osmhidden": "S'ha ocultat aquests objectes automàticament perquè la capa d'OpenStreetMap es troba ocultada.",
+      "style_options": "Opcions d'estil",
+      "title": "Dades del mapa"
+    },
+    "mapillary": {
+      "title": "Mapillary",
+      "tooltip": "Fotos a peu de carrer de Mapillary",
+      "view_on_mapillary": "Mostra la imatge a Mapillary"
+    },
+    "mapillary_signs": {
+      "title": "Senyals de trànsit"
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "deleted": "Aquest objecte ha estat eliminat per {user}.",
+        "location": "Aquest objecte que vareu moure també ho ha sigut per {user}.",
+        "memberlist": "Tant tu com {user} vau canviar els membres de la relació.",
+        "nodelist": "Tant tu com {user} vau canviar els nodes.",
+        "tags": "Heu canviat \"{tag}\" a \"{local}\" i {user} ho ha canviat  a \"{remote}\"."
+      }
+    },
+    "modes": {
+      "add_area": {
+        "description": "Afegiu parcs, edificis, llacs o altres tipus d'àrees sobre el mapa.",
+        "title": "Àrea"
+      },
+      "add_line": {
+        "description": "Afegiu autopistes, carrers, camins per a vianants o d'altres tipus de línies sobre el mapa.",
+        "title": "Línia"
+      },
+      "add_note": {
+        "description": "Has trobat algun error? Fes-ho saber als altres mapejadors.",
+        "title": "Nota"
+      },
+      "add_point": {
+        "description": "Afegiu restaurants, monuments, bústies de correus o altres punts al mapa.",
+        "title": "Punt"
+      },
+      "add_preset": {
+        "title": "Afegeix {feature}"
+      },
+      "browse": {
+        "description": "Allunyeu o apropeu el mapa",
+        "title": "Navega"
+      },
+      "drag_node": {
+        "connected_to_hidden": "No es pot editar perquè està connectat a un objecte amagat."
+      }
+    },
+    "note": {
+      "anonymous": "anònim",
+      "close": "Tanca la nota",
+      "close_comment": "Tanca i comenta",
+      "closed": "(tancat)",
+      "comment": "Comentari",
+      "commentTitle": "Comentaris",
+      "inputPlaceholder": "Escriviu un comentari per a compartir-lo amb altres usuaris.",
+      "login": "Cal que inicieu la sessió per canviar o comentar en aquesta nota.",
+      "new": "Nota nova",
+      "newComment": "Comentari nou",
+      "newDescription": "Descriviu el problema.",
+      "note": "Nota",
+      "open": "Torna a obrir la nota",
+      "open_comment": "Torna a obrir i comenta",
+      "report": "Informa",
+      "save": "Desa la nota",
+      "status": {
+        "closed": "tancat {when}",
+        "commented": "comentat {when}",
+        "opened": "obert {when}",
+        "reopened": "reobert {when}"
+      },
+      "title": "Edita la nota",
+      "upload_explanation": "Els vostres comentaris seran visibles públicament per tots els usuaris d'OpenStreetMap.",
+      "upload_explanation_with_user": "Els vostres comentaris com a {user} seran visibles públicament per tots els usuaris d'OpenStreetMap."
+    },
+    "operations": {
+      "add": {
+        "annotation": {
+          "note": "S'ha afegit una nota.",
+          "point": "Heu afegit un punt.",
+          "relation": "Heu afegit una relació",
+          "vertex": "Heu afegit un node a una via"
+        }
+      },
+      "add_member": {
+        "annotation": {
+          "one": "S'ha afegit un membre a una relació.",
+          "other": "S'han afegit {n} membres a una relació."
+        }
+      },
+      "cancel_draw": {
+        "annotation": "Heu cancel·lat un dibuix."
+      },
+      "change_role": {
+        "annotation": {
+          "one": "S'ha canviat el rol d'un membre de la relació.",
+          "other": "S'ha canviat el rol de {n} membres de la relació."
+        }
+      },
+      "change_tags": {
+        "annotation": "Heu canviat etiquetes."
+      },
+      "circularize": {
+        "annotation": {
+          "feature": {
+            "one": "S'ha fet circular un objecte.",
+            "other": "S'han fet circulars {n} objectes."
+          }
+        },
+        "title": "Feu-ho circular"
+      },
+      "connect": {
+        "annotation": {
+          "from_point": {
+            "to_area": "Heu mogut un punt a un àrea.",
+            "to_line": "Heu mogut un punt a una línia.",
+            "to_point": "Heu fusionat un punt amb una altre.",
+            "to_vertex": "Heu fusionat un punt amb un punt d'una d'una via."
+          },
+          "from_vertex": {
+            "to_adjacent_vertex": "S'han fusionat els punts adjacents en una via.",
+            "to_area": "Heu connectat una via a una àrea.",
+            "to_line": "Heu connectat una via a una línia.",
+            "to_point": "Heu connectat una via a un punt.",
+            "to_sibling_vertex": "S'ha connectat una via amb ella mateixa.",
+            "to_vertex": "Heu connectat una via a una altra."
+          }
+        },
+        "relation": "Aquests objectes no es poden connectar perquè tenen rols de relació amb conflicte.",
+        "restriction": "Aquests objectes no es poden connectar perquè podria malmetre la relació «{relation}»-"
+      },
+      "continue": {
+        "annotation": {
+          "area": "Heu continuat una àrea.",
+          "line": "Heu continuat una línia."
+        },
+        "description": "Continueu aquesta línia",
+        "multiple": "Aquí es poden continuar diferents línies. Afegiu-ne una a la selecció per continuar.",
+        "not_eligible": "No es pot continuar cap línia aquí",
+        "title": "Continua"
+      },
+      "copy": {
+        "annotation": {
+          "one": "S'ha copiat un objecte.",
+          "other": "S'han copiat {n} objectes."
+        },
+        "description": {
+          "one": "Estableix aquest objecte per enganxar.",
+          "other": "Estableix aquests objectes per a enganxar."
+        },
+        "title": "Copiar",
+        "too_large": {
+          "one": "No es pot copiar perquè actualment no es veu una part suficient.",
+          "other": "No es poden copiar perquè actualment no se'ls veu una part suficient."
+        }
+      },
+      "delete": {
+        "annotation": {
+          "area": "Heu eliminat una àrea.",
+          "feature": {
+            "one": "S'ha eliminat un objecte.",
+            "other": "S'han eliminat {n} objectes."
+          },
+          "line": "Heu eliminat una línia.",
+          "point": "Heu eliminat un punt.",
+          "relation": "Heu eliminat una relació.",
+          "vertex": "Heu eliminat un node d'una via."
+        },
+        "title": "Elimina"
+      },
+      "delete_member": {
+        "annotation": {
+          "one": "S'ha eliminat un membre d'una relació",
+          "other": "S'han eliminat {n} membres d'una relació."
+        }
+      },
+      "disconnect": {
+        "annotation": {
+          "features": "Objectes desconnectats.",
+          "from_each_other": "Objectes desconnectats entre ells."
+        },
+        "connected_to_hidden": "No es pot desconnectar perquè està connectat a un objecte ocult.",
+        "description": {
+          "multiple_points": {
+            "multiple_ways": "Desconnecta els objectes seleccionats en aquests punts.",
+            "no_ways": "Desconnecta els objectes en aquests punts.",
+            "single_way": {
+              "area": "Desconnecta l'àrea seleccionada en aquests punts.",
+              "line": "Desconnecta la línia seleccionada en aquests punts."
+            }
+          },
+          "no_points": {
+            "multiple_ways": {
+              "conjoined": "Desconnecta aquests objectes entre ells.",
+              "separate": "Desconnecta aquests objectes de tot."
+            },
+            "single_way": {
+              "area": "Desconnecta aquesta àrea dels altres objectes.",
+              "line": "Desconnecta aquesta línia dels altres objectes."
+            }
+          },
+          "single_point": {
+            "multiple_ways": "Desconnecta l'objecte seleccionat en aquest punt.",
+            "no_ways": "Desconnecta l'objecte en aquest punt.",
+            "single_way": {
+              "area": "Desconnecta l'àrea seleccionada en aquest punt.",
+              "line": "Desconnecta la línia seleccionada en aquest punt."
+            }
+          }
+        },
+        "not_connected": "Aquí no hi han suficients línies o àrees per a desconnectar.",
+        "not_downloaded": "No es pot desconnectar perquè hi ha parts que encara no s'han descarregat.",
+        "relation": "No es pot desconnectar perquè connecta membres d'una relació.",
+        "title": "Desconnecta",
+        "too_large": {
+          "multiple": "No es poden desconnectar perquè actualment no se'ls veu una part suficient.",
+          "single": "No es pot desconnectar perquè actualment no es veu una part suficient."
+        }
+      },
+      "downgrade": {
+        "annotation": {
+          "address": {
+            "one": "S'ha simplificat un objecte a una adreça.",
+            "other": "S'han simplificat {n} objectes a adreces."
+          },
+          "building": {
+            "one": "S'ha simplificat un objecte a edifici bàsic.",
+            "other": "S'han simplificat {n} objectes a edificis bàsics."
+          },
+          "generic": {
+            "one": "S'ha simplificat un objecte.",
+            "other": "S'han simplificat {n} objectes."
+          }
+        },
+        "description": {
+          "address": "Elimina totes les etiquetes que no són d'adreces.",
+          "building": "Elimina totes les etiquetes que no són d'edificis.",
+          "building_address": "Elimina totes les etiquetes que no són ni d'adreces ni d'edificis.",
+          "generic": "Elimina etiquetes."
+        },
+        "title": "Simplifica"
+      },
+      "extract": {
+        "annotation": {
+          "one": "S'ha extret un punt.",
+          "other": "S'han extret {n} punts."
+        },
+        "description": {
+          "feature": {
+            "other": "Extreu punts d'aquests objectes."
+          }
+        },
+        "title": "Extreu"
+      },
+      "merge": {
+        "annotation": {
+          "one": "S'ha fusionat un objecte.",
+          "other": "S'han fusionat {n} objectes."
+        },
+        "conflicting_relations": "Aquests objectes no es poden fusionar perquè tenen rols de relacións amb conflicte.",
+        "conflicting_tags": "Aquests objectes no es poden fusionar donat que algunes de les seves etiquetes tenen valors diferents.",
+        "damage_relation": "Aquests objectes no es poden fusionar perquè podria malmetre la relació «{relation}».",
+        "description": "Fusiona aquests objectes",
+        "incomplete_relation": "Aquests objectes no es poden fusionar perquè com a mínim un d'ells no s'ha descarregat del tot.",
+        "not_adjacent": "Aquests objectes no es poden fusionar perquè els seu extrems no estan connectats.",
+        "not_eligible": "Aquests objectes no es poden fusionar.",
+        "paths_intersect": "Aquests objectes no es poden fusionar perquè el camí resultant intersecaria amb ell mateix.",
+        "relation": "Aquests objectes no es poden fusionar perquè tenen rols de relació amb conflicte.",
+        "title": "Fusiona",
+        "too_many_vertices": "Aquests objectes no es poden fusionar perquè el camí resultant tindria massa punts."
+      },
+      "move": {
+        "annotation": {
+          "area": "Heu mogut una àrea.",
+          "feature": {
+            "one": "S'ha mogut un objecte.",
+            "other": "S'han mogut {n} objectes."
+          },
+          "line": "Heu mogut una línia.",
+          "point": "Heu mogut un punt.",
+          "relation": "S'ha mogut una relació",
+          "vertex": "Heu mogut un node d'una via."
+        },
+        "title": "Mou"
+      },
+      "orthogonalize": {
+        "annotation": {
+          "corner": {
+            "one": "S'ha quadrat una cantonada.",
+            "other": "S'han quadrat {n} cantonades."
+          },
+          "feature": {
+            "one": "S'han quadrat les cantonades d'un objecte.",
+            "other": "S'han quadrat les cantonades de {n} objectes."
+          }
+        },
+        "title": "Quadra"
+      },
+      "paste": {
+        "annotation": {
+          "one": "S'ha enganxat un objecte.",
+          "other": "S'han enganxat {n} objectes."
+        },
+        "description": {
+          "one": "Afegeix aquí un objecte duplicat.",
+          "other": "Afegeix aquí {n} objectes duplicats."
+        },
+        "nothing_copied": "No s'ha copiat cap objecte.",
+        "title": "Enganxar"
+      },
+      "reflect": {
+        "annotation": {
+          "long": {
+            "feature": {
+              "one": "S'han capgirat {n} objecte a través del seu eix llarg.",
+              "other": "S'han capgirat {n} objectes a través del seu eix llarg."
+            }
+          },
+          "short": {
+            "feature": {
+              "one": "S'ha capgirat {n} objecte a través del seu eix llarg.",
+              "other": "S'han capgirat {n} objectes a través del seu eix curt."
+            }
+          }
+        },
+        "title": {
+          "long": "Capgira pel costat llarg",
+          "short": "Capgira pel costat curt"
+        }
+      },
+      "reorder_members": {
+        "annotation": "S'ha reordenat els membres d'una relació."
+      },
+      "restriction": {
+        "annotation": {
+          "create": "Heu afegit una restricció de gir",
+          "delete": "Heu eliminat una restricció de gir"
+        }
+      },
+      "reverse": {
+        "annotation": {
+          "feature": {
+            "one": "S'ha invertit {n} objecte.",
+            "other": "S'han invertit {n} objectes."
+          },
+          "line": {
+            "one": "S'ha invertit {n} línia.",
+            "other": "S'han invertit {n} línies."
+          },
+          "point": {
+            "one": "S'ha invertit {n} punt.",
+            "other": "S'han invertit {n} punts."
+          }
+        },
+        "description": {
+          "features": "Capgira la direcció d'aquests objectes.",
+          "line": "Fes que aquesta línia vagi en direcció contrària.",
+          "lines": "Fes que aquestes línies vagin en direcció contrària.",
+          "point": "Capgira la direcció d'aquest punt.",
+          "points": "Capgira la direcció d'aquests punts."
+        },
+        "title": "Inverteix"
+      },
+      "rotate": {
+        "annotation": {
+          "area": "S'ha girat una àrea.",
+          "feature": {
+            "one": "S'ha girat un objecte",
+            "other": "S'han girat {n} objectes."
+          },
+          "line": "S'ha girat una línia.",
+          "relation": "S'ha girat una relació"
+        },
+        "title": "Gira"
+      },
+      "scale": {
+        "annotation": {
+          "down": {
+            "feature": {
+              "one": "S'ha reduït un objecte.",
+              "other": "S'han reduït {n} objectes."
+            }
+          },
+          "up": {
+            "feature": {
+              "one": "S'ha ampliat un objecte.",
+              "other": "S'han ampliat {n} objectes."
+            }
+          }
+        }
+      },
+      "split": {
+        "annotation": {
+          "area": {
+            "one": "Parteix el costat d'una àrea.",
+            "other": "Parteix {n} àrees."
+          },
+          "feature": {
+            "one": "Parteix un objecte.",
+            "other": "Parteix {n} objectes."
+          },
+          "line": {
+            "one": "Parteix una línia",
+            "other": "Parteix {n} línies."
+          }
+        },
+        "connected_to_hidden": "No es pot dividir perquè està connectat a un objecte ocult.",
+        "description": {
+          "area": {
+            "multiple": {
+              "multiple_node": "Divideix les vores d'aquestes àrees en aquests punts.",
+              "single_node": "Divideix les vores d'aquestes àrees en aquest punt."
+            },
+            "single": {
+              "multiple_node": "Divideix la vora d'aquesta àrea en aquests punts.",
+              "single_node": "Divideix la vora d'aquesta àrea en dos en aquest punt."
+            }
+          },
+          "feature": {
+            "multiple": {
+              "multiple_node": "Divideix aquests objectes en aquests punts.",
+              "single_node": "Divideix aquests objectes en aquest punt."
+            }
+          },
+          "line": {
+            "multiple": {
+              "multiple_node": "Divideix totes les línies en aquests punts. Consell: per a limitar aquesta operació a una línia específica, seleccioneu la línia així com els punts abans de realitzar la divisió.",
+              "single_node": "Divideix totes les línies en aquest punt. Consell: per a limitar aquesta operació a una línia específica, seleccioneu tant la línia com el punt abans de realitzar la divisió."
+            },
+            "single": {
+              "multiple_node": "Divideix aquesta línia en aquests punts.",
+              "single_node": "Divideix aquesta línia en dos en aquest punt."
+            }
+          }
+        },
+        "not_eligible": "Les línies no es poden dividir al seu inici o al seu final.",
+        "title": "Parteix"
+      },
+      "start": {
+        "annotation": {
+          "area": "Heu iniciat una àrea.",
+          "line": "Heu iniciat una línia."
+        }
+      },
+      "straighten": {
+        "annotation": {
+          "line": {
+            "one": "S'ha fet recta una línia.",
+            "other": "S'han fet rectes {n} línies."
+          },
+          "point": {
+            "one": "S'ha alineat un punt.",
+            "other": "S'han alineat {n} punts."
+          }
+        },
+        "description": {
+          "line": "Fes recta la línia",
+          "lines": "Fes rectes aquestes línies",
+          "points": "Alinea aquests punts."
+        },
+        "title": "Alinea"
+      }
+    },
+    "photo_overlays": {
+      "date_filter": {
+        "fromDate": {
+          "title": "Des de",
+          "tooltip": "Mostra fotos preses després d'aquesta data"
+        },
+        "toDate": {
+          "title": "A",
+          "tooltip": "Mostra fotos preses abans d'aquesta data"
+        }
+      },
+      "photo_type": {
+        "flat": {
+          "title": "Fotos planes",
+          "tooltip": "Fotos tradicionals"
+        },
+        "panoramic": {
+          "title": "Fotos panoràmiques",
+          "tooltip": "Fotos 360°"
+        }
+      },
+      "title": "Capes de superposades de fotos",
+      "username_filter": {
+        "title": "Nom d'usuari",
+        "tooltip": "Mostra només fotos d'aquest usuari"
+      }
+    },
+    "photos": {
+      "hires": "Alta resolució"
+    },
+    "preferences": {
+      "color_selection": {
+        "default": "Per defecte"
+      },
+      "description": "Preferencies",
+      "key": "P",
+      "privacy": {
+        "privacy_link": "Veieu la política de privacitat d'iD",
+        "third_party_icons": {
+          "description": "Mostra les icones de tercers",
+          "tooltip": "Desmarqueu aquesta casella per evitar carregar icones de llocs de tercers com ara Wikimedia Commons, Facebook o Twitter."
+        },
+        "title": "Privacitat"
+      },
+      "title": "Preferencies"
+    },
+    "rapid_inspector": {
+      "tags": "Etiquetes"
+    },
+    "rapid_menu": {
+      "category": {
+        "roads": "carreteres"
+      },
+      "remove": "Eliminar"
+    },
+    "redo": {
+      "nothing": "Res a refer.",
+      "title": "Refés",
+      "tooltip": "Refeu: {action}"
+    },
+    "report_a_bug": "Informa d'un error",
+    "restore": {
+      "description": "Voleu restaurar els canvis no desats des d'una sessió d'edició anterior?",
+      "heading": "Teniu canvis no desats",
+      "reset": "Descarta els meus canvis",
+      "restore": "Restaura els meus canvis"
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distància",
+        "distance_up_to": "Fins a {distància}",
+        "via": "Via",
+        "via_node_only": "Només nodes",
+        "via_up_to_one": "Fins a 1 via",
+        "via_up_to_two": "Fins a 2 vies"
+      },
+      "help": {
+        "from": "DES DE",
+        "from_name": "{from} {fromName}",
+        "from_name_to_name": "{from} {fromName} {to} {toName}",
+        "indirect": "(indirecte)",
+        "select_from": "Feu clic per a seleccionar un segment de: {from}",
+        "select_from_name": "Feu clic per a seleccionar: {from} {fromName}",
+        "to": "A",
+        "toggle": "Feu clic per a «{turn}»",
+        "turn": {
+          "allowed_left_turn": "Gir a l'esquerra permès {indirecte}",
+          "allowed_right_turn": "Gir a la dreta permès {indirecte}",
+          "allowed_straight_on": "Seguir recte permès {indirect}",
+          "allowed_u_turn": "Gir total permès {indirecte}",
+          "no_left_turn": "Prohibició del gir a l'esquerra {indirecte}",
+          "no_right_turn": "Prohibició del gir a la dreta {indirecte}",
+          "no_straight_on": "Prohibició de seguir recte {indirect}",
+          "no_u_turn": "Prohibició del gir total  {indirecte}",
+          "only_left_turn": "NOMÉS gir a l'esquerra {indirecte}",
+          "only_right_turn": "NOMÉS gir a la dreta {indirecte}",
+          "only_straight_on": "NOMÉS seguir recte {indirect}",
+          "only_u_turn": "NOMÉS gir total {indirecte}"
+        },
+        "via": "VIA",
+        "via_names": "{via} {viaNames}"
+      }
+    },
+    "save": {
+      "conflict": {
+        "count": "Conflicte {num} de {total}",
+        "delete": "Deixar eliminat",
+        "done": "Tots els conflictes resolts!",
+        "download_changes": "O descarregar el fitxer osmChange",
+        "header": "Resoldre les edicions conflictives",
+        "help": "Un altre usuari ha canviat alguns dels mateixos objectes que heu canviat. Cliqueu a cada objecte d'aquí sota per tenir més detalls del conflicte,  i escolliu si mantenir els vostres canvis o els canvis de l'altre usuari.",
+        "keep_local": "Mantenir els meus",
+        "keep_remote": "Utilitzar els seus",
+        "next": "Següent >",
+        "previous": "< Anterior",
+        "restore": "Restaurar"
+      },
+      "conflict_progress": "Comprovant si hi ha conflictes: {num} de {total}",
+      "error": "Ha hagut un error en intentar desar",
+      "help": "Reviseu els canvis i pugeu-los a l'OpenStreetMap, això els fa visibles als altres usuaris.",
+      "no_changes": "No hi ha canvis a desar.",
+      "status_code": "El servidor ha expedit el codi d'estat {code}",
+      "title": "Desa",
+      "unknown_error_details": "Assegureu-vos d'estar connectats a Internet",
+      "unsaved_changes": "Teniu canvis sense desar.",
+      "uploading": "S'estan pujant els canvis a l'OpenStreetMap..."
+    },
+    "scriptNames": {
+      "Adlm": "adlam",
+      "Afak": "afaka",
+      "Aghb": "albanès caucàsic",
+      "Ahom": "ahom",
+      "Arab": "àrab",
+      "Aran": "nasta’liq",
+      "Armi": "arameu imperial",
+      "Armn": "armeni",
+      "Avst": "avèstic",
+      "Bali": "balinès",
+      "Bamu": "bamum",
+      "Bass": "bassa vah",
+      "Batk": "batak",
+      "Beng": "bengalí",
+      "Bhks": "bhaiksuki",
+      "Blis": "símbols Bliss",
+      "Bopo": "bopomofo",
+      "Brah": "brahmi",
+      "Brai": "braille",
+      "Bugi": "buginès",
+      "Buhd": "buhid",
+      "Cakm": "chakma",
+      "Cans": "sil·labari aborigen canadenc unificat",
+      "Cari": "carià",
+      "Cham": "cham",
+      "Cher": "cherokee",
+      "Cirt": "cirth",
+      "Copt": "copte",
+      "Cprt": "xipriota",
+      "Cyrl": "ciríl·lic",
+      "Cyrs": "ciríl·lic de l’antic eslau eclesiàstic",
+      "Deva": "devanagari",
+      "Dsrt": "deseret",
+      "Dupl": "taquigrafia Duployé",
+      "Egyd": "demòtic egipci",
+      "Egyh": "hieràtic egipci",
+      "Egyp": "jeroglífic egipci",
+      "Elba": "elbasan",
+      "Ethi": "etiòpic",
+      "Geok": "georgià hucuri",
+      "Geor": "georgià",
+      "Glag": "glagolític",
+      "Goth": "gòtic",
+      "Gran": "grantha",
+      "Grek": "grec",
+      "Gujr": "gujarati",
+      "Guru": "gurmukhi",
+      "Hanb": "han amb bopomofo",
+      "Hang": "hangul",
+      "Hani": "han",
+      "Hano": "hanunoo",
+      "Hans": "han simplificat",
+      "Hant": "han tradicional",
+      "Hebr": "hebreu",
+      "Hira": "hiragana",
+      "Hluw": "jeroglífic anatoli",
+      "Hmng": "pahawh hmong",
+      "Hrkt": "sil·labaris japonesos",
+      "Hung": "hongarès antic",
+      "Inds": "escriptura de la vall de l’Indus",
+      "Ital": "cursiva antiga",
+      "Jamo": "jamo",
+      "Java": "javanès",
+      "Jpan": "japonès",
+      "Jurc": "jürchen",
+      "Kali": "kayah li",
+      "Kana": "katakana",
+      "Khar": "kharosthi",
+      "Khmr": "khmer",
+      "Khoj": "khoja",
+      "Knda": "kannada",
+      "Kore": "coreà",
+      "Kpel": "kpelle",
+      "Kthi": "kaithi",
+      "Lana": "lanna",
+      "Laoo": "lao",
+      "Latf": "llatí fraktur",
+      "Latg": "llatí gaèlic",
+      "Latn": "llatí",
+      "Lepc": "lepcha",
+      "Limb": "limbu",
+      "Lina": "lineal A",
+      "Linb": "lineal B",
+      "Lisu": "lisu",
+      "Loma": "loma",
+      "Lyci": "lici",
+      "Lydi": "lidi",
+      "Mahj": "mahajani",
+      "Mand": "mandaic",
+      "Mani": "maniqueu",
+      "Maya": "jeroglífics maies",
+      "Mend": "mende",
+      "Merc": "cursiva meroítica",
+      "Mero": "meroític",
+      "Mlym": "malaiàlam",
+      "Modi": "modi",
+      "Mong": "mongol",
+      "Moon": "moon",
+      "Mroo": "mro",
+      "Mtei": "manipuri",
+      "Mult": "multani",
+      "Mymr": "birmà",
+      "Narb": "antic nord-aràbic",
+      "Nbat": "nabateu",
+      "Newa": "newar",
+      "Nkgb": "geba",
+      "Nkoo": "n’Ko",
+      "Nshu": "nü shu",
+      "Ogam": "ogham",
+      "Olck": "santali",
+      "Orkh": "orkhon",
+      "Orya": "oriya",
+      "Osge": "osage",
+      "Osma": "osmanya",
+      "Palm": "palmirè",
+      "Perm": "antic pèrmic",
+      "Phag": "phagspa",
+      "Phli": "pahlavi inscripcional",
+      "Phlp": "psalter pahlavi",
+      "Phlv": "pahlavi",
+      "Phnx": "fenici",
+      "Plrd": "pollard miao",
+      "Prti": "parthià inscripcional",
+      "Qaag": "zawgyi",
+      "Rjng": "rejang",
+      "Rohg": "hanifi",
+      "Roro": "rongo-rongo",
+      "Runr": "rúnic",
+      "Samr": "samarità",
+      "Sara": "sarati",
+      "Sarb": "sud-aràbic antic",
+      "Saur": "saurashtra",
+      "Sgnw": "escriptura de signes",
+      "Shaw": "shavià",
+      "Shrd": "shrada",
+      "Sidd": "siddham",
+      "Sind": "devangari",
+      "Sinh": "singalès",
+      "Sora": "sora sompeng",
+      "Sund": "sundanès",
+      "Sylo": "syloti nagri",
+      "Syrc": "siríac",
+      "Syre": "siríac estrangelo",
+      "Syrj": "siríac occidental",
+      "Syrn": "siríac oriental",
+      "Tagb": "tagbanwa",
+      "Takr": "takri",
+      "Tale": "tai le",
+      "Talu": "nou tai lue",
+      "Taml": "tàmil",
+      "Tang": "tangut",
+      "Tavt": "tai viet",
+      "Telu": "telugu",
+      "Teng": "tengwar",
+      "Tfng": "tifinag",
+      "Tglg": "tagàlog",
+      "Thaa": "thaana",
+      "Thai": "tailandès",
+      "Tibt": "tibetà",
+      "Tirh": "tirhut",
+      "Ugar": "ugarític",
+      "Vaii": "vai",
+      "Visp": "llenguatge visible",
+      "Wara": "varang kshiti",
+      "Wole": "woleai",
+      "Xpeo": "persa antic",
+      "Xsux": "cuneïforme sumeri-accadi",
+      "Yiii": "yi",
+      "Zinh": "heretat",
+      "Zmth": "notació matemàtica",
+      "Zsye": "emoji",
+      "Zsym": "símbols",
+      "Zxxx": "sense escriptura",
+      "Zyyy": "comú",
+      "Zzzz": "escriptura desconeguda"
+    },
+    "self_intersection": {
+      "error": {
+        "areas": "Les àrees no es poden creuar entre elles mateixes.",
+        "lines": "Les línies no es poden creuar entre elles mateixes."
+      }
+    },
+    "settings": {
+      "custom_background": {
+        "header": "Configuració del fons personalitzat",
+        "instructions": {
+          "info": "Introduïu una plantilla de l'URL de les tessel·les a sota.",
+          "tms": {
+            "tokens": {
+              "flipped_y": "`{-y}` o `{ty}`: s'han capgirat les coordenades Y a l'estil TMS",
+              "scale_factor": "`{@2x}` o `{r}`: factor de resolució de l'escala",
+              "switch": "`{switch:a,b,c}`: multiplexatge de servidor DNS",
+              "xyz": "`{zoom}` o `{z}`, `{x}`, `{y}`: coordenades de la tessel·la Z/X/Y"
+            },
+            "tokens_label": "Testimonis TMS compatibles:"
+          },
+          "wms": {
+            "tokens": {
+              "bbox": "`{bbox}`: caixa delimitadora requerida  (p. ex. `minX,minY,maxX,maxY`)",
+              "dimensions": "`{width}`, `{height}`: dimensions d'imatge requerides (només `256`)",
+              "proj": "`{proj}`: projecció requerida (només `EPSG:3857`)",
+              "wkid": "`{wkid}`: igual que proj, però sense l'EPSG (només `3857`)"
+            },
+            "tokens_label": "Testimonis WMS compatibles:"
+          }
+        },
+        "template": {
+          "placeholder": "Introduïu una plantilla d'url"
+        },
+        "tooltip": "Edita el fons personalitzat"
+      },
+      "custom_data": {
+        "file": {
+          "instructions": "Escolliu un fitxer de dades local. Els tipus implementats són:\n.gpx, .kml, .geojson, .json",
+          "label": "Navega pels fitxers"
+        },
+        "header": "Configuració de les dades del mapa personalitzades",
+        "or": "O",
+        "tooltip": "Edita la capa de dades personalitzada",
+        "url": {
+          "instructions": "Introduïu l'URL d'un fitxer de dades o una plantilla d'URL de tessel·les de vector. Els identificadors vàlids són:\n{zoom} o {z}, {x}, {y} per a un esquema de tessel·la Z/X/Y",
+          "placeholder": "Introduïu una url"
+        }
+      }
+    },
+    "shortcuts": {
+      "browsing": "Cercant",
+      "command": {
+        "add_area": {
+          "label": "Mode «Afegir àrea»"
+        },
+        "add_line": {
+          "label": "Mode «Afegir línia»"
+        },
+        "add_note": {
+          "label": "Mode «Afegeix una nota»"
+        },
+        "add_point": {
+          "label": "Mode «Afegir punt»"
+        },
+        "change_parent": {
+          "label": "Canvia la via mare"
+        },
+        "circularize": {
+          "label": "Fes circular una línia tancada o una àrea"
+        },
+        "continue_line": {
+          "label": "Continua una línia a l'extrem seleccionat"
+        },
+        "copy": {
+          "label": "Copia els objectes seleccionats"
+        },
+        "delete": {
+          "label": " Esborra els objectes seleccionats"
+        },
+        "disable_snap": {
+          "label": "Aguanta per inhabilitar l'ajustament de punts"
+        },
+        "disconnect": {
+          "label": "Desconnecta els objectes seleccionats"
+        },
+        "edit_menu": {
+          "label": "Commuta el menú d'edició"
+        },
+        "extract": {
+          "label": "Extreu un punt de l'objecte"
+        },
+        "find": {
+          "label": "Cerca objectes que coincideixin amb el text cercat"
+        },
+        "first_node": {
+          "label": "Salta al primer node"
+        },
+        "highlight_edits": {
+          "label": "Realça les edicions no desades"
+        },
+        "keyboard_shortcuts": {
+          "label": "Mostrar dreceres del teclat"
+        },
+        "lasso": {
+          "label": "Dibuixeu un llaç de selecció al voltant dels objectes"
+        },
+        "last_node": {
+          "label": "Salta al node final"
+        },
+        "merge": {
+          "label": "Combina (fusiona) els objectes seleccionats"
+        },
+        "move": {
+          "label": "Mou els objectes seleccionats"
+        },
+        "orthogonalize": {
+          "label": "Quadra les cantonades d'una línia o àrea"
+        },
+        "pan": {
+          "label": "Mapa panoràmic"
+        },
+        "paste": {
+          "label": "Enganxa els objectes copiats"
+        },
+        "place_point": {
+          "label": "Posa un punt o nota"
+        },
+        "redo": {
+          "label": "Refeu l'ultima acció"
+        },
+        "reflect_long": {
+          "label": "Capgira objectes a través del seu eix llarg"
+        },
+        "reflect_short": {
+          "label": "Capgira objectes a través del seu eix curt"
+        },
+        "reverse": {
+          "label": "Inverteix els objectes seleccionats"
+        },
+        "rotate": {
+          "label": "Gira els objectes seleccionats"
+        },
+        "save": {
+          "label": "Salveu el canvis"
+        },
+        "select_children": {
+          "label": "Selecciona els nodes membres"
+        },
+        "select_multi": {
+          "label": "Selecciona diversos objectes"
+        },
+        "select_one": {
+          "label": "Selecciona un sol objecte"
+        },
+        "select_parent": {
+          "label": "Selecciona la via mare"
+        },
+        "split": {
+          "label": "Parteix objectes als punts seleccionats"
+        },
+        "stop_line": {
+          "label": "Acaba de dibuixar una línia o àrea"
+        },
+        "straighten": {
+          "label": "Alinea una línia o punts"
+        },
+        "toggle_all_cards": {
+          "label": "Commuta tots els panells d'informació"
+        },
+        "toggle_background": {
+          "label": "Commuta el panell d'imatges de fons"
+        },
+        "toggle_background_card": {
+          "label": "Commuta el panell de fons"
+        },
+        "toggle_history_card": {
+          "label": "Commuta el panell d'historial"
+        },
+        "toggle_issues": {
+          "label": "Commuta el panell de validació de problemes"
+        },
+        "toggle_location_card": {
+          "label": "Commuta el panell d'ubicació"
+        },
+        "toggle_map_data": {
+          "label": "Commuta el panell de dades del mapa"
+        },
+        "toggle_measurement_card": {
+          "label": "Commuta el panell de mesuraments"
+        },
+        "toggle_osm_data": {
+          "label": "Commuta les dades d'OpenStreetMap"
+        },
+        "toggle_preferences": {
+          "label": "Commuta el panell de preferències d'usuari"
+        },
+        "undo": {
+          "label": "Desfeu l'ultima acció"
+        },
+        "wireframe": {
+          "key": "O"
+        }
+      },
+      "commands": "Ordres",
+      "display_options": "Opcions de pantalla",
+      "drawing": "Dibuixant",
+      "editing": "Modificant",
+      "gesture": {
+        "drag": "Arrossega"
+      },
+      "help": "Ajuda",
+      "info": "Informació",
+      "key": {
+        "alt": "Alt",
+        "backspace": "Tecla de retrocés",
+        "cmd": "Cmd",
+        "ctrl": "Ctrl",
+        "del": "Supr",
+        "delete": "Suprimir",
+        "end": "Fi",
+        "enter": "Entrar",
+        "esc": "Esc",
+        "home": "Inici",
+        "menu": "Menú",
+        "option": "Opció",
+        "pause": "Pausa",
+        "pgdn": "Av Pàg",
+        "pgup": "Re Pàg",
+        "return": "Tornar",
+        "shift": "Majúscula",
+        "space": "Espai"
+      },
+      "navigation": "Navegació",
+      "or": "-o-",
+      "selecting_features": "Seleccionant objectes",
+      "title": "Dreceres de teclat",
+      "tooltip": "Mostra la finestra de dreceres del teclat.",
+      "with_features_selected": "Amb objectes seleccionats",
+      "with_node_selected": "Amb node seleccionat",
+      "with_way_selected": "Amb via seleccionada"
+    },
+    "source_switch": {
+      "dev": "dev",
+      "live": "directe",
+      "lose_changes": "Teniu canvis sense desar. Si canvieu el servidor del mapa els descartarà. Esteu segurs que voleu canviar els sevidors?"
+    },
+    "splash": {
+      "privacy": "{updateMessage} En usar aquest programa, accepteu fer-ho d'acord amb la {privacyLink}.",
+      "privacy_update": "La nostre política de privacitat s'ha actualitzat fa poc.",
+      "start": "Editeu-lo ara",
+      "text": "iD és una eina amigable però potent per contribuir al millor mapa lliure del món. Aquesta és la versió {version}. Per més informació, visiteu {website} i informeu d'errors a {github}.",
+      "walkthrough": "Comença la introducció",
+      "welcome": "Benvingut al editor iD OpenStreetMap"
+    },
+    "status": {
+      "message": {
+        "error": "No es pot arribar a l'API d'OpenStreetMap. Les vostres edicions estan segures localment. Comproveu la connexió de xarxa.",
+        "local_storage_full": "Heu fet massa edicions per fer una còpia de seguretat. Considereu desar els canvis ara.",
+        "offline": "L'API d'OpenStreetMap no està fora de línia. Les vostres edicions estan segures localment. Torneu més tard.",
+        "readonly": "L'API d'OpenStreetMap actualment en mode només de lectura. Podeu continuar editant però us haureu d'esperar per desar els canvis."
+      },
+      "retry": "Torna a intentar-ho"
+    },
+    "streetside": {
+      "title": "Bing Streetside",
+      "tooltip": "Fotografies a peu de carrer de Microsoft"
+    },
+    "success": {
+      "events": "Esdeveniments",
+      "help_link_text": "Detalls",
+      "help_link_url": "https://wiki.openstreetmap.org/wiki/FAQ#I_have_just_made_some_changes_to_the_map._How_do_I_get_to_see_my_changes.3F",
+      "just_edited": "Acabeu d'editar l'OpenStreetMap!",
+      "languages": "Llengües: {languages}",
+      "like_osm": "Us agrada l'OpenStreetMap? Connecteu amb altres usuaris:",
+      "missing": "Manca res en aquesta llista?",
+      "more": "Més",
+      "tell_us": "Digueu-nos ho!",
+      "thank_you": "Gràcies per millorar el mapa.",
+      "thank_you_location": "Gràcies per millorar el mapa prop de {where}.",
+      "thank_you_where": {
+        "format": "{place}{separator}{region}",
+        "separator": ", "
+      },
+      "view_on_osm": "Mostra els canvis a l'OSM"
+    },
+    "tag_reference": {
+      "description": "Descripció",
+      "on_wiki": "{tag} a wiki.osm.org",
+      "used_with": "utilitzat amb {type}"
+    },
+    "title": {
+      "format": {
+        "changes": "({changes}) {base}",
+        "changes_context": "({changes}) {base} – {context}",
+        "context": "{base} – {context}"
+      },
+      "labeled_and_more": {
+        "one": "{labeled} i {count} més",
+        "other": "{labeled} i {count} més"
+      }
+    },
+    "toolbar": {
+      "add_feature": "Afegeix un objecte",
+      "favorites": "Preferits",
+      "inspect": "Inspecciona",
+      "recent": "Recents",
+      "undo_redo": "Desfés o refés"
+    },
+    "tooltip_keyhint": "Drecera:",
+    "translate": {
+      "language_and_code": "{language} ({code})",
+      "localized_translation_label": "Nom multilingüe",
+      "localized_translation_language": "Trieu una llengua",
+      "localized_translation_name": "Nom",
+      "translate": "Afegeix un nom multilingüe"
+    },
+    "undo": {
+      "nothing": "Res a desfer",
+      "title": "Desfés",
+      "tooltip": "Desfeu: {action}"
+    },
+    "units": {
+      "acres": "{quantity} acres",
+      "arcdegrees": "{quantity}°",
+      "arcminutes": "{quantity}′",
+      "arcseconds": "{quantity}″",
+      "area_pair": "{area1} ({area2})",
+      "coordinate": "{coordinate}{direction}",
+      "coordinate_pair": "{latitude}, {longitude}",
+      "east": "E",
+      "feet": "{quantity} peus",
+      "hectares": "{quantity} ha",
+      "kilometers": "{quantity} km",
+      "meters": "{quantity} m",
+      "miles": "{quantity} milles",
+      "north": "N",
+      "south": "S",
+      "square_feet": "{quantity} peus²",
+      "square_kilometers": "{quantity} km²",
+      "square_meters": "{quantity} m²",
+      "square_miles": "{quantity} milles²",
+      "west": "O",
+      "year_month_day": "AAAA-MM-DD"
+    },
+    "version": {
+      "whats_new": "Què hi ha de nou a l'iD {version}"
+    },
+    "visual_diff": {
+      "highlight_edits": {
+        "description": "Realça els canvis",
+        "tooltip": "Mostra el contorn dels objectes editats"
+      }
+    },
+    "wikidata": {
+      "description": "Descripció",
+      "identifier": "Identificador",
+      "label": "Etiqueta"
+    },
+    "zoom": {
+      "disabled": {
+        "in": "No es pot apropar més.",
+        "out": "No es pot allunyar més."
+      },
+      "in": "Apropa",
+      "out": "Allunya"
+    },
+    "zoom_in_edit": "Apropeu-vos més per a editar"
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.120Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.de-AT.json",
+    "hash": "d39f5d42f887a101a8312e18f398a711"
+  },
+  "de-AT": {
+    "operations": {
+      "paste": {
+        "annotation": {
+          "one": "{n} Objekte gelöscht."
+        }
+      },
+      "orthogonalize": {
+        "end_vertex": {
+          "one": "Diese Ecke kann nicht rechtwinklig gemacht werden, weil es ein Endpunkt ist.",
+          "other": "Diese Ecken können nicht rechtwinklig gemacht werden, weil es Endpunkte sind."
+        }
+      },
+      "delete": {
+        "title": "Entf",
+        "annotation": {
+          "feature": {
+            "one": "{n} Objekte gelöscht."
+          }
+        },
+        "has_wikidata_tag": {
+          "one": "Dieses Objekt kann nicht gelöscht werden, weil es eine Wikidata-Eigenschaft hat.",
+          "other": "Diese Objekte können nicht gelöscht werden, weil einige eine Wikidata-Eigenschaft haben."
+        }
+      },
+      "downgrade": {
+        "annotation": {
+          "building": {
+            "one": "{n} Objekte in Adressen umgewandelt."
+          },
+          "address": {
+            "one": "{n} Objekte in Adressen umgewandelt."
+          },
+          "generic": {
+            "one": "{n} Objekte herabgestuft."
+          }
+        }
+      },
+      "merge": {
+        "annotation": {
+          "one": "{n} Objekte vereinigt."
+        }
+      },
+      "split": {
+        "annotation": {
+          "feature": {
+            "one": "{n} Objekte geteilt."
+          }
+        }
+      },
+      "extract": {
+        "connected_to_hidden": {
+          "one": "Dieser Punkt kann nicht entnommen werden, weil er mit einem versteckten Objekt verbunden ist.",
+          "other": "Die Punkte können nicht entnommen werden, weil manche mit versteckten Objekt verbunden sind."
+        }
+      }
+    },
+    "restriction": {
+      "controls": {
+        "distance": "Distanz",
+        "via_up_to_one": "nur ein Weg",
+        "via_up_to_two": "maximal zwei Wege"
+      },
+      "help": {
+        "select_from": "Klick zur Auswahl auf eine {from} Straße"
+      }
+    },
+    "tooltip_keyhint": "Schlüssel:",
+    "inspector": {
+      "tooltip": "Objekt-Inspektor umschalten",
+      "none": "Leer"
+    },
+    "background": {
+      "imagery_source_faq": "Luftbilderinformationen / Problem melden",
+      "minimap": {
+        "tooltip": "Eine eine vergrößerte Karte anzeigen, um den aktuell angezeigten Bereich zu lokalisieren."
+      }
+    },
+    "map_data": {
+      "layers": {
+        "rapid": {
+          "license": "Facebook's Map With AI Lizenz"
+        },
+        "maproulette": {
+          "tooltip": "Aufträge von maproulette.org. Sie können auch eine kommagetrennte Liste aus Auftrag-IDs zum filtern eingeben.",
+          "login": "Sie müssen Sich anmelden, damit Sie den MapRoulette-Auftrag ändern können.",
+          "loginMaproulette": "Sie müssen Sich bei MapRoulette anmelden, um den Auftrag bearbeiten zu können."
+        }
+      }
+    },
+    "preferences": {
+      "map_interaction": {
+        "mouse_wheel": {
+          "zoom": {
+            "title": "Die Karte vergrößern",
+            "tooltip": "Wenn du mit dem Rad scrollst, wird die Karte immer gezoomt und nicht gezoomt."
+          },
+          "pan": {
+            "title": "Karte schwenken",
+            "tooltip": "Durch Scrollen mit dem Rad können Sie die Karte verschieben. Halten Sie die Umschalttaste gedrückt, um die Karte zu zoomen und zu entzoomen."
+          }
+        }
+      }
+    },
+    "restore": {
+      "heading": "Ungesicherte Änderungen vorhanden"
+    },
+    "merge_remote_changes": {
+      "conflict": {
+        "location": "Dieses Objekt wurde sowohl von Dir als auch von {user} verschoben.",
+        "tags": "Sie haben das <b>{tag}</b>-Tag in „{local}“ geändert und {user} hat es in „{remote}“ geändert."
+      }
+    },
+    "whats_new": {
+      "text_v24": "Diese Version verbessert die Textlokalisierung von Rapid und macht es einfacher, mit Straßendaten wie Mapillary zu arbeiten. Jetzt kannst du erkannte Objekte wie Verkehrsschilder, Fußgängerüberwege, Fahrradständer und vieles mehr untersuchen!\n\nAlle Details findest du in unserem [changelog](https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) und [issue tracker](https://github.com/facebook/Rapid/issues) auf GitHub. Viel Spaß beim Mappen! 👍",
+      "project_links": "Alle Details finden Sie in unserem [changelog] (https://github.com/facebook/Rapid/blob/main/CHANGELOG.md#whats-new) und [issue tracker] (https://github.com/facebook/Rapid/issues) auf GitHub. Viel Spaß beim Mappen! 👍"
+    },
+    "rapid_first_edit": {
+      "nice": "Sie haben soeben Ihre erste {rapidicon} erstelltes KI-unterstütztes Merkmal hinzugefügt, schön.",
+      "text": "Sie benötigen ein OpenStreetMap-Konto, um Ihre Arbeit zu speichern. Möchten Sie sich jetzt bei OSM anmelden oder weiter erkunden?"
+    },
+    "rapid_inspector": {
+      "prompt": "Wie möchten Sie mit diesem ausgewählten Merkmal verfahren?",
+      "option_accept": {
+        "tooltip": "Füge dieses Objekt der Karte hinzu, um mit dem kartieren anzufangen.",
+        "disabled": "Um die Qualität der OSM-Daten zu verbessern, erlauben wir nur das Hinzufügen von {n} AI-Eigenschaften in jeder Mapping-Sitzung. Bitte versuchen Sie, die Probleme bei Ihren bisherigen Bearbeitungen zu beheben. Nach dem Speichern können Sie weitere AI-Eigenschaften hinzufügen.",
+        "disabled_flash": "Um die Qualität der OSM-Daten zu verbessern, dürfen in jeder Mapping-Sitzung nur {n} AI-Eigenschaften hinzugefügt werden."
+      }
+    },
+    "rapid_menu": {
+      "about_the_catalog": "Diese Datensätze wurden von verschiedenen Organisationen und der Esri-Benutzergemeinschaft als offene Daten zur Verfügung gestellt, um OpenStreetMap zu verbessern.<br/> Sie können mehr erfahren, indem Sie auf die nachstehenden Links klicken oder [den Rapid Guide] (https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) oder [die Esri/ArcGIS-Datensatzseite im OSM-Wiki] (https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets) besuchen."
+    },
+    "bearing": {
+      "rotate_the_map": "Rotiere die Karte:"
+    },
+    "QA": {
+      "keepRight": {
+        "close_comment": "Kommentieren und schließen",
+        "errorTypes": {
+          "<200>": {
+            "title": "Überlagerte Wege."
+          },
+          "<270>": {
+            "description": "{var1} ist eine Kreuzung von einer Schnellstraße und einer anderen Straße (nicht \"motorway\", \"motorway_link\", \"trunk\", \"rest_area\" oder \"construction\"). Verbindungen mit einer Straße des Typs „service\" oder \"unclassified\" sind nur zulässig, wenn die Eigenschaft \"access=no/private\" enthalten ist, es zu einem Autobahnparkplatz führt oder die Eigenschaft „service=parking_aisle\" hat."
+          },
+          "<298>": {
+            "title": "Unnötige Abbiegebeschränkung (Einbahn)"
+          }
+        }
+      }
+    },
+    "mapillary_signs": {
+      "traffic_sign": "Verkehrsschild"
+    },
+    "mapillary_detections": {
+      "marking": {
+        "discrete": {
+          "arrow": {
+            "right": "Spurmarkierung - Pfeil (Rechts)",
+            "straight": "Fahrbahnmarkierung - Pfeil (Rechts)"
+          },
+          "other-marking": "Spurmarkierung - Sonstiges",
+          "symbol": {
+            "bicycle": "Spurmarkierung - Symbol (Fahrrad)"
+          },
+          "text": "Spurmarkierung - Text"
+        }
+      },
+      "object": {
+        "sign": {
+          "other": "Beschilderung - Andere"
+        }
+      }
+    },
+    "help": {
+      "help": {
+        "welcome": "Willkommen zu dem {rapidicon} Editor für [OpenStreetMap](https://www.openstreetmap.org/). Mit diesem Editor kannst du OpenStreetMap von deinem Webbrowser aus aktualisieren.",
+        "before_start": "Sie sollten mit OpenStreetMap und diesem Editor vertraut sein, bevor Sie mit der Bearbeitung beginnen. Rapid enthält eine Schritt-für-Schritt-Anleitung, um Ihnen die Grundlagen der Bearbeitung von OpenStreetMap zu vermitteln. Drücken Sie die Schaltfläche „{start_the_walkthrough}“ auf diesem Bildschirm, um das Tutorial zu starten - es dauert nur etwa 15 Minuten.",
+        "open_source": "Der Rapid-Editor ist ein gemeinschaftliches Open-Source-Projekt, und Sie verwenden jetzt die Version {version}. Der Quellcode ist [auf GitHub] verfügbar (https://github.com/facebook/Rapid).",
+        "open_source_help": "Sie können Rapid unterstützen, indem Sie [Fehler melden](https://github.com/facebook/Rapid/issues)."
+      },
+      "overview": {
+        "nodes_ways": "In OpenStreetMap werden Punkte manchmal *Knoten* genannt, Linien und Flächen werden manchmal *Wege* genannt."
+      },
+      "editing": {
+        "select_left_click": "Klicken Sie mit der linken Maustaste {mouse_left_icon} auf ein Merkmal oder tippen Sie mit dem Finger {onefinger_tap_icon} auf ein Symbol, um es auszuwählen. Dadurch wird es mit einem pulsierenden Leuchten hervorgehoben und weitere Details dazu werden im Objektinspektor angezeigt.",
+        "upload": "Vor dem Hochladen deiner Änderungen musst du einen [Änderungssatz-Kommentar](https://wiki.openstreetmap.org/wiki/DE:Good_changeset_comments) eingeben. Dann drück auf **{upload}** um deine Änderungen an OpenStreetMap zu schicken, wo sie in die Karte eingefügt und für alle öffentlich sichtbar werden.",
+        "keyboard": "Du kannst eine Liste der Tastenkürzel durch Drücken der Taste `{shortcuts_key}` ansehen."
+      },
+      "areas": {
+        "add_area_command": "Um eine Fläche hinzuzufügen, drücke die Schaltfläche {area_icon} **{area}** in der Symbolleiste über der Karte oder drücke die Tastenkombination `{add_area_key}`."
+      },
+      "relations": {
+        "maintain_relation": "In den meisten Fällen wird Rapid die Relationen automatisch beibehalten, wenn Sie sie bearbeiten. Sie sollten vorsichtig sein, wenn Sie Merkmale ersetzen, die Mitglieder von Relationen sein könnten. Wenn Sie zum Beispiel einen Straßenabschnitt löschen und einen neuen Straßenabschnitt zeichnen, um ihn zu ersetzen, sollten Sie den neuen Abschnitt zu den gleichen Beziehungen (Routen, Abbiegeverbote, etc.) wie den ursprünglichen hinzufügen.",
+        "turn_restriction_editing": "Wählen Sie im Feld „{turn_restrictions}“ eine „von“-Straße aus und sehen Sie, ob das Abbiegen zu einer der „nach“-Straßen erlaubt oder eingeschränkt ist. Sie können die Abbiegesymbole drücken, um zwischen erlaubt und eingeschränkt umzuschalten. Rapid erstellt die Relationen automatisch und legt die Rollen von, über und bis auf der Grundlage Ihrer Auswahl fest."
+      },
+      "operations": {
+        "reverse": "{reverse_icon} **{reverse}** ändert die Richtung von Objekten. Die Richtung ist für Einbahnen, Verkehrsschilder, Fließgewässer und Klippen wichtig."
+      },
+      "notes": {
+        "show_notes": "Um die Notizen-Ebene zu aktivieren, öffnen Sie das Bedienfeld {data_icon} **{map_data}** und klicken Sie auf das Kontrollkästchen für {osm_notes}, oder drücken Sie `{shift}`\" `{toggle_notes_key}`.",
+        "move_note": "Um eine Notiz zu verschieben, klicken Sie mit der linken Maustaste {mouse_left_icon} und verschieben Sie sie mit der Maus oder tippen und verschieben {onefinger_tap_and_drag_icon} Sie sie auf einem Touchscreen. Nur neue Notizen können verschoben werden."
+      },
+      "imagery": {
+        "offset": "Das Bildmaterial ist manchmal geringfügig zu genauen Kartendaten versetzt. Wenn du feststellst, dass viele Wege oder Gebäude gegenüber dem Bildmaterial versetzt sind, kann das Bildmaterial versetzt sein, also verschieb nicht alle Objekte, damit sie zum Bildmaterial passen. Stattdessen kannst du das Bildmaterial versetzen, damit es zu den bestehenden Daten passt, indem du den Bereich \"{imagery_offset}\" unten im Feld {layers_icon} **{background_settings}** aufklappst."
+      },
+      "streetlevel": {
+        "intro": "Fotos auf Straßenebene sind nützlich, um Verkehrsschilder, Geschäfte und andere Details abzubilden, die Sie auf Satelliten- und Luftbildern nicht sehen können. Der Rapid Editor unterstützt Straßenfotos von [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com) und [KartaView](https://www.kartaview.org)."
+      },
+      "qa": {
+        "intro": "Werkzeuge zur Qualitätssicherung können unpassende Eigenschaften, nicht verbundene Straßen und andere Probleme mit OpenStreetMap finden, die dann von Nutzern behoben werden können. Um bestehende Qualitätssicherungs-Probleme zu sehen öffne das Feld {data_icon} **{map_data}** um eine bestimmte Qualitätssicherungs-Ebene einzuschalten.",
+        "issues": "Die Behandlung von Q&A-Fragen ist ähnlich wie die Behandlung von Notizen. Wählen Sie eine Markierung aus, um die Fehlerdetails im Feature Inspector anzuzeigen. Jedes Werkzeug hat seine eigenen Möglichkeiten, aber im Allgemeinen können Sie ein Problem kommentieren und/oder schließen."
+      },
+      "field": {
+        "restrictions": {
+          "inspecting": {
+            "from_shadow": "{fromShadow} **VON Straße**"
+          }
+        }
+      }
+    },
+    "issues": {
+      "title": "Probleme",
+      "duplicate_way_segments": {
+        "title": "Doppelte Wegsegmente",
+        "tip": "Suche nach Wegsegmenten, die dupliziert sind (gleiche Knotenendpunkte)"
+      },
+      "crossing_ways": {
+        "aeroway-railway": {
+          "reference": "Landebahnen, die Schnellstrakreuzen kreuzen, sollten verbunden werden."
+        }
+      },
+      "dupe_node_on_road": {
+        "tip": "Die Knotenpunkte sind weniger als 2 Meter entfernt.",
+        "tip_merge": "Die Knotenpunkte sind weniger als 2 Meter entfernt; Sie können sie zusammenführen.",
+        "tip_move_away": "Die Knotenpunkte sind weniger als 2 Meter entfernt, können aber nicht zusammengeführt werden; Sie möchten sie weiter voneinander entfernt aufstellen."
+      },
+      "y_shaped_connection": {
+        "tip": "Sie können Knoten löschen oder verschieben, um die Verbindung zu vereinfachen."
+      },
+      "fix": {
+        "add_a_bridge": {
+          "title": "Eine Brücke hinzufügen."
+        },
+        "add_a_tunnel": {
+          "title": "Einen Tunnel hinzufügen."
+        },
+        "set_both_as_marked": {
+          "title_use_marking": "Nutze Markierung '{marking}'"
+        },
+        "remove_way_segments": {
+          "title": "Löschen Sie eines dieser Wegabschnitte"
+        },
+        "delete_node_around_conn": {
+          "title": "Löschen Sie diesen Knoten, um die Verbindung zu vereinfachen"
+        },
+        "move_node_around_conn": {
+          "title": "Verschieben Sie diesen Knoten, um die Form der Verbindung anzupassen"
+        }
+      }
+    },
+    "intro": {
+      "graph": {
+        "city": "Drei-Flüsse-Stadt",
+        "quarter": "Schleswig-Holstein",
+        "subdistrict": "Schleswig-Holstein",
+        "countrycode": "at",
+        "name": {
+          "7th-avenue": "Siebte Straße"
+        }
+      },
+      "navigation": {
+        "map_info2": "Die Navigation auf dieser Karte funktioniert ähnlich wie bei anderen Computerkarten, die Sie bereits verwendet haben.",
+        "pan_mouse": "- Halten Sie die linke {mouse_left_icon} oder rechte {mouse_right_icon} Maustaste auf einem leeren Teil der Karte gedrückt und ziehen Sie dann.",
+        "pan_touch": "- Berühren Sie einen leeren Bereich der Karte {onefinger_tap_and_drag_icon}, und ziehen Sie dann.",
+        "pan_touchpad": "- Streichen Sie mit zwei Fingern {twofinger_tap_and_drag_icon} auf einem Touchpad.",
+        "pan_keyboard": "- Verwenden Sie die Pfeiltasten {keyboard_arrows_all} auf einer Tastatur.",
+        "pan_the_map": "**Versuchen Sie, die Karte zu verschieben!**",
+        "zoom_mouse_scroll": "- Blättern Sie mit dem Mausrad {mouse_wheel_icon}.",
+        "zoom_keyboard": "- Drücken Sie die Tasten `+` oder `-` auf einer Tastatur.",
+        "zoom_buttons": "- Klicken Sie auf die Schaltflächen {plus} oder {minus} an der Seite der Karte.",
+        "zoom_the_map": "**Versuchen Sie, die Karte zu zoomen!**",
+        "user_settings": "Wenn das Touchpad oder Mausrad nicht wie erwartet zoomen kann, können Sie dieses Verhalten im Bereich Benutzereinstellungen anpassen.",
+        "rotate_mouse": "- Halten Sie die linke {mouse_left_icon} oder rechte {mouse_right_icon} Maustaste gedrückt und ziehen Sie die Maus, während Sie `{option}` oder `{control}` gedrückt halten.",
+        "rotate_touch": "- Drehen Sie die Karte mit zwei Fingern {twofinger_rotate_icon}.",
+        "rotate_keyboard": "- Während Sie die `{shift}` Taste gedrückt halten, verwenden Sie die Pfeiltasten {keyboard_arrows_left_right} nach links und rechts.",
+        "rotate_the_map": "**Versuchen Sie, die Karte zu drehen!**",
+        "reset_bearing": "Diese Kompass-Schaltfläche zeigt Ihnen die aktuelle Drehung oder *Peilung* der Karte an. **Klicken Sie auf die Kompass-Schaltfläche, um die Karte auf Nordausrichtung zurückzusetzen.",
+        "click_townhall": "Alle Merkmale auf der Karte können durch Anklicken {mouse_left_icon} ausgewählt werden. **Klicken Sie auf den Punkt, um ihn auszuwählen.**",
+        "tap_townhall": "Alle Merkmale auf der Karte können durch Antippen mit {onefinger_tap_icon} ausgewählt werden. **Tippen Sie auf den Punkt, um ihn auszuwählen.**",
+        "editor_townhall": "Wenn ein Objekt ausgewählt ist wird der *Objekteditor* neben der Karte angezeigt.",
+        "preset_townhall": "Der obere Teil des Objekteditors zeigt den Typ des Objekts. Dieser Punkt ist ein {preset}."
+      },
+      "points": {
+        "search_cafe": "Es gibt viele verschiedene Objekte die als Punkte dargestellt werden können. Der gerade hinzugefügte Punkt ist ein Café. **Suche nach '{preset}'.**",
+        "choose_cafe": "**Wähle {preset} von der Liste.**",
+        "feature_editor": "Der Punkt ist nun ein Café. Mit dem Objekteditor kannst du mehr Information über das Café eingeben.",
+        "add_name": "Stell dir vor, du kennst dieses Cafés und seinen Namen. **Gib einen Namen für das Café ein.**",
+        "update": "Gib noch einige Details für dieses Café ein. Du kannst seinen Namen ändern, angeben welche Küche dort angeboten wird oder die Adresse eingeben. **Ändere die Details des Café.**",
+        "update_close": "**Wenn du das Café fertig geändert hast, drück auf {button} oder `{esc}` um den Objekteditor zu schließen.**",
+        "edit_menu_touch": "You can  long-press on any feature to see the *edit menu*, which shows a list of editing operations that can be performed. **Press-and-hold the point you created to show the edit menu.**\n\nDu kannst {onefinger_tap_and_hold_icon} lange auf ein beliebiges Merkmal drücken, um das *Bearbeitungsmenü* anzuzeigen, das eine Liste der möglichen Bearbeitungsvorgänge enthält. **Drücke und halte den von dir erstellten Punkt, um das Bearbeitungsmenü anzuzeigen**."
+      },
+      "areas": {
+        "starting_node_tap": "**Tippen Sie auf {onefinger_tap_icon} , um einen Startknoten in einer der Ecken des Spielplatzes zu platzieren.**",
+        "continue_playground": "Continue drawing the area by placing more nodes along the playground's edge. It is OK to connect the area to the existing walking paths.Tip: You can hold down the `` or `` key to prevent nodes from connecting to other features. **Continue drawing an area for the playground.**\n\nFahre mit dem Zeichnen des Bereichs fort, indem du weitere Knoten entlang der Spielplatzkante platzierst. Es ist in Ordnung, die Fläche mit den vorhandenen Gehwegen zu verbinden.{br}Tipp: Du kannst die Taste {option} oder {control} gedrückt halten, um zu verhindern, dass Knoten mit anderen Elementen verbunden werden. **Fahre mit dem Zeichnen eines Bereichs für den Spielplatz fort.",
+        "finish_area_tap": "Finish the area by  tapping again on either the first or last node, or by pressing `` on a keyboard.\n\nBeende den Bereich, indem du mit {onefinger_tap_icon} erneut auf den ersten oder letzten Knoten tippst, oder indem du auf einer Tastatur `{return}` drückst.",
+        "choose_playground": "**Wähle {preset} von der Liste.**",
+        "describe_playground": "**Füge eine Beschreibung hinzu und drück auf {button} oder `{esc}` um den Objekteditor zu schließen.**"
+      },
+      "lines": {
+        "start_line_tap": "**Beginne eine neue Linie, indem du mit {onefinger_tap_icon} auf das obere Ende dieser fehlenden Straße tippst.",
+        "add_node": "Du kannst einige weitere Punkte zu einer Linie hinzufügen, um die Form einer Linie zu verbessern. Eine Möglichkeit um neue Punkte zu zeichnen ist ein Doppelklick auf die Stelle der Linie, wo der neue Punkt entstehen soll. **Doppelklick die Linie um einen neuen Punkt zu erzeugen.**",
+        "continue_drag_midpoint": "Diese Linie sieht viel besser aus! Pass diese Linie weiter an, bis sie der Straßenform entspricht. **Wenn Dir die Linie gefällt, drück {ok}.**.",
+        "rightclick_intersection": "**{mouse_right_icon} Klicke mit der rechten Maustaste auf den Knoten der Kreuzung.**"
+      },
+      "buildings": {
+        "add_building": "Du kannst helfen, OpenStreetMap zu verbessern, indem du Gebäude aufspürst, die noch nicht kartiert sind. **Drücke das {area_icon}{area}, um eine neue Fläche hinzuzufügen.",
+        "start_building": "Zeichne dieses Gebäude, indem du seinen Umriss nachzeichnest. Gebäude sollten entlang ihrer Grundfläche so genau wie möglich gezeichnet werden."
+      }
+    },
+    "shortcuts": {
+      "command": {
+        "first_node": {
+          "label": "Erster Punkt"
+        },
+        "last_node": {
+          "label": "Letzter Punkt"
+        },
+        "accept_feature": {
+          "label": "Merkmal akzeptieren"
+        },
+        "add_point": {
+          "label": "'Neuen Punkt hinzufügen' (Modus)"
+        },
+        "add_line": {
+          "label": "'Neue Linie hinzufügen' (Modus)"
+        },
+        "add_area": {
+          "label": "'Neue Fläche hinzufügen' (Modus)"
+        },
+        "add_note": {
+          "label": "'Neuen Hinweis hinzufügen' (Modus)"
+        },
+        "merge": {
+          "label": "Vereinigen der ausgewählten Objekte"
+        },
+        "split": {
+          "label": "Teile Objekte an den ausgewählten Punkten."
+        },
+        "cycle_highway_tag": {
+          "label": "Gemeinsame Tags durchlaufen"
+        },
+        "toggle_help": {
+          "label": "Hilfe-/Dokumentationsfenster umschalten"
+        },
+        "toggle_inspector": {
+          "label": "Merkmalinspektor umschalten"
+        }
+      }
+    },
+    "units": {
+      "feet": "{quantity} Fuß"
+    },
+    "languageNames": {
+      "ar-001": "modernes Hocharabisch",
+      "car": "karibische Sprache",
+      "chb": "Chibcha-Sprache",
+      "del": "Delawarisch",
+      "fur": "Friulanisch",
+      "haw": "Hawaiianisch",
+      "hmn": "Miao-Sprache",
+      "mus": "Muskogee-Sprache",
+      "niu": "Niueanisch",
+      "pag": "Pangasinensisch",
+      "sh": "Serbokroatisch",
+      "szl": "Schlesisch"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "version": "2.5.7",
+    "generated": "2026-04-15T20:17:42.042Z",
+    "url": "https://raw.githubusercontent.com/facebook/rapid/main/dist/data/l10n/core.nv.json",
+    "hash": "83d851957f0f799bc8aaa516a498616c"
+  },
+  "nv": {
+    "intro": {
+      "graph": {
+        "block_number": "<value for addr:block_number>",
+        "city": "Three Rivers",
+        "countrycode": "us",
+        "county": "<value for addr:county>",
+        "district": "<value for addr:district>",
+        "hamlet": "<value for addr:hamlet>",
+        "name": {
+          "three-rivers": "Three Rivers"
+        },
+        "neighbourhood": "<value for addr:neighbourhood>",
+        "postcode": "49093",
+        "province": "<value for addr:province>",
+        "quarter": "<value for addr:quarter>",
+        "state": "MI",
+        "subdistrict": "<value for addr:subdistrict>",
+        "suburb": "<value for addr:suburb>"
+      }
+    },
+    "languageNames": {
+      "nv": "Diné Bizaad"
+    }
+  }
+}
