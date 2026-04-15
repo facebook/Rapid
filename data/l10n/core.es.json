@@ -1504,14 +1504,6 @@
           "description": "Contiene más de 53 millones de representaciones puntuales de entidades del mundo real: escuelas, negocios, hospitales, organizaciones religiosas, puntos de referencia, picos de montañas y mucho más."
         }
       },
-      "omdFootways": {
-        "label": "Senderos peatonales de datos abiertos",
-        "description": "Datos de senderos peatonales abiertos, recopilados de diversas entidades gubernamentales locales."
-      },
-      "metaSyntheticFootways": {
-        "label": "Senderos peatonales sintéticos de Meta",
-        "description": "Datos de senderos peatonales sintéticos recopilados de diversas entidades gubernamentales locales."
-      }
     },
     "rapid_poweruser": {
       "beta": "Función beta",

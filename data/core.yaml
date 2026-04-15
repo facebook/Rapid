@@ -1171,12 +1171,6 @@ en:
       tomtom_roads:
         label: TomTom Roads
         description: "Road network data sourced from TomTom, available through the Overture Maps Foundation."
-    omdFootways:
-      label: Open Data Footways
-      description: Open footways data collected from various local government entities.
-    metaSyntheticFootways:
-      label: Synthetic Footways from Meta
-      description: Synthetic footways data collected from various local government entities.
     ignored_ids:
       link: "{count} ignored Overture IDs"
       link_one: "{count} ignored Overture ID"

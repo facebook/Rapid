@@ -1402,14 +1402,6 @@
           "description": "Enthält über 53 Millionen Punktdarstellungen von realen Objekten: Schulen, Unternehmen, Krankenhäuser, religiöse Organisationen, Landmarken, Berggipfel und vieles mehr."
         }
       },
-      "omdFootways": {
-        "label": "Open Data Fußwege",
-        "description": "Daten über offene Fußwege, die von verschiedenen lokalen Behörden gesammelt wurden."
-      },
-      "metaSyntheticFootways": {
-        "label": "Synthetische Fußwege von Meta",
-        "description": "Daten über synthetische Fußwege, die von verschiedenen lokalen Behörden gesammelt wurden."
-      }
     },
     "rapid_poweruser": {
       "beta": "Beta-Funktion",

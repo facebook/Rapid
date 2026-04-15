@@ -1400,14 +1400,6 @@
           "description": "Innehåller över 53 miljoner punktrepresentationer av verkliga enheter: skolor, företag, sjukhus, religiösa organisationer, landmärken, bergstoppar och mycket mer."
         }
       },
-      "omdFootways": {
-        "label": "Öppna data Gångvägar",
-        "description": "Data om öppna gångvägar insamlad från olika lokala myndigheter."
-      },
-      "metaSyntheticFootways": {
-        "label": "Konstbelagda gångbanor från Meta",
-        "description": "Data om syntetiska gångbanor insamlade från olika lokala myndigheter."
-      }
     },
     "rapid_poweruser": {
       "beta": "Betafunktion",
