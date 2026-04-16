@@ -3,189 +3,243 @@ import { AbstractMode } from './AbstractMode.js';
 import { actionAddEntity } from '../actions/add_entity.js';
 import { actionChangeTags } from '../actions/change_tags.js';
 import { actionAddMidpoint } from '../actions/add_midpoint.js';
-import { geoChooseEdge } from '../geo/index.js';
 import { osmNode } from '../osm/node.js';
+import { actionMoveNode } from '../actions/move_node.js';
 
 const DEBUG = false;
 
 
-/**
- * `AddPointMode`
- * In this mode, we are waiting for the user to place a point somewhere
- */
 export class AddPointMode extends AbstractMode {
 
-  /**
-   * @constructor
-   * @param  `context`  Global shared application context
-   */
-  constructor(context) {
-    super(context);
-    this.id = 'add-point';
+	constructor(context) {
+		super(context);
+		this.id = 'add-point';
 
-    this.defaultTags = {};
+		this.defaultTags = {};
 
-    // Make sure the event handlers have `this` bound correctly
-    this._click = this._click.bind(this);
-    this._cancel = this._cancel.bind(this);
-  }
+		this._click = this._click.bind(this);
+		this._cancel = this._cancel.bind(this);
+		this._onCursorMovement = this._onCursorMovement.bind(this);
 
-
-  /**
-   * enter
-   * Enters the mode.
-   */
-  enter() {
-    if (DEBUG) {
-      console.log('AddPointMode: entering');  // eslint-disable-line no-console
-    }
-
-    this._active = true;
-    const context = this.context;
-
-    const eventManager = context.systems.gfx.events;
-    eventManager.setCursor('crosshair');
-
-    context.enableBehaviors(['hover', 'draw', 'mapInteraction']);
-    context.behaviors.draw
-      .on('click', this._click)
-      .on('cancel', this._cancel)
-      .on('finish', this._cancel);
-
-    return true;
-  }
+		this._previewNodeID = null;
+		this._lastSnapResult = null;
+	}
 
 
-  /**
-   * exit
-   */
-  exit() {
-    if (!this._active) return;
-    this._active = false;
+	enter() {
+		if (DEBUG) {
+			console.log('AddPointMode: entering');
+		}
 
-    if (DEBUG) {
-      console.log('AddPointMode: exiting');  // eslint-disable-line no-console
-    }
+		const context = this.context;
+		const editor = context.systems.editor;
+		const map = context.systems.map;
 
-    const context = this.context;
+		this._active = true;
+		this._previewNodeID = null;
+		this._lastSnapResult = null;
 
-    const eventManager = context.systems.gfx.events;
-    eventManager.setCursor('grab');
+		const startLoc = map.mouseLoc();
+		const previewNode = osmNode({ loc: startLoc, tags: this.defaultTags });
 
-    context.behaviors.draw
-      .off('click', this._click)
-      .off('cancel', this._cancel)
-      .off('finish', this._cancel);
-  }
+		editor.perform(actionAddEntity(previewNode));
+		this._previewNodeID = previewNode.id;
 
+		// Mark the preview node with the 'drawing' class so the Pixi renderer
+		// treats it as non-interactive. Without this, the preview node sits on
+		// top of ways and intercepts Pixi hit tests, preventing way snapping.
+		// DrawLineMode uses the same approach for its temporary draw node.
+		const gfx = context.systems.gfx;
+		const layer = gfx.scene.layers.get('osm');
+		if (layer) {
+			layer.setClass('drawing', previewNode.id);
+		}
 
-  /**
-   * _click
-   * Process whatever the user clicked on
-   */
-  _click(eventData) {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const graph = editor.staging.graph;
-    const locations = context.systems.locations;
-    const viewport = context.viewport;
-    const point = eventData.coord.map;
-    const loc = viewport.unproject(point);
-    if (locations.blocksAt(loc).length) return;   // editing is blocked here
+		const eventManager = context.systems.gfx.events;
+		eventManager.setCursor('crosshair');
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
-    const datum = eventData?.target?.data;
-    const choice = eventData?.target?.choice;
-    const target = datum && graph.hasEntity(datum.id);
+		context.enableBehaviors(['hover', 'draw', 'mapInteraction']);
 
-    // Snap to a node
-    if (target?.type === 'node') {
-      this._clickNode(target.loc, target);
-      return;
-    }
+		context.behaviors.draw
+			.on('click', this._click)
+			.on('cancel', this._cancel)
+			.on('finish', this._cancel)
+			.on('move', this._onCursorMovement);
 
-    // Snap to a way
-//    if (target?.type === 'way' && choice) {
-//      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-//      this._clickWay(choice.loc, edge);
-//      return;
-//    }
-    if (target?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(target), point, viewport);
-      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-      if (choice && choice.distance < SNAP_DIST) {
-        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
-        this._clickWay(choice.loc, edge);
-        return;
-      }
-    }
-    this._clickNothing(loc);
-  }
+		return true;
+	}
 
 
-  /**
-   * _click
-   * Clicked on nothing, create the point at given `loc`
-   */
-  _clickNothing(loc) {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const l10n = context.systems.l10n;
+	exit() {
+		if (!this._active) {
+			return;
+		}
 
-    const node = osmNode({ loc: loc, tags: this.defaultTags });
+		this._active = false;
 
-    editor.perform(actionAddEntity(node));
-    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
-    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
-  }
+		if (DEBUG) {
+			console.log('AddPointMode: exiting');
+		}
 
+		const context = this.context;
+		const editor = context.systems.editor;
+		const eventManager = context.systems.gfx.events;
 
-  /**
-   * _clickWay
-   * Clicked on an existing way, add a midpoint along the `edge` at given `loc`
-   */
-  _clickWay(loc, edge) {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const l10n = context.systems.l10n;
+		eventManager.setCursor('grab');
 
-    const node = osmNode({ tags: this.defaultTags });
-    editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
-    editor.commit({ annotation: l10n.t('operations.add.annotation.vertex'), selectedIDs: [node.id] });
-    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: true });
-  }
+		const gfx = context.systems.gfx;
+		const layer = gfx.scene.layers.get('osm');
+		if (layer) {
+			layer.clearClass('drawing');
+		}
 
+		context.behaviors.draw
+			.off('click', this._click)
+			.off('cancel', this._cancel)
+			.off('finish', this._cancel)
+			.off('move', this._onCursorMovement);
 
-  /**
-   * _clickNode
-   * Clicked on an existing node, merge `defaultTags` into it, if any, then select the node
-   */
-  _clickNode(loc, node) {
-    const context = this.context;
-    const editor = context.systems.editor;
-    const l10n = context.systems.l10n;
-
-    if (Object.keys(this.defaultTags).length === 0) {
-      context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
-      return;
-    }
-
-    const tags = Object.assign({}, node.tags);  // shallow copy
-    for (const k in this.defaultTags) {
-      tags[k] = this.defaultTags[k];
-    }
-
-    editor.perform(actionChangeTags(node.id, tags));
-    editor.commit({ annotation: l10n.t('operations.add.annotation.point'), selectedIDs: [node.id] });
-    context.enter('select-osm', { selection: { osm: [node.id] }, newFeature: false });
-  }
+		// _previewNodeID is null if _click already handled cleanup.
+		// Only revert if the user cancelled — preview node still in staging.
+		if (this._previewNodeID !== null) {
+			this._previewNodeID = null;
+			this._lastSnapResult = null;
+			editor.revert();
+		}
+	}
 
 
-  /**
-   * _cancel
-   * Return to browse mode without doing anything
-   */
-  _cancel() {
-    this.context.enter('browse');
-  }
+	_onCursorMovement(eventData) {
+		if (this._previewNodeID === null) {
+			return;
+		}
+
+		const context = this.context;
+		const editor = context.systems.editor;
+
+		// Cache snap result for use in _click
+		this._lastSnapResult = eventData.snapResult;
+
+		let worldLoc = null;
+
+		if (eventData.snapResult !== null && eventData.snapResult !== undefined) {
+			// snapResult.loc is world coords from SnapSystem
+			worldLoc = eventData.snapResult.loc;
+		}
+		else {
+			worldLoc = context.viewport.unproject(eventData.coord.map);
+		}
+
+		editor.perform(actionMoveNode(this._previewNodeID, worldLoc));
+		context.systems.gfx.immediateRedraw();
+	}
+
+
+	_click(eventData) {
+		const context = this.context;
+		const editor = context.systems.editor;
+
+		// Use snap from click event, fall back to last cached move snap
+		const snap = eventData.snapResult || this._lastSnapResult;
+
+		// Null out before revert so exit() skips the revert
+		this._previewNodeID = null;
+		this._lastSnapResult = null;
+
+		// Revert wipes the preview node from staging.
+		// Stable is untouched — previously committed nodes are safe.
+		editor.revert();
+
+		if (snap !== null) {
+			if (snap.type === 'way') {
+				this._placeOnWay(snap.loc, snap.edge);
+				return;
+			}
+
+			if (snap.type === 'node') {
+				this._placeOnNode(snap.data);
+				return;
+			}
+		}
+
+		// Free placement
+		const freeLoc = snap ? snap.loc : context.viewport.unproject(eventData.coord.map);
+		this._placeFree(freeLoc);
+	}
+
+
+	_placeFree(loc) {
+		const context = this.context;
+		const editor = context.systems.editor;
+		const l10n = context.systems.l10n;
+
+		const node = osmNode({ loc: loc, tags: this.defaultTags });
+		editor.perform(actionAddEntity(node));
+		editor.commit({
+			annotation: l10n.t('operations.add.annotation.point'),
+			selectedIDs: [node.id]
+		});
+
+		context.enter('select-osm', {
+			selection: { osm: [node.id] },
+			newFeature: true
+		});
+	}
+
+
+	_placeOnWay(loc, edge) {
+		const context = this.context;
+		const editor = context.systems.editor;
+		const l10n = context.systems.l10n;
+
+		const node = osmNode({ tags: this.defaultTags });
+		editor.perform(actionAddMidpoint({ loc: loc, edge: edge }, node));
+		editor.commit({
+			annotation: l10n.t('operations.add.annotation.vertex'),
+			selectedIDs: [node.id]
+		});
+
+		context.enter('select-osm', {
+			selection: { osm: [node.id] },
+			newFeature: true
+		});
+	}
+
+
+	_placeOnNode(existingNode) {
+		const context = this.context;
+		const editor = context.systems.editor;
+		const l10n = context.systems.l10n;
+
+		if (Object.keys(this.defaultTags).length === 0) {
+			context.enter('select-osm', {
+				selection: { osm: [existingNode.id] },
+				newFeature: false
+			});
+			return;
+		}
+
+		const tags = Object.assign({}, existingNode.tags);
+
+		for (const k in this.defaultTags) {
+			tags[k] = this.defaultTags[k];
+		}
+
+		editor.perform(actionChangeTags(existingNode.id, tags));
+		editor.commit({
+			annotation: l10n.t('operations.add.annotation.point'),
+			selectedIDs: [existingNode.id]
+		});
+
+		context.enter('select-osm', {
+			selection: { osm: [existingNode.id] },
+			newFeature: false
+		});
+	}
+
+
+	_cancel() {
+		// exit() will revert since _previewNodeID is still set
+		this.context.enter('browse');
+	}
 }
