@@ -1,3 +1,4 @@
+import 'pixi.js/unsafe-eval';
 import * as PIXI from 'pixi.js';
 import { TAU, Viewport, numWrap, vecEqual, vecLength, vecRotate, vecScale, vecSubtract } from '@rapid-sdk/math';
 
