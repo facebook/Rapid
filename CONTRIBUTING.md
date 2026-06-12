@@ -41,7 +41,7 @@ This section suggests a toolset and method to start contributing to Rapid. Howev
 2. [Clone the repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) with `git clone https://github.com/YOUR-GITHUB-USERNAME/Rapid.git`.
 3. From the CLI, open your freshly cloned Rapid directory by running the command `code Rapid`
 4. Once in VSCode, type **Ctrl+Shift+`** to open a terminal. Alternatively, use the **Terminal>New Terminal** menu option.
-5. Make sure you are using [the latest `node`](https://nodejs.org/en/download) by running `node --version`. If not, then running `nvm install node` will set it up for you.
+5. Make sure you are using Node.js 22 or newer by running `node --version`. If not, then running `nvm install --lts` will set it up for you.
 6. Install all required dependencies with `npm install`
 7. Then run `npm run all` to set up Rapid.
 8. Finally, run `npm run start` to start the server on port 8080.
