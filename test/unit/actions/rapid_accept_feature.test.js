@@ -151,6 +151,29 @@ describe('actionRapidAcceptFeature', () => {
         });
 
 
+        it('preserves shared endpoint when accepting connected Rapid ways', () => {
+            const tree = new Rapid.Tree(new Rapid.Graph());
+
+            const smallN1 = Rapid.osmNode({ id: 'n-27', loc: [0, 0] });
+            const sharedNode = Rapid.osmNode({ id: 'n-28', loc: [1, 0] });
+            const smallWay = Rapid.osmWay({ id: 'w-4', nodes: ['n-27', 'n-28'], tags: { highway: 'residential' } });
+            const smallExtGraph = new Rapid.Graph([smallN1, sharedNode, smallWay]);
+
+            let graph = Rapid.actionRapidAcceptFeature('w-4', smallExtGraph, tree)(new Rapid.Graph());
+            assert.ok(graph.hasEntity('n-28'), 'shared endpoint should exist after accepting first way');
+
+            const largeN2 = Rapid.osmNode({ id: 'n-29', loc: [2, 0] });
+            const largeWay = Rapid.osmWay({ id: 'w-5', nodes: ['n-28', 'n-29'], tags: { highway: 'tertiary' } });
+            const largeExtGraph = new Rapid.Graph([sharedNode, largeN2, largeWay]);
+
+            graph = Rapid.actionRapidAcceptFeature('w-5', largeExtGraph, tree)(graph);
+
+            assert.ok(graph.hasEntity('n-28'), 'shared endpoint should not be removed by self-merge');
+            assert.deepEqual(graph.childNodes(graph.entity('w-4')).map(node => node.id), ['n-27', 'n-28']);
+            assert.deepEqual(graph.childNodes(graph.entity('w-5')).map(node => node.id), ['n-28', 'n-29']);
+        });
+
+
         it('merges instead of creating duplicate when projection lands on existing node', () => {
             const { osmGraph, tree } = buildOsmScene(makeHighway());
 

@@ -177,13 +177,15 @@ export function actionRapidAcceptFeature(entityID, extGraph, tree) {
             var connectedHighwayTag = graph.entity(bestResult.targetWayId).tags.highway;
 
             if (bestResult.mergeNodeId) {
-                // Replace endpoint references in accepted way with existing node
-                var updatedNodes = acceptedWay.nodes.map(function(nid) {
-                    return nid === node.id ? bestResult.mergeNodeId : nid;
-                });
-                graph = graph.replace(acceptedWay.update({ nodes: updatedNodes }));
-                // Remove the orphaned original node
-                graph = graph.remove(node);
+                if (bestResult.mergeNodeId !== node.id) {
+                    // Replace endpoint references in accepted way with existing node
+                    var updatedNodes = acceptedWay.nodes.map(function(nid) {
+                        return nid === node.id ? bestResult.mergeNodeId : nid;
+                    });
+                    graph = graph.replace(acceptedWay.update({ nodes: updatedNodes }));
+                    // Remove the orphaned original node
+                    graph = graph.remove(node);
+                }
             } else {
                 // Snap node to projected point on segment, splice into target way
                 node = node.move(bestResult.snapLoc);
