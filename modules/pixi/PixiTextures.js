@@ -72,20 +72,9 @@ export class PixiTextures {
     const renderer = gfx.pixi.renderer;
     registerAtlasUploader(renderer);
 
-    // Try to get the max texture size.
-    // We will prefer large atlas size of 8192 to avoid texture swapping, but can settle for less.
-    const trysize = 8192;
-    let maxsize = 2048;   // a reasonable default
-    if (gfx.highQuality) {
-      if (renderer.type === PIXI.RendererType.WEBGL) {
-        const gl = renderer.gl;
-        maxsize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-      } else if (renderer.type === PIXI.RendererType.WEBGPU) {
-        const gpu = renderer.gpu;
-        maxsize = gpu.adapter.limits.maxTextureDimension2D;
-      }
-    }
-    const size = Math.min(trysize, maxsize);
+    // Pixi's WebGL shaders use mediump fragment UVs, which only guarantee about
+    // 10 bits of precision and cannot reliably address larger normalized atlases.
+    const size = 2048;
 
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "TextureSources" - real textures that upload to the GPU.
